@@ -1,0 +1,40 @@
+<nav class="navbar navbar-expand" id="main_navbar" *ngIf="showNav"
+     style="background: -webkit-linear-gradient(45deg, rgba(66, 183, 245, 0.8) 0%, rgba(66, 245, 189, 0.4) 100%);
+    background: linear-gradient(45deg, rgba(66, 183, 245, 0.8) 0%, rgba(66, 245, 189, 0.4) 100%);">
+  <div class="navbar-nav" style="width: 100%; font-size: 17px;">
+    <li>
+      <a class="navbar-brand" style="color: black">@Logo</a>
+    </li>
+    <li class="nav-item" style="width: auto">
+      <a routerLink="/main/" class="nav-link" style="color: black"> Главная</a>
+    </li>
+    <li class="nav-item" style="width: auto">
+      <a routerLink="/load_image/" class="nav-link" style="color: black"> Обработка изображения</a>
+    </li>
+    <li class="nav-item" style="width: auto">
+      <a routerLink="/create_user/" class="nav-link" style="color: black">Создать пользователя</a>
+    </li>
+    <li class="nav-item" style="width: auto">
+      <a routerLink="/patients/" class="nav-link" style="color: black">Пациенты</a>
+    </li>
+    <li class="nav-item" style="width: auto">
+      <a routerLink="/create_patient/" class="nav-link" style="color: black">Создать пациента</a>
+    </li>
+    <li style="margin-left: auto; max-width: 40px;">
+      <a routerLink='/profile/'>
+        <img class="d-none d-sm-none d-md-block" style="width: 100%; float: right;" src="assets/images/profile.png">
+      </a>
+    </li>
+    <li style="margin-left: 20px; max-width: 40px;">
+      <img class="d-none d-sm-none d-md-block" (click)="logout()" style="width: 100%; float: right;"
+           src="assets/images/exit.png">
+    </li>
+  </div>
+</nav>
+
+<div class="container mt-3">
+  <router-outlet></router-outlet>
+</div>
+
+
+

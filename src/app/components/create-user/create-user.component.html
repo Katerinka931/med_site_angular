@@ -1,0 +1,60 @@
+<head>
+  <title>Создать пользователя</title>
+</head>
+<br><br>
+<div class="form-panel one background_color_body" style="border-radius: 5px">
+  <div class="form-header">
+    <h1>Создать пользователя</h1>
+  </div>
+  <div class="form-group">
+    <label for="last_name">Фамилия</label>
+    <input id="last_name" type="text" name="last_name" value=""
+           [(ngModel)]="user.last_name" style="background-color: #ededed">
+  </div>
+  <div class="form-group">
+    <label for="first_name">Имя</label>
+    <input id="first_name" type="text" name="first_name" value=""
+           [(ngModel)]="user.first_name" style="background-color: #ededed">
+  </div>
+  <div class="form-group">
+    <label for="middle_name">Отчество</label>
+    <input id="middle_name" type="text" name="middle_name" value=""
+           [(ngModel)]="user.middle_name" style="background-color: #ededed">
+  </div>
+  <div class="form-group">
+    <label for="email">Почта</label>
+    <input id="email" type="text" name="email" value=""
+           [(ngModel)]="user.email" style="background-color: #ededed">
+  </div>
+  <div class="form-group">
+    <label for="phone">Телефон</label>
+    <input id="phone" type="text" name="phone" value=""
+           [(ngModel)]="user.phone" style="background-color: #ededed">
+  </div>
+  <div class="form-group">
+    <label for="login">Логин</label>
+    <input id="login" type="text" name="login" value=""
+           [(ngModel)]="user.login" style="background-color: #ededed">
+  </div>
+  <div class="form-group">
+    <label for="password">Пароль </label>
+    <input id="password" [(ngModel)]="password" type="text" name="password" value="" style="background-color: #ededed">
+  </div>
+  <div class="form-group">
+    <label for="password_repeat">Повторите пароль </label>
+    <input id="password_repeat" [(ngModel)]="password_repeat" type="text" name="password_repeat" value="" style="background-color: #ededed">
+  </div>
+</div>
+<br>
+<div class="text-center">
+  <button
+    type="submit"
+    class="btn btn-info mb-2 text-center"
+    name="save"
+    (click)="saveUser()"
+    style="min-width: 10%; margin-right: 50px"
+  >
+    Сохранить
+  </button>
+</div>
+<br><br>

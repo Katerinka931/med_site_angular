@@ -1,0 +1,53 @@
+<head>
+    <title>Пользователь</title>
+</head>
+<div class="split left">
+    <div class="pos">
+        <h4><b>{{ user.last_name }} {{ user.first_name }} {{ user.middle_name }} </b></h4>
+        <p> Звание, должность? </p>
+        <br>
+        <h4><b>Контакты</b></h4>
+        <p>Телефон: {{ user.phone }}</p>
+        <p>Почта: {{ user.email }}</p>
+    </div>
+    <div>
+        <a button href="/edit_doctor/{{ user.id }}"
+           type="submit"
+           class="btn btn-light mb-2 text-center edit-button"
+        >
+            Редактировать
+        </a>
+    </div>
+</div>
+
+<div class="split right">
+    <div class="pos">
+<!--        <div style="padding-bottom: 4%; width: 99.5%">-->
+<!--            <h3 style="float: left"> Список пациентов </h3>-->
+<!--            <li class="my-button add-but">-->
+<!--                <a href="/create_patient/{{ doctor.pk }}/?pk={{ user.pk }}"><img-->
+<!--                        width="50px" src="{% static "img/add.png" %}"/></a>-->
+<!--            </li>-->
+<!--        </div>-->
+<!--        {% if not patients %}-->
+<!--            <label>Пациентов нет. </label>-->
+<!--            <label> Чтобы создать пациентов нажмите на <img-->
+<!--                    width="1.3%" src="{% static "img/add.png" %}"/> в парвом верхнем углу. </label>-->
+<!--        {% else %}-->
+<!--            {% for patient in patients %}-->
+<!--                <br>-->
+<!--                <div>-->
+<!--                    <li class="list-group-item text-capitalize" style="float: left; width: 95%"-->
+<!--                        data-href="/patient/{{ doctor.pk }}/?pat={{ patient.pk }}"-->
+<!--                        onclick="window.location.href='/patient/{{ doctor.pk }}/?pat={{ patient.pk }}'">-->
+<!--                        {{ patient.last_name }} {{ patient.first_name }} {{ patient.middle_name }}-->
+<!--                    </li>-->
+<!--                    <li class="my-button remove-but">-->
+<!--                        <a href="/doctor/{{ doctor.pk }}/{{ user.pk }}/?remove={{ patient.pk }}"><img-->
+<!--                                width="50px" src="{% static "img/remove.png" %}"/></a>-->
+<!--                    </li>-->
+<!--                </div>-->
+<!--            {% endfor %}-->
+<!--        {% endif %}-->
+    </div>
+</div>

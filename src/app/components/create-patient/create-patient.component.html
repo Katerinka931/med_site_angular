@@ -1,0 +1,64 @@
+<head>
+  <title>Создать пациента</title>
+</head>
+<br><br>
+<div class="form-panel one background_color_body" style="border-radius: 5px">
+  <div class="form-header">
+    <h1>Создать пациента</h1>
+  </div>
+  <div class="form-group">
+    <label for="last_name">Фамилия</label>
+    <input id="last_name" type="text" name="last_name" value=""
+           [(ngModel)]="patient.last_name" style="background-color: #ededed">
+  </div>
+  <div class="form-group">
+    <label for="first_name">Имя</label>
+    <input id="first_name" type="text" name="first_name" value=""
+           [(ngModel)]="patient.first_name" style="background-color: #ededed">
+  </div>
+  <div class="form-group">
+    <label for="middle_name">Отчество</label>
+    <input id="middle_name" type="text" name="middle_name" value=""
+           [(ngModel)]="patient.middle_name" style="background-color: #ededed">
+  </div>
+  <div class="form-group">
+    <label for="date">Дата рождения</label>
+    <input id="date" type="date" name="date" value=""
+           [(ngModel)]="patient.date_of_birth" style="background-color: #ededed">
+  </div>
+  <div class="form-group">
+    <label for="email">Почта</label>
+    <input id="email" type="text" name="email" value=""
+           [(ngModel)]="patient.email" style="background-color: #ededed">
+  </div>
+  <div class="form-group">
+    <label for="phone">Телефон</label>
+    <input id="phone" type="text" name="phone" value=""
+           [(ngModel)]="patient.phone" style="background-color: #ededed">
+  </div>
+  <div class="form-group">
+    <label for="diagnosys">Диагноз</label>
+    <input id="diagnosys" type="text" name="diagnosys" value=""
+           [(ngModel)]="patient.diagnosys" style="background-color: #ededed">
+  </div>
+  <div *ngIf="userRole!='DOCTOR'">
+    <div class="form-group">
+      <label for="doctor_number">Лечащий врач (сделать селектор)</label>
+      <input id="doctor_number" type="text" name="doctor_number" value=""
+             [(ngModel)]="patient.doctor_number" style="background-color: #ededed">
+    </div>
+  </div>
+</div>
+<br>
+<div class="text-center">
+  <button
+    type="submit"
+    class="btn btn-info mb-2 text-center"
+    name="save"
+    (click)="savePatient()"
+    style="min-width: 10%; margin-right: 50px"
+  >
+    Сохранить
+  </button>
+</div>
+<br><br>

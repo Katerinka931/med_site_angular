@@ -1,0 +1,38 @@
+<head>
+  <title>Обработка изображения</title>
+</head>
+<div class="split left" style="background: white; width: 55%;">
+  <div class="pos">
+    <label class="btn btn-default">
+      <input type="file" (change)="selectFile($event)"/>
+    </label>
+  </div>
+  <button
+    type="submit"
+    class="btn btn-info mb-2 text-center edit-button"
+    [disabled]="!selectedFiles" (click)="loadImage()"
+    style="min-width: 10%; margin-right: 50px"
+  >
+    Загрузить
+  </button>
+</div>
+<div class="split right" style="width: 40%">
+  <div class="pos">
+    <h3>Результат:</h3>
+    <input type="text" readonly style="width: 100%;" class="diagnosis" value="{{diagnosys}}">
+    <br>
+    <div> Информация о пациенте</div>
+  </div>
+
+  <div>
+    <button
+      type="submit"
+      class="btn btn-info mb-2 text-center edit-button"
+      name="save"
+      (click)="saveDiagnosys()"
+      style="min-width: 10%; margin-right: 50px"
+    >
+      Сохранить
+    </button>
+  </div>
+</div>

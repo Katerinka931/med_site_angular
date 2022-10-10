@@ -1,0 +1,40 @@
+<head>
+    <title>Пациент</title>
+</head>
+<div class="split left">
+    <div class="pos">
+        <h2 style="text-align: center"> *photo* </h2>
+    </div>
+    <div>
+        <button
+                type="submit"
+                name="change_photo"
+                class="btn btn-light mb-2 text-center edit-button"
+        >
+            Изменить
+        </button>
+    </div>
+</div>
+<div class="split right">
+    <div class="pos">
+        <h4><b>{{ patient.last_name }} {{ patient.first_name}} {{ patient.middle_name}}</b></h4>
+        <h6><b>Год рождения: </b> {{ patient.date_of_birth }}</h6>
+        <h6><b>Контакты</b></h6>
+        <h6>Телефон: {{ patient.phone }}</h6>
+        <h6>Почта: {{ patient.email }}</h6>
+        <h6>Лечащий
+            врач: <!--{{ patients_doctor.last_name }} {{ patients_doctor.first_name}} {{ patients_doctor.middle_name}}--></h6>
+        <div class="diagnosis">
+            <h4> Диагноз: {{ patient.diagnosys }}</h4>
+        </div>
+    </div>
+    <div>
+        <a href="/edit_patient/{{ patient.id }}"
+                type="submit"
+                class="btn btn-info mb-2 text-center edit-button"
+        >
+            Редактировать
+        </a>
+    </div>
+</div>
+
