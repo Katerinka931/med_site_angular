@@ -1,1 +1,49 @@
-<p>edit-patient works!</p>
+<head>
+  <title>Редактирование пациента</title>
+</head>
+<br>
+<div class="form-panel one background_color_body" style="border-radius: 5px">
+  <div class="form-header">
+    <h1>Редактирование пациента</h1>
+  </div>
+  <br>
+  <div class="form-group">
+    <label for="last_name">Фамилия</label>
+    <input id="last_name" type="text" name="last_name" value="{{currentPatient.last_name}}"
+           [(ngModel)]="currentPatient.last_name" style="background-color: #ededed">
+  </div>
+  <div class="form-group">
+    <label for="first_name">Имя</label>
+    <input id="first_name" type="text" name="first_name" value="{{currentPatient.first_name}}"
+           [(ngModel)]="currentPatient.first_name" style="background-color: #ededed">
+  </div>
+  <div class="form-group">
+    <label for="middle_name">Отчество</label>
+    <input id="middle_name" type="text" name="middle_name" value="{{currentPatient.middle_name}}"
+           [(ngModel)]="currentPatient.middle_name" style="background-color: #ededed">
+  </div>
+  <div class="form-group">
+    <label for="email">Почта</label>
+    <input id="email" type="text" name="email" value="{{currentPatient.email}}"
+           [(ngModel)]="currentPatient.email" style="background-color: #ededed">
+  </div>
+  <div class="form-group">
+    <label for="phone">Телефон</label>
+    <input id="phone" type="text" name="phone" value="{{currentPatient.phone}}"
+           [(ngModel)]="currentPatient.phone" style="background-color: #ededed">
+  </div>
+  <label> date_of_birth, diagnosys, doctor_id </label>
+</div>
+<br>
+<div class="text-center">
+  <button
+    type="submit"
+    class="btn btn-info mb-2 text-center"
+    name="save"
+    (click)="editPatient()"
+    style="min-width: 10%; margin-right: 50px"
+  >
+    Сохранить
+  </button>
+</div>
+<br><br>

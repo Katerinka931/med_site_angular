@@ -20,7 +20,7 @@ export class ProfileComponent implements OnInit {
   }
 
   private retrieve(): void {
-    this.userService.getDoctor(this.token.user_id).subscribe({ //todo
+    this.userService.getDoctorHimself(this.token.user_id).subscribe({ //todo
       next: (data) => {
         this.currentUser = data["user"];
       }, error: (e) => console.error(e)
@@ -28,10 +28,10 @@ export class ProfileComponent implements OnInit {
   }
 
   editDoctor(): void {
-    this.userService.editDoctor(this.token.user_id!, this.currentUser)
+    this.userService.editDoctorHimself(this.token.user_id!, this.currentUser)
       .subscribe({
-        next: (res) => {
-          console.log(res);
+        next: (data) => {
+          console.log(data);
         },
         error: (e) => {
           console.error(e);

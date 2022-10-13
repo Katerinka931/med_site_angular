@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Patient} from "../../models/patient_model/patient";
+import {PatientService} from "../../services/patients_service/patient.service";
+import {ActivatedRoute} from "@angular/router";
+import {Doctor} from "../../models/doctor_model/doctor";
 
 @Component({
   selector: 'app-patients-data',
@@ -8,11 +11,21 @@ import {Patient} from "../../models/patient_model/patient";
 })
 export class PatientsDataComponent implements OnInit {
   patient: Patient = {};
+  patients_doctor: Doctor = {};
 
-  constructor() { }
-
-  ngOnInit(): void {
-
+  constructor(private patientService: PatientService, private route: ActivatedRoute) {
   }
 
+  ngOnInit(): void {
+    this.retrieve();
+  }
+
+  private retrieve(): void {
+    this.patientService.getPatientsData(this.route.snapshot.params["pat"]).subscribe({
+      next: (data) => {
+        this.patient = data["patient"];
+        this.patients_doctor = this.patient["doctor"];
+      }, error: (e) => console.error(e)
+    });
+  }
 }

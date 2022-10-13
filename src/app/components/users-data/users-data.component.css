@@ -5,6 +5,12 @@
   margin-left: 20%
 }
 
+.nested-list-item {
+  width: 90%;
+  border-width: 4px;
+  box-shadow: 0 0 5px 2px #e5e5e5;
+}
+
 .border-gradient {
   -moz-border-image: -moz-linear-gradient(45deg, rgba(66, 183, 245, 0.8) 0%, rgba(66, 245, 189, 0.4) 100%);
   -webkit-border-image: -webkit-linear-gradient(45deg, rgba(66, 183, 245, 0.8) 0%, rgba(66, 245, 189, 0.4) 100%);
@@ -79,3 +85,4 @@
   height: 25vw;
   overflow-y: scroll;
 }
+
