@@ -13,14 +13,26 @@ export class CreateUserComponent implements OnInit {
   password_repeat: any;
   submitted = false;
 
+  typeSearch: string[] = ['Главный врач', 'Оператор', 'Врач'];
+  selected = '';
+  isWrong: any;
+  message: any;
+  gotMessage: any;
+
   constructor(private userService: UserService) {
   }
 
   ngOnInit(): void {
   }
 
+  valueChange(event: any) {
+    this.selected = event.target.value;
+  }
+
   saveUser() {
+    this.message = ''
     const data = {
+      role: this.selected,
       last_name: this.user.last_name,
       first_name: this.user.first_name,
       middle_name: this.user.middle_name,
@@ -33,10 +45,13 @@ export class CreateUserComponent implements OnInit {
     this.userService.createUser(data).subscribe({
       next: (res) => {
         this.submitted = true;
-        console.log(res);
+        this.gotMessage = true;
+        this.message = res['message'];
       },
       error: (e) => {
+        this.gotMessage = true;
         console.error(e);
+        confirm(e['error']['message']);
       }
     });
   }

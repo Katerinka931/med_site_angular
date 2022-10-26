@@ -4,7 +4,7 @@
 <div class="split left">
   <div class="pos">
     <h4><b>{{ user.last_name }} {{ user.first_name }} {{ user.middle_name }}</b></h4>
-    <p> Звание, должность? </p>
+    <p> Должность: {{role}} </p>
     <br>
     <h4><b>Контакты</b></h4>
     <p>Телефон: {{ user.phone }}</p>
@@ -24,27 +24,34 @@
   <div class="pos">
     <div style="padding-bottom: 4%; width: 99.5%;">
       <h3 style="float: left; "> Список пациентов </h3>
-      <li class="my-button add-but">
-        <a routerLink="/create_patient/">
-          <img class="img-responsive" width="50px" src="assets/images/add.png">
-        </a>
-      </li>
+      <div *ngIf="currentUserRole != 'ADMIN'">
+        <li class="my-button add-but">
+          <a routerLink="/create_patient/">
+            <img class="img-responsive" width="50px" src="assets/images/add.png">
+          </a>
+        </li>
+      </div>
     </div>
     <br>
     <div *ngIf="patients; else noPatients">
       <div *ngFor="let pat of patients; let i = index" [class.active]="i == selectedPatient">
-          <div class="list-group-item text-capitalize nested-list-item border-gradient" style="float: left; margin-bottom: 5px" (click)="gotoPatient(pat)">
-            {{ pat.last_name }} {{ pat.first_name }} {{ pat.middle_name }}
-          </div>
-            <img (click)="delete(user.id, pat.id)" style="float:right; margin-top: 0.5%;" class="img-responsive"
-                 width="45px"
-                 src="assets/images/remove.png">
+        <div class="list-group-item text-capitalize nested-list-item border-gradient"
+             style="float: left; margin-bottom: 5px" (click)="gotoPatient(pat)">
+          {{ pat.last_name }} {{ pat.first_name }} {{ pat.middle_name }}
+        </div>
+         <div *ngIf="user.role == 'CHIEF'">
+        <img (click)="delete(user.id, pat.id)" style="float:right; margin-top: 0.5%;" class="img-responsive"
+             width="45px"
+             src="assets/images/remove.png">
+         </div>
       </div>
     </div>
     <ng-template #noPatients>
       <label>Пациентов нет. </label>
+       <div *ngIf="user.role == 'CHIEF'">
       <label> Чтобы создать пациентов нажмите на <img class="img-responsive" width="50px"
                                                       src="assets/images/add.png"></label>
+       </div>
     </ng-template>
   </div>
 </div>

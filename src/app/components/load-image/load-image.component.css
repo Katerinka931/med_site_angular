@@ -40,7 +40,7 @@
     box-shadow: 0 0 5px 2px gainsboro;
     padding-left: 1%;
     margin-top: 4%;
-    height: 15vw;
+    height: 2vw;
     overflow-y: scroll;
 }
 
@@ -78,4 +78,8 @@
     left: 50%;
     position: absolute;
     transform: translateX(-50%) translateY(-50%);
+}
+
+input[type="file"] {
+    display: none;
 }

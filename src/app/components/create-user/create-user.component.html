@@ -22,6 +22,17 @@
            [(ngModel)]="user.middle_name" style="background-color: #ededed">
   </div>
   <div class="form-group">
+    <label for="doctor_selector">Роль</label>
+    <br>
+    <select [(ngModel)]="selected" (change)="valueChange($event)" id="doctor_selector" name="doctor_selector"
+            style="color: rgba(0, 0, 0, 0.6); background-color: #ededed; width: 100%; border-radius: 4px; height: 50px; border: none; padding-left: 20px">
+      <option *ngFor="let type of typeSearch"
+              [value]="type" [selected]="type == selected">
+        {{ type }}
+      </option>
+    </select>
+  </div>
+  <div class="form-group">
     <label for="email">Почта</label>
     <input id="email" type="text" name="email" value=""
            [(ngModel)]="user.email" style="background-color: #ededed">
@@ -42,7 +53,8 @@
   </div>
   <div class="form-group">
     <label for="password_repeat">Повторите пароль </label>
-    <input id="password_repeat" [(ngModel)]="password_repeat" type="text" name="password_repeat" value="" style="background-color: #ededed">
+    <input id="password_repeat" [(ngModel)]="password_repeat" type="text" name="password_repeat" value=""
+           style="background-color: #ededed">
   </div>
 </div>
 <br>
@@ -56,5 +68,12 @@
   >
     Сохранить
   </button>
+</div>
+<div *ngIf="gotMessage">
+  <div style="padding-top: 20px" class="text-center">
+    <h4>
+      <label style="color: lawngreen">{{ message }} </label>
+    </h4>
+  </div>
 </div>
 <br><br>

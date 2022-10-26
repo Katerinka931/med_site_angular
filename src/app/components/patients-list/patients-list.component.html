@@ -13,19 +13,24 @@
   </h3>
   <br><br>
   <div *ngIf="!peopleIsNull">
-    <div *ngFor="let pat of patients; let i = index" [class.active]="i == selectedPatient" >
+    <div *ngFor="let pat of patients; let i = index" [class.active]="i == selectedPatient">
       <div class="list-group-item text-capitalize list-item border-gradient" (click)="gotoPatient(pat)">
         {{ pat.last_name }} {{ pat.first_name }} {{ pat.middle_name }}
       </div>
       <div>
-        <img (click)="delete(pat.id)" style="float: right; margin-top: 0.5%;" class="img-responsive" width="45px"
+        <img (click)="delete(pat.id, pat.last_name, pat.first_name, pat.middle_name)" style="float: right; margin-top: 0.5%;" class="img-responsive" width="45px"
              src="assets/images/remove.png">
       </div>
     </div>
   </div>
 
   <div *ngIf="peopleIsNull">
-    <label>NO CONTENT</label>
+    <div style="padding-top: 20px" class="text-center">
+      <h4><label> Пациентов нет. </label>
+        <label> Нажмите на <img class="img-responsive" width="1.3%" src="assets/images/add.png"> в парвом верхнем углу,
+          чтобы создать пользователя.
+        </label></h4>
+    </div>
   </div>
 </div>
 </body>

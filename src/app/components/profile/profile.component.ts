@@ -20,7 +20,7 @@ export class ProfileComponent implements OnInit {
   }
 
   private retrieve(): void {
-    this.userService.getDoctorHimself(this.token.user_id).subscribe({ //todo
+    this.userService.getDoctorHimself(this.token.user_id).subscribe({
       next: (data) => {
         this.currentUser = data["user"];
       }, error: (e) => console.error(e)

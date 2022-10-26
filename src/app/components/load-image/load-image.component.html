@@ -3,9 +3,11 @@
 </head>
 <div class="split left" style="background: white; width: 55%;">
   <div class="pos">
-    <label class="btn btn-default">
-      <input type="file" (change)="selectFile($event)"/>
+    <label for="file-upload" class="btn btn-info mb-2" style="margin-right: 20px">
+      Обзор...
     </label>
+    <input id="file-upload" type="file" (change)="selectFile($event)"/>
+    <label *ngIf="file_name != ''" style="font-size: 20px"> Загруженный файл: {{ file_name }} </label>
   </div>
   <button
     type="submit"
@@ -20,10 +22,19 @@
   <div class="pos">
     <h3>Результат:</h3>
     <input type="text" readonly style="width: 100%;" class="diagnosis" value="{{diagnosys}}">
-    <br>
-    <div> Информация о пациенте</div>
+    <br><br><br>
+<!--    <h5> Выберите пациента из списка:</h5>-->
+    <div class="form-group">
+      <label for="doctor_selector">Выберите пациента из списка:</label>
+      <br>
+      <select class="form-control" [(ngModel)]="selected" (change)="valueChange($event)" id="doctor_selector" name="doctor_selector">
+        <option *ngFor="let type of patientsList"
+                [value]="type" [selected]="type == selected">
+          {{ type }}
+        </option>
+      </select>
+    </div>
   </div>
-
   <div>
     <button
       type="submit"

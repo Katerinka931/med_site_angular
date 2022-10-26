@@ -6,7 +6,8 @@
 
 <div>
   <div *ngIf="userRole=='ADMIN' || userRole=='CHIEF'; else patientsTemplate">
-    <h3 style="text-align: center;"> Список докторов
+    <h3 style="text-align: center;">
+      {{ header }}
       <li class="my-button add-but">
         <a routerLink="/create_user/">
           <img class="img-responsive" width="50px" src="assets/images/add.png">
@@ -16,11 +17,12 @@
     <br><br>
     <div *ngIf="!peopleIsNull">
       <div *ngFor="let doc of doctors; let i = index" [class.active]="i == selectedDoctor">
-        <div class="list-group-item text-capitalize list-item border-gradient" (click)="gotoDoctor(doc)">
+        <div class="list-group-item list-item border-gradient" (click)="gotoDoctor(doc)">
           {{ doc.last_name }} {{ doc.first_name }} {{ doc.middle_name }}
+          <div *ngIf="userRole=='ADMIN'" style="float: right"> {{ roleTo(doc.role!) }} </div>
         </div>
         <div>
-          <img (click)="delete(doc.id)" style="float: right; margin-top: 0.5%;" class="img-responsive" width="45px"
+          <img (click)="delete(doc.id, doc.last_name, doc.first_name, doc.middle_name)" style="float: right; margin-top: 0.5%;" class="img-responsive" width="45px"
                src="assets/images/remove.png">
         </div>
       </div>
@@ -41,13 +43,12 @@
           {{ pat.last_name }} {{ pat.first_name }} {{ pat.middle_name }}
         </div>
         <div>
-          <img (click)="delete(pat.id)" style="float: right; margin-top: 0.5%;" class="img-responsive" width="45px"
+          <img (click)="delete(pat.id, pat.last_name, pat.first_name, pat.middle_name)" style="float: right; margin-top: 0.5%;" class="img-responsive" width="45px"
                src="assets/images/remove.png">
         </div>
       </div>
     </div>
   </ng-template>
-
   <div *ngIf="peopleIsNull">
     <label>NO CONTENT</label>
   </div>

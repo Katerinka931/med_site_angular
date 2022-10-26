@@ -3,6 +3,7 @@ import {Doctor} from "../../models/doctor_model/doctor";
 import {UserService} from "../../services/users_service/user.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Patient} from "../../models/patient_model/patient";
+import {TokenStorageService} from "../../services/token_storage_service/token-storage.service";
 
 @Component({
   selector: 'app-users-data',
@@ -13,12 +14,15 @@ export class UsersDataComponent implements OnInit {
   user: Doctor = {};
   patients?: Patient[];
   selectedPatient: Patient = {};
+  role: string;
+  currentUserRole: string;
 
-  constructor(private userService: UserService, private route: ActivatedRoute, private router: Router) {
+  constructor(private userService: UserService, private route: ActivatedRoute, private router: Router, private tokenStorage: TokenStorageService) {
   }
 
   ngOnInit(): void {
     this.retrieve();
+    this.currentUserRole = this.tokenStorage.getUserRole()!;
   }
 
   private retrieve(): void {
@@ -26,8 +30,27 @@ export class UsersDataComponent implements OnInit {
       next: (data) => {
         this.user = data["user"];
         this.patients = this.user["patients"];
+        this.getRole();
       }, error: (e) => console.error(e)
     });
+
+  }
+
+  private getRole(): void {
+    switch (this.user.role) {
+      case 'ADMIN':
+        this.role = 'администратор';
+        break;
+      case 'OPERATOR':
+        this.role = 'оператор';
+        break;
+      case 'CHIEF':
+        this.role = 'главный врач';
+        break;
+      case 'DOCTOR':
+        this.role = 'врач';
+        break;
+    }
   }
 
   refreshList(): void {
@@ -40,8 +63,11 @@ export class UsersDataComponent implements OnInit {
   }
 
   gotoPatient(pat: Patient) {
-    this.setActivePatient(pat);
-    this.router.navigate([`/patient/${this.selectedPatient.id}`]);
+    console.log(this.user.role);
+    if (this.tokenStorage.getUserRole() != 'ADMIN') {
+      this.setActivePatient(pat);
+      this.router.navigate([`/patient/${this.selectedPatient.id}`]);
+    }
   }
 
   delete(usr: any, id: any) {

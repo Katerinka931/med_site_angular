@@ -19,6 +19,10 @@ export class PatientService {
     return this.http.post(createUrl, data);
   }
 
+  getListOfDoctorsToCreatePatient(): Observable<any> {
+    return this.http.get(createUrl);
+  }
+
   getPatients(id: any): Observable<Patient[]> {
     return this.http.get<Patient[]>(`${patientsUrl}`);
   }

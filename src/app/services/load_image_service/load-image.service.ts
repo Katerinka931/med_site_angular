@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpEvent, HttpHeaders, HttpRequest} from "@angular/common/http";
 import {Observable} from "rxjs";
+import {Patient} from "../../models/patient_model/patient";
 
+const baseUrl = 'http://localhost:8000/load_image';
 @Injectable({
   providedIn: 'root'
 })
 export class LoadImageService {
-  private baseUrl = 'http://localhost:8000/load_image';
   private httpOptions: any;
 
   constructor(private http: HttpClient) {
@@ -20,10 +21,18 @@ export class LoadImageService {
 
     formData.append('file', file);
 
-    const req = new HttpRequest('POST', `${this.baseUrl}`, formData, {
+    const req = new HttpRequest('POST', `${baseUrl}`, formData, {
       responseType: 'json'
     });
 
     return this.http.request(req);
+  }
+
+  getPatients(id: any): Observable<Patient[]> {
+    return this.http.get<Patient[]>(`${baseUrl}`);
+  }
+
+  save(data: any, act: string): Observable<any> {
+    return this.http.post(`${baseUrl}?act=${act}`, data);
   }
 }

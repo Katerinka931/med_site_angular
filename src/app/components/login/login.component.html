@@ -24,5 +24,11 @@
         <button type="submit" id="enter" (click)="login()">Войти</button>
       </div>
     </form>
+    <div *ngIf="isLoginFailed">
+      <div style="color: red; padding-top: 20px" class="text-center">
+        <h4>{{ message }}</h4>
+      </div>
+    </div>
   </div>
 </div>
+

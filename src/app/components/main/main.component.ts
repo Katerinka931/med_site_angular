@@ -24,6 +24,7 @@ export class MainComponent implements OnInit {
   selectedPatient: Patient = {};
 
   userRole: string;
+  header: string;
 
   message: any;
 
@@ -37,7 +38,7 @@ export class MainComponent implements OnInit {
     this.renderer.setStyle(document.body, 'background-color', 'white');
     this.retrieve();
     this.peopleIsNull = false;
-    console.log('userRole ' + this.userRole);
+    this.createHeader();
   }
 
   refreshList(): void {
@@ -48,6 +49,12 @@ export class MainComponent implements OnInit {
 
   setActiveDoctor(doc: Doctor) {
     this.selectedDoctor = doc;
+  }
+
+  createHeader() {
+    if (this.userRole == 'ADMIN') {
+      this.header = 'Список пользователей';
+    } else this.header = 'Список докторов'
   }
 
   gotoDoctor(doc: Doctor) {
@@ -66,7 +73,7 @@ export class MainComponent implements OnInit {
 
   private retrieve(): void {
     if (this.userRole == 'ADMIN' || this.userRole == 'CHIEF') {
-      this.mainService.getAllDoctors(this.authService.user_id).subscribe({ //todo
+      this.mainService.getAllDoctors(this.authService.user_id).subscribe({
         next: (data) => {
           this.doctors = data["people"];
         }, error: (e) => console.error(e)
@@ -75,9 +82,29 @@ export class MainComponent implements OnInit {
       this.mainService.getAllPatients(this.authService.user_id).subscribe({
         next: (data) => {
           this.patients = data["people"];
+          console.log(this.patients);
         }, error: (e) => console.error(e)
       });
     }
+  }
+
+  roleTo(role: string): string {
+    let newRole = '';
+    switch (role) {
+      case 'ADMIN':
+        newRole = 'администратор';
+        break;
+      case 'OPERATOR':
+        newRole = 'оператор';
+        break;
+      case 'CHIEF':
+        newRole = 'главный врач';
+        break;
+      case 'DOCTOR':
+        newRole = 'врач';
+        break;
+    }
+    return newRole;
   }
 
   private checkFound(data: Doctor[]) {
@@ -90,8 +117,8 @@ export class MainComponent implements OnInit {
     }
   }
 
-  delete(pk: any): void {
-    if (confirm("Вы уверены, что хотите удалить \"" + this.selectedDoctor.last_name + ' ' + "имя" + ' ' + "отчество" + "\"?")) {
+  delete(pk: any, last: any, first: any, middle: any): void {
+    if (confirm("Вы уверены, что хотите удалить человека с именем\"" + last + ' ' + first + ' ' +  middle + "\"?")) {
       this.mainService.delete(pk).subscribe({
         next: (res) => {
           console.log(res);

@@ -8,7 +8,7 @@
   </div>
   <div class="form-group">
     <label for="last_name">Фамилия</label>
-    <input id="last_name" type="text" name="last_name" value=""
+    <input id="last_name" type="text" name="last_name" value=" "
            [(ngModel)]="patient.last_name" style="background-color: #ededed">
   </div>
   <div class="form-group">
@@ -41,11 +41,17 @@
     <input id="diagnosys" type="text" name="diagnosys" value=""
            [(ngModel)]="patient.diagnosys" style="background-color: #ededed">
   </div>
-  <div *ngIf="userRole!='DOCTOR'">
+  <div *ngIf="userRole != 'DOCTOR'">
     <div class="form-group">
-      <label for="doctor_number">Лечащий врач (сделать селектор)</label>
-      <input id="doctor_number" type="text" name="doctor_number" value=""
-             [(ngModel)]="patient.doctor_number" style="background-color: #ededed">
+      <label for="doctor_selector">Лечащий врач</label>
+      <br>
+      <select [(ngModel)]="selected" (change)="valueChange($event)" id="doctor_selector" name="doctor_selector"
+              style="color: rgba(0, 0, 0, 0.6); background-color: #ededed; width: 100%; border-radius: 4px; height: 50px; border: none; padding-left: 20px">
+        <option *ngFor="let type of doctors"
+                [value]="type" [selected]="type == selected">
+          {{ type }}
+        </option>
+      </select>
     </div>
   </div>
 </div>
@@ -60,5 +66,12 @@
   >
     Сохранить
   </button>
+</div>
+<div *ngIf="submitted">
+  <div style="padding-top: 20px" class="text-center">
+    <h4>
+      <label style="color: lawngreen">{{ message }} </label>
+    </h4>
+  </div>
 </div>
 <br><br>

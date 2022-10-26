@@ -28,7 +28,8 @@ export class PatientsListComponent implements OnInit {
     this.patientService.getPatients(this.authService.user_id).subscribe({
       next: (data) => {
         this.patients = data["people"];
-        console.log(this.patients);
+        if (this.patients?.length == 0)
+          this.peopleIsNull = true;
       }, error: (e) => console.error(e)
     });
   }
@@ -46,8 +47,8 @@ export class PatientsListComponent implements OnInit {
     this.selectedPatient = {};
   }
 
-  delete(pk: any) {
-    if (confirm("Вы уверены, что хотите удалить \"" + 'фамилия ' + ' ' + "имя" + ' ' + "отчество" + "\"?")) {
+  delete(pk: any, last: any, first: any, middle: any) {
+    if (confirm("Вы уверены, что хотите удалить человека с именем\"" + last + ' ' + first + ' ' + middle + "\"?")) {
       this.patientService.delete(pk).subscribe({
         next: (res) => {
           console.log(res);

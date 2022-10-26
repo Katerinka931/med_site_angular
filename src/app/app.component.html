@@ -8,18 +8,26 @@
     <li class="nav-item" style="width: auto">
       <a routerLink="/main/" class="nav-link" style="color: black"> Главная</a>
     </li>
-    <li class="nav-item" style="width: auto">
-      <a routerLink="/load_image/" class="nav-link" style="color: black"> Обработка изображения</a>
-    </li>
-    <li class="nav-item" style="width: auto">
-      <a routerLink="/create_user/" class="nav-link" style="color: black">Создать пользователя</a>
-    </li>
-    <li class="nav-item" style="width: auto">
-      <a routerLink="/patients/" class="nav-link" style="color: black">Пациенты</a>
-    </li>
-    <li class="nav-item" style="width: auto">
-      <a routerLink="/create_patient/" class="nav-link" style="color: black">Создать пациента</a>
-    </li>
+    <div *ngIf="role == 'CHIEF' || role == 'DOCTOR'">
+      <li class="nav-item" style="width: auto">
+        <a routerLink="/load_image/" class="nav-link" style="color: black"> Обработка изображения</a>
+      </li>
+    </div>
+    <div *ngIf="role == 'ADMIN'">
+      <li class="nav-item" style="width: auto">
+        <a routerLink="/create_user/" class="nav-link" style="color: black">Создать пользователя</a>
+      </li>
+    </div>
+    <div *ngIf="role == 'CHIEF'">
+      <li class="nav-item" style="width: auto">
+        <a routerLink="/patients/" class="nav-link" style="color: black">Пациенты</a>
+      </li>
+    </div>
+    <div *ngIf="role == 'OPERATOR'">
+      <li class="nav-item" style="width: auto">
+        <a routerLink="/create_patient/" class="nav-link" style="color: black">Создать пациента</a>
+      </li>
+    </div>
     <li style="margin-left: auto; max-width: 40px;">
       <a routerLink='/profile/'>
         <img class="d-none d-sm-none d-md-block" style="width: 100%; float: right;" src="assets/images/profile.png">
