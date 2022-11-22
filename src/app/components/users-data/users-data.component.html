@@ -23,7 +23,14 @@
 <div class="split right">
   <div class="pos">
     <div style="padding-bottom: 4%; width: 99.5%;">
-      <h3 style="float: left; "> Список пациентов </h3>
+
+      <div *ngIf="user.role=='OPERATOR'; else operatorTitle">
+        <h3 style="float: left; "> Список всех пациентов </h3>
+      </div>
+      <ng-template #operatorTitle>
+        <h3 style="float: left; "> Список пациентов </h3>
+      </ng-template>
+
       <div *ngIf="currentUserRole != 'ADMIN'">
         <li class="my-button add-but">
           <a routerLink="/create_patient/">

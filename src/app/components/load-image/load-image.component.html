@@ -3,11 +3,11 @@
 </head>
 <div class="split left" style="background: white; width: 55%;">
   <div class="pos">
-    <label for="file-upload" class="btn btn-info mb-2" style="margin-right: 20px">
-      Обзор...
-    </label>
-    <input id="file-upload" type="file" (change)="selectFile($event)"/>
-    <label *ngIf="file_name != ''" style="font-size: 20px"> Загруженный файл: {{ file_name }} </label>
+        <label for="file-upload" class="btn btn-info mb-2" style="margin-right: 20px">
+          Обзор...
+        </label>
+        <input id="file-upload" type="file" (change)="selectFile($event)"/>
+        <label *ngIf="file_name != ''" style="font-size: 20px"> Загруженный файл: {{ file_name }} </label>
   </div>
   <button
     type="submit"
@@ -23,11 +23,12 @@
     <h3>Результат:</h3>
     <input type="text" readonly style="width: 100%;" class="diagnosis" value="{{diagnosys}}">
     <br><br><br>
-<!--    <h5> Выберите пациента из списка:</h5>-->
+    <!--    <h5> Выберите пациента из списка:</h5>-->
     <div class="form-group">
       <label for="doctor_selector">Выберите пациента из списка:</label>
       <br>
-      <select class="form-control" [(ngModel)]="selected" (change)="valueChange($event)" id="doctor_selector" name="doctor_selector">
+      <select class="form-control" [(ngModel)]="selected" (change)="valueChange($event)" id="doctor_selector"
+              name="doctor_selector">
         <option *ngFor="let type of patientsList"
                 [value]="type" [selected]="type == selected">
           {{ type }}
@@ -40,6 +41,7 @@
       type="submit"
       class="btn btn-info mb-2 text-center edit-button"
       name="save"
+      [disabled]="!diagnosys"
       (click)="saveDiagnosys()"
       style="min-width: 10%; margin-right: 50px"
     >
@@ -47,3 +49,4 @@
     </button>
   </div>
 </div>
+

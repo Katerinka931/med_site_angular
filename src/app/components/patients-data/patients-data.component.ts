@@ -25,6 +25,8 @@ export class PatientsDataComponent implements OnInit {
       next: (data) => {
         this.patient = data["patient"];
         this.patients_doctor = this.patient["doctor"];
+        if (this.patient.diagnosys == '')
+          this.patient.diagnosys = 'отсутствует';
       }, error: (e) => console.error(e)
     });
   }

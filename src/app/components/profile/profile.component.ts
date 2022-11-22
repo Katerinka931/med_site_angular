@@ -11,6 +11,9 @@ import {UserService} from "../../services/users_service/user.service";
 export class ProfileComponent implements OnInit {
 
   currentUser: Doctor = {};
+  password: string;
+  new_password: string;
+  new_password_repeat: string;
 
   constructor(private userService: UserService, private token: AuthService) {
   }
@@ -37,5 +40,21 @@ export class ProfileComponent implements OnInit {
           console.error(e);
         }
       });
+  }
+
+  changePassword() {
+    const data = {
+      password: this.password,
+      new_password: this.new_password,
+      new_password_repeat: this.new_password_repeat
+    }
+    this.userService.changePassword(data).subscribe({
+      next: (data) => {
+        console.log(data);
+      },
+      error: (e) => {
+        console.error(e);
+      }
+    });
   }
 }

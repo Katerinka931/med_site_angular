@@ -80,17 +80,18 @@ export class LoadImageComponent implements OnInit {
     const data = {
       diagnosys: this.diagnosys,
       pat_id: this.selected.split('=')[1].slice(0, -1),
-      photo: '' // todo
     }
 
-    this.loadService.save(data, 'save').subscribe({
+    // this.loadService.upload(this.currentFile);
+
+    this.loadService.save(data, 'save', this.currentFile).subscribe({
       next: (data) => {
-          this.message = data['message'];
-        },
-        error: (e) => {
-          console.error(e);
-          confirm(e['error']['message']);
-        }
+        this.message = data['message'];
+      },
+      error: (e) => {
+        console.error(e);
+        confirm(e['error']['message']);
+      }
     });
   }
 

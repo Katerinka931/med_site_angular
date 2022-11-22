@@ -30,6 +30,7 @@ export class CreatePatientComponent implements OnInit {
     this.patientService.getListOfDoctorsToCreatePatient().subscribe({
       next: (data) => {
         this.listOfDoctors = data["doctors"];
+        console.log(this.selected);
         this.doctorsToSelector();
       }, error: (e) => {
         console.error(e);

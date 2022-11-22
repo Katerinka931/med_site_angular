@@ -51,10 +51,6 @@
     <input id="login" type="text" name="login" value="{{currentUser.login}}"
            [(ngModel)]="currentUser.login" style="background-color: #ededed">
   </div>
-  <div class="form-group">
-    <label for="password">Пароль </label>
-    <input id="password" type="text" name="password" value="***" style="background-color: #ededed">
-  </div>
 </div>
 <br>
 <div class="text-center">
@@ -66,13 +62,6 @@
     style="min-width: 10%; margin-right: 50px"
   >
     Сохранить
-  </button>
-  <button
-    type="submit"
-    class="btn btn-info mb-2 text-center"
-    name="edit_password"
-  >
-    Отдельно изменить пароль
   </button>
 </div>
 <div *ngIf="gotMessage">

@@ -43,4 +43,8 @@ export class UserService {
   editUser(id: number, data: any): Observable<any> {
     return this.http.put(`${editUrl}/${id}`, data);
   }
+
+  changePassword(data: any) {
+    return this.http.post(profileUrl, data)
+  }
 }

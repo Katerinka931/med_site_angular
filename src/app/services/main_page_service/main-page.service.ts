@@ -10,7 +10,6 @@ const baseUrl = 'http://localhost:8000/main';
   providedIn: 'root'
 })
 export class MainPageService {
-
   constructor(private http: HttpClient) {
   }
 
