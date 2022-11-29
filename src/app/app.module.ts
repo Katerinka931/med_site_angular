@@ -18,6 +18,7 @@ import {CreatePatientComponent} from './components/create-patient/create-patient
 import {EditPatientComponent} from './components/edit-patient/edit-patient.component';
 import {UsersDataComponent} from './components/users-data/users-data.component';
 import { PatientsListComponent } from './components/patients-list/patients-list.component';
+import { ModalComponent } from './components/modal/modal.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { PatientsListComponent } from './components/patients-list/patients-list.
     EditPatientComponent,
     UsersDataComponent,
     PatientsListComponent,
+    ModalComponent,
   ],
   imports: [
     BrowserModule,

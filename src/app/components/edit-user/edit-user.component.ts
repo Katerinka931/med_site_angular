@@ -3,6 +3,7 @@ import {Doctor} from "../../models/doctor_model/doctor";
 import {UserService} from "../../services/users_service/user.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {TokenStorageService} from "../../services/token_storage_service/token-storage.service";
+import {ModalServiceService} from "../../services/modal_service/modal-service.service";
 
 @Component({
   selector: 'app-edit-user',
@@ -16,12 +17,11 @@ export class EditUserComponent implements OnInit {
 
   typeSearch: string[] = ['Главный врач', 'Врач', 'Оператор'];
   selected = '';
-  gotMessage: any;
   message: any;
   userRole: string;
 
 
-  constructor(private userService: UserService, private route: ActivatedRoute, private tokenStorage: TokenStorageService) {
+  constructor(private userService: UserService, private route: ActivatedRoute, private tokenStorage: TokenStorageService, private modalService: ModalServiceService) {
   }
 
   ngOnInit(): void {
@@ -42,20 +42,19 @@ export class EditUserComponent implements OnInit {
     });
   }
 
-  editDoctor(): void {
+  editDoctor(modal: string): void {
     this.currentUser.role = this.selected;
     this.userService.editUser(this.currentID, this.currentUser)
       .subscribe({
         next: (data) => {
-          this.gotMessage = true;
           this.message = data['message'];
         },
         error: (e) => {
-          this.gotMessage = true;
           console.error(e);
-          confirm(e['error']['message']);
+          this.message = e['error']['message'];
         }
       });
+    this.openModal(modal);
   }
 
   private getSelected() {
@@ -70,5 +69,13 @@ export class EditUserComponent implements OnInit {
         this.selected = 'Оператор';
         break;
     }
+  }
+
+  openModal(id: string) {
+    this.modalService.open(id);
+  }
+
+  closeModal(id: string) {
+    this.modalService.close(id);
   }
 }

@@ -4,6 +4,7 @@ import {Patient} from "../../models/patient_model/patient";
 import {ActivatedRoute} from "@angular/router";
 import {TokenStorageService} from "../../services/token_storage_service/token-storage.service";
 import {Doctor} from "../../models/doctor_model/doctor";
+import {ModalServiceService} from "../../services/modal_service/modal-service.service";
 
 @Component({
   selector: 'app-edit-patient',
@@ -18,10 +19,9 @@ export class EditPatientComponent implements OnInit {
   doctors: string[] = [];
   listOfDoctors: Doctor[];
   selected: any;
-  gotMessage: any;
   message: any;
 
-  constructor(private patientService: PatientService, private route: ActivatedRoute, private tokenStorage: TokenStorageService) {
+  constructor(private patientService: PatientService, private route: ActivatedRoute, private tokenStorage: TokenStorageService, private modalService: ModalServiceService) {
   }
 
   ngOnInit(): void {
@@ -47,23 +47,29 @@ export class EditPatientComponent implements OnInit {
     }
   }
 
-  editPatient(): void {
+  editPatient(modal: string): void {
     this.currentPatient.doctor_number = this.selected.split('=')[1].slice(0, -1)
     this.patientService.editPatient(this.currentID, this.currentPatient)
       .subscribe({
         next: (data) => {
-          this.gotMessage = true;
           this.message = data['message'];
         },
         error: (e) => {
-          this.gotMessage = true;
-          console.error(e);
-          confirm(e['error']['message']);
+          this.message = e['error']['message'];
         }
       });
+    this.openModal(modal);
   }
 
   valueChange(event: any) {
     this.selected = event.target.value;
+  }
+
+  openModal(id: string) {
+    this.modalService.open(id);
+  }
+
+  closeModal(id: string) {
+    this.modalService.close(id);
   }
 }

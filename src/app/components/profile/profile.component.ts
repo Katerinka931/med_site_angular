@@ -1,7 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 import {AuthService} from "../../services/auth_service/auth.service";
 import {Doctor} from "../../models/doctor_model/doctor";
 import {UserService} from "../../services/users_service/user.service";
+import {ModalServiceService} from "../../services/modal_service/modal-service.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-profile',
@@ -14,9 +16,15 @@ export class ProfileComponent implements OnInit {
   password: string;
   new_password: string;
   new_password_repeat: string;
+  message: string;
+  gotSuccess: boolean;
 
-  constructor(private userService: UserService, private token: AuthService) {
+  constructor(private userService: UserService, private token: AuthService, private modalService: ModalServiceService) {
   }
+
+  @ViewChild('modal', {read: ViewContainerRef})
+  entry!: ViewContainerRef;
+  sub!: Subscription;
 
   ngOnInit(): void {
     this.retrieve();
@@ -30,19 +38,20 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  editDoctor(): void {
+  editDoctor(modal: string): void {
     this.userService.editDoctorHimself(this.token.user_id!, this.currentUser)
       .subscribe({
         next: (data) => {
-          console.log(data);
+          this.message = data['message'];
         },
         error: (e) => {
-          console.error(e);
+          this.message = e['error']['message'];
         }
       });
+    this.openModal(modal);
   }
 
-  changePassword() {
+  changePassword(modal: string) {
     const data = {
       password: this.password,
       new_password: this.new_password,
@@ -50,11 +59,25 @@ export class ProfileComponent implements OnInit {
     }
     this.userService.changePassword(data).subscribe({
       next: (data) => {
-        console.log(data);
+        this.message = data['message'];
+        this.gotSuccess = true;
       },
       error: (e) => {
-        console.error(e);
+        this.message = e['error']['message'];
+        this.gotSuccess = false;
       }
     });
   }
+
+  openModal(id: string) {
+    this.modalService.open(id);
+  }
+
+  closeModal(id: string) {
+    this.modalService.close(id);
+  }
 }
+
+
+
+

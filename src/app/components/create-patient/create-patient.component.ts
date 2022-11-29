@@ -3,6 +3,7 @@ import {Patient} from "../../models/patient_model/patient";
 import {PatientService} from "../../services/patients_service/patient.service";
 import {TokenStorageService} from "../../services/token_storage_service/token-storage.service";
 import {Doctor} from "../../models/doctor_model/doctor";
+import {ModalServiceService} from "../../services/modal_service/modal-service.service";
 
 @Component({
   selector: 'app-create-patient',
@@ -18,7 +19,7 @@ export class CreatePatientComponent implements OnInit {
   listOfDoctors: Doctor[];
   selected: any;
 
-  constructor(private tokenStorage: TokenStorageService, private patientService: PatientService) {
+  constructor(private tokenStorage: TokenStorageService, private patientService: PatientService, private modalService: ModalServiceService) {
   }
 
   ngOnInit(): void {
@@ -49,12 +50,14 @@ export class CreatePatientComponent implements OnInit {
     }
   }
 
-  savePatient() {
+  savePatient(modal: string) {
     if (this.patient.diagnosys == undefined)
       this.patient.diagnosys = '';
 
-    if (this.selected == undefined)
-      confirm('Введите ФИО лечащего врача');
+    if (this.selected == undefined) {
+      this.message = 'Введите ФИО лечащего врача';
+      this.openModal(modal);
+    }
     else {
       const data = {
         last_name: this.patient.last_name,
@@ -68,13 +71,21 @@ export class CreatePatientComponent implements OnInit {
       }
       this.patientService.createPatient(data).subscribe({
         next: (res) => {
-          this.submitted = true;
           this.message = res['message'];
         },
         error: (e) => {
-          confirm(e['error']['message']);
+          this.message = e['error']['message'];
         }
       });
+      this.openModal(modal);
     }
+  }
+
+  openModal(id: string) {
+    this.modalService.open(id);
+  }
+
+  closeModal(id: string) {
+    this.modalService.close(id);
   }
 }

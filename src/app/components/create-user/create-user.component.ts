@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Doctor} from "../../models/doctor_model/doctor";
 import {UserService} from "../../services/users_service/user.service";
+import {ModalServiceService} from "../../services/modal_service/modal-service.service";
 
 @Component({
   selector: 'app-create-user',
@@ -17,9 +18,8 @@ export class CreateUserComponent implements OnInit {
   selected = '';
   isWrong: any;
   message: any;
-  gotMessage: any;
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService, private modalService: ModalServiceService) {
   }
 
   ngOnInit(): void {
@@ -29,7 +29,7 @@ export class CreateUserComponent implements OnInit {
     this.selected = event.target.value;
   }
 
-  saveUser() {
+  saveUser(modal: string) {
     this.message = ''
     const data = {
       role: this.selected,
@@ -45,14 +45,20 @@ export class CreateUserComponent implements OnInit {
     this.userService.createUser(data).subscribe({
       next: (res) => {
         this.submitted = true;
-        this.gotMessage = true;
         this.message = res['message'];
       },
       error: (e) => {
-        this.gotMessage = true;
-        console.error(e);
-        confirm(e['error']['message']);
+        this.message = e['error']['message'];
       }
     });
+    this.openModal(modal);
+  }
+
+  openModal(id: string) {
+    this.modalService.open(id);
+  }
+
+  closeModal(id: string) {
+    this.modalService.close(id);
   }
 }

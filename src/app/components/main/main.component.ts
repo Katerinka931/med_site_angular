@@ -5,6 +5,7 @@ import {Patient} from "../../models/patient_model/patient";
 import {AuthService} from "../../services/auth_service/auth.service";
 import {Router} from "@angular/router";
 import {TokenStorageService} from "../../services/token_storage_service/token-storage.service";
+import {ModalServiceService} from "../../services/modal_service/modal-service.service";
 
 @Component({
   selector: 'app-main',
@@ -27,8 +28,10 @@ export class MainComponent implements OnInit {
   header: string;
 
   message: any;
+  tempID: any;
 
-  constructor(private mainService: MainPageService, private renderer: Renderer2, private authService: AuthService, private tokenStorage: TokenStorageService, private router: Router) {
+
+  constructor(private mainService: MainPageService, private renderer: Renderer2, private authService: AuthService, private tokenStorage: TokenStorageService, private router: Router, private modalService: ModalServiceService) {
     this.renderer.setStyle(document.body, 'background-color', 'white');
   }
 
@@ -117,19 +120,48 @@ export class MainComponent implements OnInit {
     }
   }
 
-  delete(pk: any, last: any, first: any, middle: any): void {
-    if (confirm("Вы уверены, что хотите удалить человека с именем\"" + last + ' ' + first + ' ' +  middle + "\"?")) {
+  delete(pk: any, last: any, first: any, middle: any, modal: string): void {
+    if (confirm("Вы уверены, что хотите удалить человека с именем\"" + last + ' ' + first + ' ' + middle + "\"?")) {
       this.mainService.delete(pk).subscribe({
         next: (res) => {
-          console.log(res);
-          confirm("Удаление успешно");
+          this.message = "Удаление успешно";
           this.refreshList();
         },
         error: (e) => {
-          console.error(e);
-          confirm("Удаление не удалось");
+          this.message = "Удаление не удалось";
         }
       })
+      this.openModal(modal);
     }
+  }
+
+
+  openModal(id: string) {
+    this.modalService.open(id);
+  }
+
+  closeModal(id: string) {
+    this.modalService.close(id);
+  }
+
+  open(id: any, last_name: any, first_name: any, middle_name: any, modal: string) {
+    this.openModal(modal);
+    this.message = last_name + ' ' + first_name + ' ' + middle_name;
+
+    this.tempID = id;
+  }
+
+  remove(modal: string, prev_modal: string) {
+    this.closeModal(prev_modal);
+    this.mainService.delete(this.tempID).subscribe({
+      next: (res) => {
+        this.message = "Удаление успешно";
+        this.refreshList();
+      },
+      error: (e) => {
+        this.message = "Удаление не удалось";
+      }
+    });
+    this.openModal(modal);
   }
 }

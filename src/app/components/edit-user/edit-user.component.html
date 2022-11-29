@@ -58,17 +58,27 @@
     type="submit"
     class="btn btn-info mb-2 text-center"
     name="save"
-    (click)="editDoctor()"
+    (click)="editDoctor('message_modal')"
     style="min-width: 10%; margin-right: 50px"
   >
     Сохранить
   </button>
 </div>
-<div *ngIf="gotMessage">
-  <div style="padding-top: 20px" class="text-center">
-    <h4>
-      <label style="color: lawngreen">{{ message }} </label>
-    </h4>
-  </div>
-</div>
 <br><br>
+
+<jw-modal id="message_modal">
+  <div class="text-center">
+  <label style="margin-top: 10px"> {{ message }} </label>
+  <br>
+  <button
+    type="submit"
+    class="btn btn-outline-info mb-2 text-center"
+    name="save"
+    (click)="closeModal('message_modal');"
+    style="width: 140px; margin-left: 20px"
+  >
+    Закрыть
+  </button>
+  </div>
+</jw-modal>
+
