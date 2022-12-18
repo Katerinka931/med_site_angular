@@ -6,6 +6,7 @@ import {Patient} from "../../models/patient_model/patient";
 import {Doctor} from "../../models/doctor_model/doctor";
 import {TokenStorageService} from "../../services/token_storage_service/token-storage.service";
 import {AuthService} from "../../services/auth_service/auth.service";
+import {ModalServiceService} from "../../services/modal_service/modal-service.service";
 
 @Component({
   selector: 'app-load-image',
@@ -27,7 +28,7 @@ export class LoadImageComponent implements OnInit {
   diagnosys = '';
   message = '';
 
-  constructor(private loadService: LoadImageService, private authService: AuthService) {
+  constructor(private loadService: LoadImageService, private authService: AuthService, private modalService: ModalServiceService) {
   }
 
   ngOnInit(): void {
@@ -59,7 +60,7 @@ export class LoadImageComponent implements OnInit {
     }
   }
 
-  loadImage(): void {
+  loadImage(modal: string): void {
     this.currentFile = this.selectedFiles[0];
     this.diagnosys = '';
 
@@ -67,35 +68,50 @@ export class LoadImageComponent implements OnInit {
       event => {
         if (event instanceof HttpResponse) {
           this.message = event.body.message;
-          this.diagnosys = event.body['result'];
+          this.diagnosys = event.body['message'];
           // console.log(event.body['image']);
         }
       },
       err => {
-        this.message = 'Не удалось загрузить файл';
+        this.message = err['error']['message'];
+        this.openModal(modal);
       });
   }
 
-  saveDiagnosys() {
-    const data = {
-      diagnosys: this.diagnosys,
-      pat_id: this.selected.split('=')[1].slice(0, -1),
-    }
-
-    // this.loadService.upload(this.currentFile);
-
-    this.loadService.save(data, 'save', this.currentFile).subscribe({
-      next: (data) => {
-        this.message = data['message'];
-      },
-      error: (e) => {
-        console.error(e);
-        confirm(e['error']['message']);
+  saveDiagnosys(modal: string) {
+    if (this.selected == undefined) {
+      this.message = 'Пациент не выбран!';
+      this.openModal(modal);
+    } else {
+      const data = {
+        diagnosys: this.diagnosys,
+        pat_id: this.selected.split('=')[1].slice(0, -1),
       }
-    });
+      this.loadService.save(data, 'save', this.currentFile).subscribe({
+        next: (data) => {
+          if (data instanceof HttpResponse) {
+            this.message = data.body['message'];
+            this.openModal(modal);
+            // console.log(event.body['image']);
+          }
+        },
+        error: (e) => {
+          this.message = e['error']['message'];
+          this.openModal(modal);
+        }
+      });
+    }
   }
 
   valueChange(event: any) {
     this.selected = event.target.value;
+  }
+
+  closeModal(id: string) {
+    this.modalService.close(id);
+  }
+
+  openModal(id: string) {
+    this.modalService.open(id);
   }
 }
