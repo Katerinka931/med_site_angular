@@ -7,6 +7,7 @@ import {Doctor} from "../../models/doctor_model/doctor";
 import {TokenStorageService} from "../../services/token_storage_service/token-storage.service";
 import {AuthService} from "../../services/auth_service/auth.service";
 import {ModalServiceService} from "../../services/modal_service/modal-service.service";
+import {Photo} from "../../models/photo-model/photo.model";
 
 @Component({
   selector: 'app-load-image',
@@ -27,6 +28,8 @@ export class LoadImageComponent implements OnInit {
 
   diagnosys = '';
   message = '';
+  photo: Photo;
+
 
   constructor(private loadService: LoadImageService, private authService: AuthService, private modalService: ModalServiceService) {
   }
@@ -62,6 +65,9 @@ export class LoadImageComponent implements OnInit {
 
   loadImage(modal: string): void {
     this.currentFile = this.selectedFiles[0];
+
+    console.log('currentFile=' + this.currentFile);
+
     this.diagnosys = '';
 
     this.loadService.upload(this.currentFile).subscribe(
@@ -69,6 +75,9 @@ export class LoadImageComponent implements OnInit {
         if (event instanceof HttpResponse) {
           this.message = event.body.message;
           this.diagnosys = event.body['message'];
+
+          // this.photo = event.body['image'];
+          // console.log(this.photo);
           // console.log(event.body['image']);
         }
       },
