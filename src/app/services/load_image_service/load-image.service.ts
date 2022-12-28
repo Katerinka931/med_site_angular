@@ -39,11 +39,11 @@ export class LoadImageService {
     formData.append('file', file);
     formData.append('pat_id', data['pat_id']);
     formData.append('diagnosys', data['diagnosys']);
+    formData.append('custom_diagnosys', data['custom_diagnosys']);
 
     const req = new HttpRequest('POST', `${baseUrl}?act=${act}`, formData, {
       responseType: 'json'
     });
     return this.http.request(req);
-    // return this.http.post(`${baseUrl}?act=${act}`, data);
   }
 }

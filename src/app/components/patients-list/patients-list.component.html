@@ -18,12 +18,11 @@
         {{ pat.last_name }} {{ pat.first_name }} {{ pat.middle_name }}
       </div>
       <div>
-        <img (click)="delete(pat.id, pat.last_name, pat.first_name, pat.middle_name)" style="float: right; margin-top: 0.5%;" class="img-responsive" width="45px"
+        <img (click)="open(pat.id, pat.last_name, pat.first_name, pat.middle_name, 'confirmation_modal')" style="float: right; margin-top: 0.5%;" class="img-responsive" width="45px"
              src="assets/images/remove.png">
       </div>
     </div>
   </div>
-
   <div *ngIf="peopleIsNull">
     <div style="padding-top: 20px" class="text-center">
       <h4><label> Пациентов нет. </label>
@@ -34,3 +33,27 @@
   </div>
 </div>
 </body>
+
+<jw-modal id="confirmation_modal">
+  <label> Вы уверены, что хотите удалить из базы человека с именем "{{message}}"? </label>
+  <div class="text-center">
+    <button
+      type="submit"
+      class="btn btn-outline-danger mb-2 text-center"
+      name="save"
+      (click)="remove('message_modal', 'confirmation_modal')"
+      style="width: 140px; "
+    >
+      Удалить
+    </button>
+    <button
+      type="submit"
+      class="btn btn-outline-info mb-2 text-center"
+      name="save"
+      (click)="closeModal('confirmation_modal');"
+      style="width: 140px; margin-left: 20px"
+    >
+      Отменить
+    </button>
+  </div>
+</jw-modal>

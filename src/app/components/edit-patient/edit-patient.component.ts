@@ -5,6 +5,7 @@ import {ActivatedRoute} from "@angular/router";
 import {TokenStorageService} from "../../services/token_storage_service/token-storage.service";
 import {Doctor} from "../../models/doctor_model/doctor";
 import {ModalServiceService} from "../../services/modal_service/modal-service.service";
+import {Photo} from "../../models/photo-model/photo.model";
 
 @Component({
   selector: 'app-edit-patient',
@@ -20,6 +21,7 @@ export class EditPatientComponent implements OnInit {
   listOfDoctors: Doctor[];
   selected: any;
   message: any;
+  photo: Photo = {};
 
   constructor(private patientService: PatientService, private route: ActivatedRoute, private tokenStorage: TokenStorageService, private modalService: ModalServiceService) {
   }
@@ -34,8 +36,9 @@ export class EditPatientComponent implements OnInit {
       next: (data) => {
         this.currentPatient = data["patient"];
         this.listOfDoctors = data["doctors"];
-        this.doctorsToSelector();
+        this.photo = data['photo'];
 
+        this.doctorsToSelector();
         this.selected = this.currentPatient['doctor']['last_name'] + ' ' + this.currentPatient['doctor']['first_name'] + ' ' + this.currentPatient['doctor']['middle_name'] + ' (ID=' + this.currentPatient['doctor']['id'] + ')';
       }, error: (e) => console.error(e)
     });
@@ -49,7 +52,11 @@ export class EditPatientComponent implements OnInit {
 
   editPatient(modal: string): void {
     this.currentPatient.doctor_number = this.selected.split('=')[1].slice(0, -1)
-    this.patientService.editPatient(this.currentID, this.currentPatient)
+    const data = {
+      diagnosys: this.photo.diagnosys,
+      patient: this.currentPatient,
+    }
+    this.patientService.editPatient(this.currentID, data)
       .subscribe({
         next: (data) => {
           this.message = data['message'];

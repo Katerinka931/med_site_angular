@@ -39,8 +39,9 @@
   </div>
   <div class="form-group">
     <label for="diagnosys">Диагноз</label>
-    <input id="diagnosys" type="text" name="diagnosys" value=""
-           [(ngModel)]="currentPatient.diagnosys" style="background-color: #ededed">
+    <textarea id="diagnosys" name="text" wrap="soft" maxlength="9970"
+              style="color: rgba(0, 0, 0, 0.6); border: none; padding-left: 20px; border-radius: 4px; background-color: #ededed; width: 100%; height: 5%; overflow:hidden;"
+              [(ngModel)]="photo.diagnosys"></textarea>
   </div>
   <div *ngIf="userRole != 'DOCTOR'">
     <div class="form-group">
@@ -72,16 +73,16 @@
 <br><br>
 <jw-modal id="message_modal">
   <div class="text-center">
-  <label style="margin-top: 10px"> {{ message }} </label>
-  <br>
-  <button
-    type="submit"
-    class="btn btn-outline-info mb-2 text-center"
-    name="save"
-    (click)="closeModal('message_modal');"
-    style="width: 140px; margin-left: 20px"
-  >
-    Закрыть
-  </button>
+    <label style="margin-top: 10px"> {{ message }} </label>
+    <br>
+    <button
+      type="submit"
+      class="btn btn-outline-info mb-2 text-center"
+      name="save"
+      (click)="closeModal('message_modal');"
+      style="width: 140px; margin-left: 20px"
+    >
+      Закрыть
+    </button>
   </div>
 </jw-modal>

@@ -9,6 +9,9 @@ import {AuthService} from "../../services/auth_service/auth.service";
 import {ModalServiceService} from "../../services/modal_service/modal-service.service";
 import {Photo} from "../../models/photo-model/photo.model";
 
+
+import { DomSanitizer } from '@angular/platform-browser';
+
 @Component({
   selector: 'app-load-image',
   templateUrl: './load-image.component.html',
@@ -27,11 +30,12 @@ export class LoadImageComponent implements OnInit {
   selected: any;
 
   diagnosys = '';
+  custom_diagnosys = '';
   message = '';
-  photo: Photo;
+  imagePath: any;
 
 
-  constructor(private loadService: LoadImageService, private authService: AuthService, private modalService: ModalServiceService) {
+  constructor(private loadService: LoadImageService, private authService: AuthService, private modalService: ModalServiceService, private domSerializer: DomSanitizer) {
   }
 
   ngOnInit(): void {
@@ -55,6 +59,7 @@ export class LoadImageComponent implements OnInit {
   }
 
   selectFile(event: any): void {
+    this.imagePath = null;
     this.selectedFiles = event.target.files;
     if (this.selectedFiles.length > 1) {
       confirm("Выберите один файл!");
@@ -66,19 +71,15 @@ export class LoadImageComponent implements OnInit {
   loadImage(modal: string): void {
     this.currentFile = this.selectedFiles[0];
 
-    console.log('currentFile=' + this.currentFile);
-
     this.diagnosys = '';
+    this.custom_diagnosys = '';
 
     this.loadService.upload(this.currentFile).subscribe(
       event => {
         if (event instanceof HttpResponse) {
           this.message = event.body.message;
           this.diagnosys = event.body['message'];
-
-          // this.photo = event.body['image'];
-          // console.log(this.photo);
-          // console.log(event.body['image']);
+          this.imagePath = this.domSerializer.bypassSecurityTrustResourceUrl('data:image/jpg;base64,' + event.body['file']);
         }
       },
       err => {
@@ -94,6 +95,7 @@ export class LoadImageComponent implements OnInit {
     } else {
       const data = {
         diagnosys: this.diagnosys,
+        custom_diagnosys: this.custom_diagnosys,
         pat_id: this.selected.split('=')[1].slice(0, -1),
       }
       this.loadService.save(data, 'save', this.currentFile).subscribe({
@@ -101,7 +103,6 @@ export class LoadImageComponent implements OnInit {
           if (data instanceof HttpResponse) {
             this.message = data.body['message'];
             this.openModal(modal);
-            // console.log(event.body['image']);
           }
         },
         error: (e) => {

@@ -36,11 +36,6 @@
     <input id="phone" type="text" name="phone" value=""
            [(ngModel)]="patient.phone" style="background-color: #ededed">
   </div>
-  <div class="form-group">
-    <label for="diagnosys">Диагноз</label>
-    <input id="diagnosys" type="text" name="diagnosys" value=""
-           [(ngModel)]="patient.diagnosys" style="background-color: #ededed">
-  </div>
   <div *ngIf="userRole != 'DOCTOR'">
     <div class="form-group">
       <label for="doctor_selector">Лечащий врач</label>

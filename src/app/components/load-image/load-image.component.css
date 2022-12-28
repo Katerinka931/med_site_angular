@@ -1,85 +1,93 @@
 /* Split the screen in half */
 .split {
-    height: 85%;
-    position: fixed;
-    z-index: 1;
-    overflow-x: hidden;
-    margin-top: 2%;
-    margin-left: 1%;
-    border-radius: 5px;
-    margin-bottom: 0;
+  height: 85%;
+  position: fixed;
+  z-index: 1;
+  overflow-x: hidden;
+  margin-top: 2%;
+  margin-left: 1%;
+  border-radius: 5px;
+  margin-bottom: 0;
 }
 
 /* Control the left side */
 .left {
-    box-shadow: 0 0 5px 2px gainsboro;
-    width: 31%;
-    left: 0;
-    background: -webkit-linear-gradient(45deg, #7ccbef 0%, #7ad3f2 100%);
-    background: linear-gradient(45deg, #7ccbef 0%, #7ad3f2 100%);
+  box-shadow: 0 0 5px 2px gainsboro;
+  width: 31%;
+  left: 0;
+  background: -webkit-linear-gradient(45deg, #7ccbef 0%, #7ad3f2 100%);
+  background: linear-gradient(45deg, #7ccbef 0%, #7ad3f2 100%);
 }
 
 /* Control the right side */
 .right {
-    box-shadow: 0 0 5px 2px gainsboro;
-    width: 65%;
-    right: 1%;
-    background-color: transparent;
+  box-shadow: 0 0 5px 2px gainsboro;
+  width: 65%;
+  right: 1%;
+  background-color: transparent;
 }
 
 /* If you want the content centered horizontally and vertically */
 .pos {
-    position: absolute;
-    top: 5%;
-    left: 3%;
-    text-align: left;
-    width: 94%;
+  position: absolute;
+  top: 5%;
+  left: 3%;
+  text-align: left;
+  width: 94%;
 }
 
 .diagnosis {
-    box-shadow: 0 0 5px 2px gainsboro;
-    padding-left: 1%;
-    margin-top: 4%;
-    height: 2vw;
-    overflow-y: scroll;
+  box-shadow: 0 0 5px 2px gainsboro;
+  padding-left: 1%;
+  margin-top: 4%;
+  height: 2vw;
+  overflow-y: scroll;
 }
 
 .list-item {
-    width: 60%;
-    border-width: 4px;
-    box-shadow: 0 0 5px 2px #e5e5e5;
-    margin-left: 20%
+  width: 60%;
+  border-width: 4px;
+  box-shadow: 0 0 5px 2px #e5e5e5;
+  margin-left: 20%
 }
 
 .border-gradient {
-    -moz-border-image: -moz-linear-gradient(45deg, rgba(66, 183, 245, 0.8) 0%, rgba(66, 245, 189, 0.4) 100%);
-    -webkit-border-image: -webkit-linear-gradient(45deg, rgba(66, 183, 245, 0.8) 0%, rgba(66, 245, 189, 0.4) 100%);
-    border-image-slice: 1;
+  -moz-border-image: -moz-linear-gradient(45deg, rgba(66, 183, 245, 0.8) 0%, rgba(66, 245, 189, 0.4) 100%);
+  -webkit-border-image: -webkit-linear-gradient(45deg, rgba(66, 183, 245, 0.8) 0%, rgba(66, 245, 189, 0.4) 100%);
+  border-image-slice: 1;
 }
 
 .remove-but {
-    float: left;
+  float: left;
 }
 
 .add-but {
-    float: right;
+  float: right;
 }
 
-.my-button{
-    width: 4.5%;
-    background-color: transparent;
-    border: none;
-    list-style-type: none;
+.my-button {
+  width: 4.5%;
+  background-color: transparent;
+  border: none;
+  list-style-type: none;
 }
 
 .edit-button {
-    min-width: 10%;
-    top: 95%;
-    left: 50%;
-    position: absolute;
-    transform: translateX(-50%) translateY(-50%);
+  min-width: 10%;
+  top: 95%;
+  left: 50%;
+  position: absolute;
+  transform: translateX(-50%) translateY(-50%);
 }
 
 input[type="file"] {
-    display: none;
+  display: none;
+}
+
+.border-for-image-div {
+  border-style: ridge;
+  height: 75%;
+  width: 70%;
+  display: block;
+  margin: auto;
 }

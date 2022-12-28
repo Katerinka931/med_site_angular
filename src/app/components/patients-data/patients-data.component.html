@@ -1,44 +1,76 @@
 <head>
-    <title>Пациент</title>
+  <title>Пациент</title>
 </head>
 <div class="split left">
-    <div class="pos">
-        <h2 style="text-align: center"> *photo*
-        <img src="" >
-
-<!--          http://127.0.0.1:8000/temp_storage/normal_1.jpeg -->
-        </h2>
-    </div>
-<!--    <div>-->
-<!--        <button-->
-<!--                type="submit"-->
-<!--                name="change_photo"-->
-<!--                class="btn btn-light mb-2 text-center edit-button"-->
-<!--        >-->
-<!--            Редактировать -->
-<!--        </button>-->
-<!--    </div>-->
+  <div class="pos">
+    <h2 style="text-align: center">
+      <div *ngIf="currentFile!=null; else fileIsNull">
+        Актуальный снимок
+        <img [src]="currentFile" style="max-width: 29%; display: block; margin: auto; top: 25%; position: fixed;">
+      </div>
+      <ng-template #fileIsNull>
+        Фотография не загружена
+      </ng-template>
+    </h2>
+  </div>
+  <div>
+    <button
+      type="submit"
+      name="show_all"
+      class="btn btn-light mb-2 text-center edit-button"
+      (click)="get_photos_data('photos_info_modal')"
+    >
+      Просмотреть историю снимков
+    </button>
+  </div>
 </div>
 <div class="split right">
-    <div class="pos">
-        <h4><b>{{ patient.last_name }} {{ patient.first_name}} {{ patient.middle_name}}</b></h4>
-        <h6><b>Год рождения: </b> {{ patient.date_of_birth }}</h6>
-        <h6><b>Контакты</b></h6>
-        <h6>Телефон: {{ patient.phone }}</h6>
-        <h6>Почта: {{ patient.email }}</h6>
-        <h6>Лечащий
-            врач: {{ patients_doctor.last_name }} {{ patients_doctor.first_name}} {{ patients_doctor.middle_name}} </h6>
-        <div class="diagnosis">
-            <h4> Диагноз: {{ patient.diagnosys }}</h4>
-        </div>
+  <div class="pos">
+    <h4><b>{{ patient.last_name }} {{ patient.first_name}} {{ patient.middle_name}}</b></h4>
+    <h6><b>Год рождения: </b> {{ patient.date_of_birth }}</h6>
+    <h6><b>Контакты</b></h6>
+    <h6>Телефон: {{ patient.phone }}</h6>
+    <h6>Почта: {{ patient.email }}</h6>
+    <h6>Лечащий
+      врач: {{ patients_doctor.last_name }} {{ patients_doctor.first_name}} {{ patients_doctor.middle_name}} </h6>
+    <div class="diagnosis">
+      <h4> Диагноз: {{ photo.diagnosys }}</h4>
     </div>
-    <div>
-        <a href="/edit_patient/{{ patient.id }}"
-                type="submit"
-                class="btn btn-info mb-2 text-center edit-button"
-        >
-            Редактировать
-        </a>
-    </div>
+  </div>
+  <div>
+    <a href="/edit_patient/{{ patient.id }}"
+       type="submit"
+       class="btn btn-info mb-2 text-center edit-button"
+    >
+      Редактировать
+    </a>
+  </div>
 </div>
 
+<jw-modal id="photos_info_modal">
+  <label> Список всех фотографий ...</label>
+  <div class="text-center">
+    <div *ngIf="photos; else tmplt">
+      <div *ngFor="let ph of photos; let i = index" >
+
+        <img [src]="ph.photo" style="max-width: 50%; display: block; margin: auto;">
+        <label> Дата создания: </label> <br>
+        <label> Диагноз: {{ph.diagnosys}} </label> <br>
+
+        <div>
+          <img (click)="openAnotherModal('photos_info_modal', 'confirmation_modal')"
+               style="float: right; margin-top: 0.5%;" class="img-responsive" width="45px"
+               src="assets/images/remove.png">
+        </div>
+      </div>
+    </div>
+    <ng-template #tmplt>
+      Снимков нет
+    </ng-template>
+  </div>
+</jw-modal>
+
+<jw-modal id="confirmation_modal">
+<!--  todo delete or not-->
+  <label style="height: 100%;"> Вы уверены, что хотите удалить снимок? </label>
+</jw-modal>

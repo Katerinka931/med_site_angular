@@ -35,6 +35,10 @@ export class PatientService {
     return this.http.get<Object>(`${patientUrl}/${pat}`);
   }
 
+  getAllPhotos(pat: any, ph: any): Observable<Object> {
+    return this.http.get<Object>(`${patientUrl}/${pat}?photo=${ph}`);
+  }
+
   editPatient(pat: any, data: any): Observable<any> {
     return this.http.put(`${editUrl}/${pat}`, data);
   }

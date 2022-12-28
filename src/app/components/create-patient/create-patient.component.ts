@@ -51,9 +51,6 @@ export class CreatePatientComponent implements OnInit {
   }
 
   savePatient(modal: string) {
-    if (this.patient.diagnosys == undefined)
-      this.patient.diagnosys = '';
-
     if (this.selected == undefined) {
       this.message = 'Введите ФИО лечащего врача';
       this.openModal(modal);
@@ -66,7 +63,6 @@ export class CreatePatientComponent implements OnInit {
         email: this.patient.email,
         phone: this.patient.phone,
         date_of_birth: this.patient.date_of_birth,
-        diagnosys: this.patient.diagnosys,
         doctor_number: this.selected.split('=')[1].slice(0, -1)
       }
       this.patientService.createPatient(data).subscribe({

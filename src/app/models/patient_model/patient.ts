@@ -8,6 +8,4 @@ export class Patient {
 
   email ?: string;
   phone ?: string;
-
-  diagnosys ?: string;
 }
