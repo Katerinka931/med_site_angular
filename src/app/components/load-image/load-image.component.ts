@@ -1,16 +1,14 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Observable} from "rxjs";
 import {LoadImageService} from "../../services/load_image_service/load-image.service";
-import {HttpEventType, HttpResponse} from "@angular/common/http";
+import {HttpResponse} from "@angular/common/http";
 import {Patient} from "../../models/patient_model/patient";
-import {Doctor} from "../../models/doctor_model/doctor";
-import {TokenStorageService} from "../../services/token_storage_service/token-storage.service";
 import {AuthService} from "../../services/auth_service/auth.service";
 import {ModalServiceService} from "../../services/modal_service/modal-service.service";
-import {Photo} from "../../models/photo-model/photo.model";
 
 
 import { DomSanitizer } from '@angular/platform-browser';
+
 
 @Component({
   selector: 'app-load-image',
@@ -33,6 +31,7 @@ export class LoadImageComponent implements OnInit {
   custom_diagnosys = '';
   message = '';
   imagePath: any;
+  modifiedDate: any;
 
 
   constructor(private loadService: LoadImageService, private authService: AuthService, private modalService: ModalServiceService, private domSerializer: DomSanitizer) {
@@ -65,6 +64,7 @@ export class LoadImageComponent implements OnInit {
       confirm("Выберите один файл!");
     } else {
       this.file_name = this.selectedFiles[0]!.name.split('.')[0];
+      this.modifiedDate= this.selectedFiles[0].lastModified;
     }
   }
 
@@ -74,7 +74,7 @@ export class LoadImageComponent implements OnInit {
     this.diagnosys = '';
     this.custom_diagnosys = '';
 
-    this.loadService.upload(this.currentFile).subscribe(
+    this.loadService.upload(this.currentFile, this.modifiedDate).subscribe(
       event => {
         if (event instanceof HttpResponse) {
           this.message = event.body.message;
@@ -97,6 +97,7 @@ export class LoadImageComponent implements OnInit {
         diagnosys: this.diagnosys,
         custom_diagnosys: this.custom_diagnosys,
         pat_id: this.selected.split('=')[1].slice(0, -1),
+        date: this.modifiedDate
       }
       this.loadService.save(data, 'save', this.currentFile).subscribe({
         next: (data) => {
@@ -106,7 +107,7 @@ export class LoadImageComponent implements OnInit {
           }
         },
         error: (e) => {
-          this.message = e['error']['message'];
+          this.message = "Ошибка сохранения!";
           this.openModal(modal);
         }
       });

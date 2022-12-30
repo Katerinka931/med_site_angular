@@ -17,10 +17,12 @@ export class LoadImageService {
     };
   }
 
-  upload(file: File): Observable<HttpEvent<any>> {
+  upload(file: File, date: any): Observable<HttpEvent<any>> {
     const formData: FormData = new FormData();
 
     formData.append('file', file);
+
+    formData.append('date', date);
 
     const req = new HttpRequest('POST', `${baseUrl}`, formData, {
       responseType: 'json'
@@ -34,12 +36,14 @@ export class LoadImageService {
   }
 
   save(data: any, act: string, file: File): Observable<any> {
+
     const formData: FormData = new FormData();
 
     formData.append('file', file);
     formData.append('pat_id', data['pat_id']);
     formData.append('diagnosys', data['diagnosys']);
     formData.append('custom_diagnosys', data['custom_diagnosys']);
+    formData.append('date', data['date']);
 
     const req = new HttpRequest('POST', `${baseUrl}?act=${act}`, formData, {
       responseType: 'json'

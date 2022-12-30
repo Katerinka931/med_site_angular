@@ -17,6 +17,8 @@ export class PatientsDataComponent implements OnInit {
   photo: Photo = {};
   patients_doctor: Doctor = {};
   photos: any = [];
+  deleteID: any;
+  message: any;
 
   constructor(private patientService: PatientService, private route: ActivatedRoute, private domSerializer: DomSanitizer, private modalService: ModalServiceService) {
   }
@@ -24,6 +26,7 @@ export class PatientsDataComponent implements OnInit {
   ngOnInit(): void {
     this.retrieve();
   }
+
   currentFile: any;
 
   private retrieve(): void {
@@ -31,7 +34,7 @@ export class PatientsDataComponent implements OnInit {
       next: (data) => {
         this.patient = data["patient"];
         this.patients_doctor = this.patient["doctor"];
-        this.photo =  data['photo'];
+        this.photo = data['photo'];
 
         var file = this.photo['photo'];
         if (file == undefined)
@@ -42,27 +45,33 @@ export class PatientsDataComponent implements OnInit {
     });
   }
 
-  get_photos_data(modal: string){
+  get_photos_data(modal: string) {
     this.openModal(modal);
+    this.retrieve();
 
     this.patientService.getAllPhotos(this.route.snapshot.params["pat"], 1).subscribe({
       next: (data) => {
         var photo_objects = data['photos'];
-        //todo date of creation write when in server it will be
-        for (var i in photo_objects){
+        for (var i in photo_objects) {
           var photo = photo_objects[i];
           var file = photo['photo']
-          this.photos[i] = {'photo': this.domSerializer.bypassSecurityTrustResourceUrl('data:image/jpg;base64,' + file), 'diagnosys': photo['diagnosys']};
-
-          console.log(this.photos[i]);
+          this.photos[i] = {
+            'id': photo['id'],
+            'photo': this.domSerializer.bypassSecurityTrustResourceUrl('data:image/jpg;base64,' + file),
+            'diagnosys': photo['diagnosys'],
+            'date': photo['date']
+          };
         }
       }, error: (e) => console.error(e)
     });
   }
 
-  openAnotherModal(modal1: string, modal2: string){
+  openAnotherModal(modal1: string, modal2: string, id: number) {
     this.openModal(modal2);
     this.closeModal(modal1);
+
+    this.deleteID = id;
+    console.log('del id: ' + this.deleteID);
   }
 
   openModal(id: string) {
@@ -71,5 +80,20 @@ export class PatientsDataComponent implements OnInit {
 
   closeModal(id: string) {
     this.modalService.close(id);
+  }
+
+  remove(modal: string) {
+    this.patientService.removePhoto(this.patient.id, this.deleteID).subscribe({
+        next: (res) => {
+          this.message = res['message'];
+          this.openModal('message_modal');
+          this.retrieve();
+        },
+        error: (e) => {
+          this.message = "Удаление не удалось";
+          this.openModal('message_modal');
+        }
+      })
+      this.closeModal(modal);
   }
 }

@@ -39,6 +39,11 @@ export class PatientService {
     return this.http.get<Object>(`${patientUrl}/${pat}?photo=${ph}`);
   }
 
+  removePhoto(pat: any, ph: any): Observable<any> {
+    console.log('in serv')
+    return this.http.delete(`${patientUrl}/${pat}?id=${ph}`);
+  }
+
   editPatient(pat: any, data: any): Observable<any> {
     return this.http.put(`${editUrl}/${pat}`, data);
   }

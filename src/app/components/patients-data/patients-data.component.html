@@ -48,20 +48,22 @@
 </div>
 
 <jw-modal id="photos_info_modal">
-  <label> Список всех фотографий ...</label>
+  <label style="text-align: center; display: block; margin-bottom: 3%"> История фотографий </label>
   <div class="text-center">
     <div *ngIf="photos; else tmplt">
-      <div *ngFor="let ph of photos; let i = index" >
-
-        <img [src]="ph.photo" style="max-width: 50%; display: block; margin: auto;">
-        <label> Дата создания: </label> <br>
-        <label> Диагноз: {{ph.diagnosys}} </label> <br>
-
-        <div>
-          <img (click)="openAnotherModal('photos_info_modal', 'confirmation_modal')"
-               style="float: right; margin-top: 0.5%;" class="img-responsive" width="45px"
-               src="assets/images/remove.png">
+      <div *ngFor="let ph of photos; let i = index">
+        <img [src]="ph.photo" style="max-width: 80%; display: block; margin: auto;">
+        <div style="max-width: 80%; text-align: left; margin-left: auto; margin-right: auto; ">
+          <label> Дата и время создания: {{ph.date}} </label> <br>
+          <label> Диагноз: {{ph.diagnosys}} </label> <br>
         </div>
+        <button
+          class="btn btn-outline-danger" style="margin-bottom: 5%"
+          (click)="openAnotherModal('photos_info_modal', 'confirmation_modal', ph.id)"
+        >
+          Удалить снимок
+        </button>
+        <br>
       </div>
     </div>
     <ng-template #tmplt>
@@ -71,6 +73,41 @@
 </jw-modal>
 
 <jw-modal id="confirmation_modal">
-<!--  todo delete or not-->
   <label style="height: 100%;"> Вы уверены, что хотите удалить снимок? </label>
+  <div class="text-center">
+    <button
+      type="submit"
+      class="btn btn-outline-danger mb-2 text-center"
+      name="save"
+      (click)="remove('confirmation_modal');"
+      style="width: 140px; "
+    >
+      Удалить
+    </button>
+    <button
+      type="submit"
+      class="btn btn-outline-info mb-2 text-center"
+      name="save"
+      (click)="closeModal('confirmation_modal');"
+      style="width: 140px; margin-left: 20px"
+    >
+      Отменить
+    </button>
+  </div>
+</jw-modal>
+
+<jw-modal id="message_modal">
+  <div class="text-center">
+  <label style="margin-top: 10px"> {{ message }} </label>
+  <br>
+  <button
+    type="submit"
+    class="btn btn-outline-info mb-2 text-center"
+    name="save"
+    (click)="closeModal('message_modal');"
+    style="width: 140px; margin-left: 20px"
+  >
+    Закрыть
+  </button>
+  </div>
 </jw-modal>
