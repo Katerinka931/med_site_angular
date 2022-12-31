@@ -28,7 +28,7 @@
             style="color: rgba(0, 0, 0, 0.6); background-color: #ededed; width: 100%; border-radius: 4px; height: 50px; border: none; padding-left: 20px">
       <option *ngFor="let type of typeSearch"
               [value]="type" [selected]="type == selected">
-        {{ type }}
+        {{ type|uppercase }}
       </option>
     </select>
   </div>

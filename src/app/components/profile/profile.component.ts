@@ -75,6 +75,7 @@ export class ProfileComponent implements OnInit {
 
   closeModal(id: string) {
     this.modalService.close(id);
+    this.message = '';
   }
 }
 

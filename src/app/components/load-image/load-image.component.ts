@@ -99,7 +99,7 @@ export class LoadImageComponent implements OnInit {
         pat_id: this.selected.split('=')[1].slice(0, -1),
         date: this.modifiedDate
       }
-      this.loadService.save(data, 'save', this.currentFile).subscribe({
+      this.loadService.save(data, this.currentFile).subscribe({
         next: (data) => {
           if (data instanceof HttpResponse) {
             this.message = data.body['message'];

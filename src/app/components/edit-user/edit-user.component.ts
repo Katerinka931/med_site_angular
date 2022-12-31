@@ -15,7 +15,7 @@ export class EditUserComponent implements OnInit {
   currentUser: Doctor = {};
   currentID = this.route.snapshot.params["usr"];
 
-  typeSearch: string[] = ['Главный врач', 'Врач', 'Оператор'];
+  typeSearch: string[];
   selected = '';
   message: any;
   userRole: string;
@@ -37,6 +37,7 @@ export class EditUserComponent implements OnInit {
     this.userService.getUser(this.currentID).subscribe({
       next: (data) => {
         this.currentUser = data["user"];
+        this.typeSearch = data['roles'];
         this.getSelected();
       }, error: (e) => console.error(e)
     });
@@ -60,13 +61,13 @@ export class EditUserComponent implements OnInit {
   private getSelected() {
     switch (this.currentUser.role) {
       case 'DOCTOR':
-        this.selected = 'Врач';
+        this.selected = 'ВРАЧ';
         break;
       case 'CHIEF':
-        this.selected = 'Главный врач';
+        this.selected = 'ГЛАВНЫЙ ВРАЧ';
         break;
       case 'OPERATOR':
-        this.selected = 'Оператор';
+        this.selected = 'ОПЕРАТОР';
         break;
     }
   }

@@ -51,20 +51,27 @@ export class CreatePatientComponent implements OnInit {
   }
 
   savePatient(modal: string) {
-    if (this.selected == undefined) {
+    //todo delete checking of doctor cuz it do in the server
+    if (this.selected == undefined && this.userRole != 'DOCTOR') {
       this.message = 'Введите ФИО лечащего врача';
       this.openModal(modal);
     }
     else {
-      const data = {
-        last_name: this.patient.last_name,
-        first_name: this.patient.first_name,
-        middle_name: this.patient.middle_name,
-        email: this.patient.email,
-        phone: this.patient.phone,
-        date_of_birth: this.patient.date_of_birth,
-        doctor_number: this.selected.split('=')[1].slice(0, -1)
+      var doc;
+      if (this.userRole == 'DOCTOR'){
+        doc = ''
+      } else {
+        doc = this.selected.split('=')[1].slice(0, -1)
       }
+      var data = {
+          last_name: this.patient.last_name,
+          first_name: this.patient.first_name,
+          middle_name: this.patient.middle_name,
+          email: this.patient.email,
+          phone: this.patient.phone,
+          date_of_birth: this.patient.date_of_birth,
+          doctor_number: doc
+        }
       this.patientService.createPatient(data).subscribe({
         next: (res) => {
           this.message = res['message'];

@@ -40,7 +40,6 @@ export class PatientService {
   }
 
   removePhoto(pat: any, ph: any): Observable<any> {
-    console.log('in serv')
     return this.http.delete(`${patientUrl}/${pat}?id=${ph}`);
   }
 

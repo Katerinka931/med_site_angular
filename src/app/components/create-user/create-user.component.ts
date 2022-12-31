@@ -14,7 +14,7 @@ export class CreateUserComponent implements OnInit {
   password_repeat: any;
   submitted = false;
 
-  typeSearch: string[] = ['Главный врач', 'Оператор', 'Врач'];
+  typeSearch: string[];
   selected = '';
   isWrong: any;
   message: any;
@@ -23,6 +23,17 @@ export class CreateUserComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.retrieve();
+  }
+
+  private retrieve(): void {
+    this.userService.getUserRoles().subscribe({
+      next: (data) => {
+        this.typeSearch = data['roles'];
+      }, error: (e) => {
+        console.error(e);
+      }
+    });
   }
 
   valueChange(event: any) {

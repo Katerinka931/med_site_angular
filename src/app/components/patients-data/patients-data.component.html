@@ -51,7 +51,7 @@
   <label style="text-align: center; display: block; margin-bottom: 3%"> История фотографий </label>
   <div class="text-center">
     <div *ngIf="photos; else tmplt">
-      <div *ngFor="let ph of photos; let i = index">
+      <div *ngFor="let ph of photos;">
         <img [src]="ph.photo" style="max-width: 80%; display: block; margin: auto;">
         <div style="max-width: 80%; text-align: left; margin-left: auto; margin-right: auto; ">
           <label> Дата и время создания: {{ph.date}} </label> <br>

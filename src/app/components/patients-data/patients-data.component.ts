@@ -47,8 +47,7 @@ export class PatientsDataComponent implements OnInit {
 
   get_photos_data(modal: string) {
     this.openModal(modal);
-    this.retrieve();
-
+    this.photos = [];
     this.patientService.getAllPhotos(this.route.snapshot.params["pat"], 1).subscribe({
       next: (data) => {
         var photo_objects = data['photos'];
@@ -69,9 +68,7 @@ export class PatientsDataComponent implements OnInit {
   openAnotherModal(modal1: string, modal2: string, id: number) {
     this.openModal(modal2);
     this.closeModal(modal1);
-
     this.deleteID = id;
-    console.log('del id: ' + this.deleteID);
   }
 
   openModal(id: string) {

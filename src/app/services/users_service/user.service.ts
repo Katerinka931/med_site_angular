@@ -20,6 +20,10 @@ export class UserService {
     return this.http.post(createUrl, data);
   }
 
+  getUserRoles(): Observable<any> {
+    return this.http.get(createUrl);
+  }
+
   getDoctorHimself(id: any): Observable<Object> {
     return this.http.get<Object>(`${profileUrl}`);
   }

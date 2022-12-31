@@ -35,7 +35,7 @@ export class LoadImageService {
     return this.http.get<Patient[]>(`${baseUrl}`);
   }
 
-  save(data: any, act: string, file: File): Observable<any> {
+  save(data: any, file: File): Observable<any> {
 
     const formData: FormData = new FormData();
 
@@ -45,7 +45,7 @@ export class LoadImageService {
     formData.append('custom_diagnosys', data['custom_diagnosys']);
     formData.append('date', data['date']);
 
-    const req = new HttpRequest('POST', `${baseUrl}?act=${act}`, formData, {
+    const req = new HttpRequest('POST', `${baseUrl}/save`, formData, {
       responseType: 'json'
     });
     return this.http.request(req);
