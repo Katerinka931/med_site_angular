@@ -1,12 +1,14 @@
-import {Component, OnDestroy, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 import {AuthService} from "../../services/auth_service/auth.service";
 import {Doctor} from "../../models/doctor_model/doctor";
 import {UserService} from "../../services/users_service/user.service";
 import {ModalServiceService} from "../../services/modal_service/modal-service.service";
 import {Subscription} from "rxjs";
+import {TokenStorageService} from "../../services/token_storage_service/token-storage.service";
 
 @Component({
   selector: 'app-profile',
+  // changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
@@ -19,7 +21,7 @@ export class ProfileComponent implements OnInit {
   message: string;
   gotSuccess: boolean;
 
-  constructor(private userService: UserService, private token: AuthService, private modalService: ModalServiceService) {
+  constructor(private tokenStorage: TokenStorageService, private userService: UserService, private token: AuthService, private modalService: ModalServiceService) {
   }
 
   @ViewChild('modal', {read: ViewContainerRef})
@@ -34,7 +36,10 @@ export class ProfileComponent implements OnInit {
     this.userService.getDoctorHimself(this.token.user_id).subscribe({
       next: (data) => {
         this.currentUser = data["user"];
-      }, error: (e) => console.error(e)
+      }, error: (e) => {
+        this.message = "Ошибка загрузки данных"
+        this.openModal('message_modal');
+      }
     });
   }
 
@@ -45,7 +50,7 @@ export class ProfileComponent implements OnInit {
           this.message = data['message'];
         },
         error: (e) => {
-          this.message = e['error']['message'];
+          e.status != 500 ? this.message = e['error']['message'] : this.message == "Ошибка сервера";
         }
       });
     this.openModal(modal);
@@ -63,7 +68,7 @@ export class ProfileComponent implements OnInit {
         this.gotSuccess = true;
       },
       error: (e) => {
-        this.message = e['error']['message'];
+        e.status != 500 ? this.message = e['error']['message'] : this.message == "Ошибка сервера";
         this.gotSuccess = false;
       }
     });

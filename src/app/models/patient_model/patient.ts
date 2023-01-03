@@ -4,7 +4,7 @@ export class Patient {
   first_name ?: string;
   last_name ?: string;
   middle_name ?: string;
-  date_of_birth ?: string; //todo
+  date_of_birth ?: string;
 
   email ?: string;
   phone ?: string;

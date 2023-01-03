@@ -28,7 +28,7 @@
 
 .edit-button {
   min-width: 10%;
-  top: 95%;
+  top: 90%;
   left: 50%;
   position: absolute;
   transform: translateX(-50%) translateY(-50%);
@@ -75,7 +75,17 @@
 .diagnosis {
   box-shadow: 0 0 5px 2px gainsboro;
   padding-left: 1%;
-  margin-top: 4%;
-  height: 25vw;
+  margin-top: 2%;
+  height: 20vw;
   overflow-y: scroll;
+}
+
+hr {
+  display: block;
+  unicode-bidi: isolate;
+  overflow: hidden;
+  border-style: inset;
+  border-width: 5px;
+  background: #7ccbef;
+  color: #4285F4;
 }

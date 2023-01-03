@@ -6,9 +6,9 @@ import {Observable, tap} from "rxjs";
 
 const AUTH_API = 'http://localhost:8000/';
 
-const httpOptions = {
-  headers: new HttpHeaders({'Content-Type': 'application/json'})
-};
+// const httpOptions = {
+//   headers: new HttpHeaders({'Content-Type': 'application/json'})
+// };
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +27,12 @@ export class AuthService {
   }
 
   login(user: any): Observable<any> {
+    console.log('login ' + !!this.tokenStorage.getRefreshToken())
     return this.http.post(AUTH_API + 'login', JSON.stringify(user), this.httpOptions);
+  }
+
+  public logout() {
+    this.tokenStorage.signOut();
   }
 
   refreshToken() {
@@ -38,8 +43,7 @@ export class AuthService {
     }));
   }
 
-  public logout() { //todo logout
-    this.tokenStorage.signOut();
-    this.router.navigate(['/']);
+  isAuthenticated() {
+    return this.tokenStorage.getRefreshToken()
   }
 }

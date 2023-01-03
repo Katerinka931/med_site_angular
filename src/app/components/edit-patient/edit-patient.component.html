@@ -37,12 +37,6 @@
     <input id="date" type="date" name="date" value=""
            [(ngModel)]="currentPatient.date_of_birth" style="background-color: #ededed">
   </div>
-  <div class="form-group">
-    <label for="diagnosys">Диагноз</label>
-    <textarea id="diagnosys" name="text" wrap="soft" maxlength="9970"
-              style="color: rgba(0, 0, 0, 0.6); border: none; padding-left: 20px; border-radius: 4px; background-color: #ededed; width: 100%; height: 5%; overflow:hidden;"
-              [(ngModel)]="photo.diagnosys"></textarea>
-  </div>
   <div *ngIf="userRole != 'DOCTOR'">
     <div class="form-group">
       <label for="doctor_selector">Лечащий врач</label>
@@ -56,7 +50,32 @@
       </select>
     </div>
   </div>
-
+  <div *ngIf="userRole != 'OPERATOR'">
+    <div *ngIf="isPhotoExists; else addPhoto">
+      <div class="form-group">
+        <label for="diagnosis"><br><br>Диагноз</label>
+        <textarea id="diagnosis" name="text" wrap="soft" maxlength="9970"
+                  style="color: rgba(0, 0, 0, 0.6); border: none; padding-left: 20px; border-radius: 4px; background-color: #ededed; width: 100%; height: 5%; overflow:hidden;"
+                  [(ngModel)]="photo.diagnosis"></textarea>
+      </div>
+      <!--      <div class="form-group">todo-->
+      <!--        <label>Изобаржение</label> &lt;!&ndash;for="photo"&ndash;&gt;-->
+      <!--        Изображение загруженное-->
+      <!--      </div>-->
+    </div>
+    <br><br>
+    <ng-template #addPhoto>
+      <div class="text-center">
+        <a href="/load_image/"
+           type="submit"
+           style="min-width: 10%; margin-right: 50px;"
+           class="btn btn-outline-dark text-center"
+        >
+          Добавьте фото
+        </a>
+      </div>
+    </ng-template>
+  </div>
 </div>
 <br>
 <div class="text-center">

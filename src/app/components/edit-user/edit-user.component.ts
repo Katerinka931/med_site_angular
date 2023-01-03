@@ -39,7 +39,10 @@ export class EditUserComponent implements OnInit {
         this.currentUser = data["user"];
         this.typeSearch = data['roles'];
         this.getSelected();
-      }, error: (e) => console.error(e)
+      }, error: (e) => {
+        this.message = "Ошибка загрузки данных"
+        this.openModal('message_modal');
+      }
     });
   }
 
@@ -51,8 +54,7 @@ export class EditUserComponent implements OnInit {
           this.message = data['message'];
         },
         error: (e) => {
-          console.error(e);
-          this.message = e['error']['message'];
+          e.status != 500 ? this.message = e['error']['message'] : this.message == "Ошибка сервера";
         }
       });
     this.openModal(modal);

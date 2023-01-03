@@ -11,30 +11,31 @@ import {CreatePatientComponent} from "./components/create-patient/create-patient
 import {EditPatientComponent} from "./components/edit-patient/edit-patient.component";
 import {UsersDataComponent} from "./components/users-data/users-data.component";
 import {PatientsListComponent} from "./components/patients-list/patients-list.component";
-
+import {AuthGuard} from "./auth/auth.guard";
 
 const routes: Routes = [
   { path: '', component: LoginComponent, pathMatch: "full"},
-  { path: 'refresh_token', component: LoginComponent },
-  { path: 'logout', component: LoginComponent },
-  { path: 'main', component: MainComponent},
-  { path: 'profile', component: ProfileComponent },
+  { path: 'refresh_token', component: LoginComponent},
+  { path: 'logout', component: LoginComponent, canActivate: [AuthGuard]},
+  { path: 'main', component: MainComponent, canActivate: [AuthGuard]},
+  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},
 
-  { path: 'create_user', component: CreateUserComponent},
-  { path: 'edit_user/:usr', component: EditUserComponent},
+  { path: 'create_user', component: CreateUserComponent, canActivate: [AuthGuard]},
+  { path: 'edit_user/:usr', component: EditUserComponent, canActivate: [AuthGuard]},
 
-  { path: 'create_patient', component: CreatePatientComponent},
-  { path: 'edit_patient/:pat', component: EditPatientComponent},
+  { path: 'create_patient', component: CreatePatientComponent, canActivate: [AuthGuard]},
+  { path: 'edit_patient/:pat', component: EditPatientComponent, canActivate: [AuthGuard]},
 
-  { path: 'user/:usr', component: UsersDataComponent },
-  { path: 'patient/:pat', component: PatientsDataComponent },
-  { path: 'patients', component: PatientsListComponent},
+  { path: 'user/:usr', component: UsersDataComponent, canActivate: [AuthGuard]},
+  { path: 'patient/:pat', component: PatientsDataComponent, canActivate: [AuthGuard]},
+  { path: 'patients', component: PatientsListComponent, canActivate: [AuthGuard]},
 
-  { path: 'load_image', component: LoadImageComponent },
+  { path: 'load_image', component: LoadImageComponent, canActivate: [AuthGuard]},
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [AuthGuard]
 })
 export class AppRoutingModule { }

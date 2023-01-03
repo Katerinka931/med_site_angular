@@ -43,7 +43,7 @@ import { ModalComponent } from './components/modal/modal.component';
     HttpClientModule,
   ],
   providers: [authInterceptorProviders],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {
 }

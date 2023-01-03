@@ -1,7 +1,7 @@
 export class Photo{
   id ?: number;
 
-  diagnosys ?: string;
+  diagnosis ?: string;
   actual ?: string;
   photo ?: string;
   pat_number ?: string;

@@ -15,7 +15,6 @@ import {ModalServiceService} from "../../services/modal_service/modal-service.se
 export class MainComponent implements OnInit {
   doctors?: Doctor[];
   doctor: Doctor = {};
-
   patients?: Patient[];
   patient: Patient = {};
 
@@ -54,7 +53,7 @@ export class MainComponent implements OnInit {
     this.selectedDoctor = doc;
   }
 
-  createHeader() {
+  createHeader() { // todo не нравится
     if (this.userRole == 'ADMIN') {
       this.header = 'Список пользователей';
     } else this.header = 'Список докторов'
@@ -79,19 +78,25 @@ export class MainComponent implements OnInit {
       this.mainService.getAllDoctors(this.authService.user_id).subscribe({
         next: (data) => {
           this.doctors = data["people"];
-        }, error: (e) => console.error(e)
+        }, error: (e) => {
+          e.status == 404 ? this.message = e['error']['message'] : this.message = "Ошибка сервера"
+          this.openModal('message_modal');
+        }
       });
     } else {
       this.mainService.getAllPatients(this.authService.user_id).subscribe({
         next: (data) => {
           this.patients = data["people"];
           console.log(this.patients);
-        }, error: (e) => console.error(e)
+        }, error: (e) => {
+          e.status == 404 ? this.message = e['error']['message'] : this.message = "Ошибка сервера"
+          this.openModal('message_modal');
+        }
       });
     }
   }
 
-  roleTo(role: string): string {
+  roleTo(role: string): string { //todo
     let newRole = '';
     switch (role) {
       case 'ADMIN':
@@ -120,22 +125,6 @@ export class MainComponent implements OnInit {
     }
   }
 
-  delete(pk: any, last: any, first: any, middle: any, modal: string): void {
-    if (confirm("Вы уверены, что хотите удалить человека с именем\"" + last + ' ' + first + ' ' + middle + "\"?")) {
-      this.mainService.delete(pk).subscribe({
-        next: (res) => {
-          this.message = "Удаление успешно";
-          this.refreshList();
-        },
-        error: (e) => {
-          this.message = "Удаление не удалось";
-        }
-      })
-      this.openModal(modal);
-    }
-  }
-
-
   openModal(id: string) {
     this.modalService.open(id);
   }
@@ -147,19 +136,19 @@ export class MainComponent implements OnInit {
   open(id: any, last_name: any, first_name: any, middle_name: any, modal: string) {
     this.openModal(modal);
     this.message = last_name + ' ' + first_name + ' ' + middle_name;
-
     this.tempID = id;
   }
 
   remove(modal: string, prev_modal: string) {
+    this.message = '';
     this.closeModal(prev_modal);
     this.mainService.delete(this.tempID).subscribe({
       next: (res) => {
-        this.message = "Удаление успешно";
+        this.message = res['message'];
         this.refreshList();
       },
       error: (e) => {
-        this.message = "Удаление не удалось";
+        e.status == 404 ? this.message = e['error']['message'] : this.message = "Ошибка сервера"
       }
     });
     this.openModal(modal);

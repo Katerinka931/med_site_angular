@@ -22,7 +22,8 @@
           <div *ngIf="userRole=='ADMIN'" style="float: right"> {{ roleTo(doc.role!) }} </div>
         </div>
         <div>
-          <img (click)="open(doc.id, doc.last_name, doc.first_name, doc.middle_name, 'confirmation_modal')" style="float: right; margin-top: 0.5%;" class="img-responsive" width="45px"
+          <img (click)="open(doc.id, doc.last_name, doc.first_name, doc.middle_name, 'confirmation_modal')"
+               style="float: right; margin-top: 0.5%;" class="img-responsive" width="45px"
                src="assets/images/remove.png">
         </div>
       </div>
@@ -43,12 +44,9 @@
           {{ pat.last_name }} {{ pat.first_name }} {{ pat.middle_name }}
         </div>
         <div>
-
-          <img (click)="open(pat.id, pat.last_name, pat.first_name, pat.middle_name, 'confirmation_modal')" style="float: right; margin-top: 0.5%;" class="img-responsive" width="45px"
+          <img (click)="open(pat.id, pat.last_name, pat.first_name, pat.middle_name, 'confirmation_modal')"
+               style="float: right; margin-top: 0.5%;" class="img-responsive" width="45px"
                src="assets/images/remove.png">
-
-<!--          (click)="delete(pat.id, pat.last_name, pat.first_name, pat.middle_name, 'message_modal')"-->
-
         </div>
       </div>
     </div>
@@ -58,6 +56,7 @@
   </div>
 </div>
 </body>
+
 <jw-modal id="confirmation_modal">
   <label> Вы уверены, что хотите удалить из базы человека с именем "{{message}}"? </label>
   <div class="text-center">
@@ -84,16 +83,16 @@
 
 <jw-modal id="message_modal">
   <div class="text-center">
-  <label style="margin-top: 10px"> {{ message }} </label>
-  <br>
-  <button
-    type="submit"
-    class="btn btn-outline-info mb-2 text-center"
-    name="save"
-    (click)="closeModal('message_modal');"
-    style="width: 140px; margin-left: 20px"
-  >
-    Закрыть
-  </button>
+    <label style="margin-top: 10px"> {{ message }} </label>
+    <br>
+    <button
+      type="submit"
+      class="btn btn-outline-info mb-2 text-center"
+      name="save"
+      (click)="closeModal('message_modal');"
+      style="width: 140px; margin-left: 20px"
+    >
+      Закрыть
+    </button>
   </div>
 </jw-modal>

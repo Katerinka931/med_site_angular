@@ -31,7 +31,8 @@ export class CreateUserComponent implements OnInit {
       next: (data) => {
         this.typeSearch = data['roles'];
       }, error: (e) => {
-        console.error(e);
+        this.message = "Ошибка сервера"
+        this.openModal('message_modal');
       }
     });
   }
@@ -59,7 +60,7 @@ export class CreateUserComponent implements OnInit {
         this.message = res['message'];
       },
       error: (e) => {
-        this.message = e['error']['message'];
+        e.status != 500 ? this.message = e['error']['message'] : this.message == "Ошибка сервера";
       }
     });
     this.openModal(modal);

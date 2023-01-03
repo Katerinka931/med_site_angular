@@ -22,6 +22,7 @@ export class EditPatientComponent implements OnInit {
   selected: any;
   message: any;
   photo: Photo = {};
+  isPhotoExists: boolean = false;
 
   constructor(private patientService: PatientService, private route: ActivatedRoute, private tokenStorage: TokenStorageService, private modalService: ModalServiceService) {
   }
@@ -36,12 +37,20 @@ export class EditPatientComponent implements OnInit {
       next: (data) => {
         this.currentPatient = data["patient"];
         this.listOfDoctors = data["doctors"];
-        this.photo = data['photo'];
-
         this.doctorsToSelector();
         this.selected = this.currentPatient['doctor']['last_name'] + ' ' + this.currentPatient['doctor']['first_name'] + ' ' + this.currentPatient['doctor']['middle_name'] + ' (ID=' + this.currentPatient['doctor']['id'] + ')';
-      }, error: (e) => console.error(e)
+        if (data['photo'] != null) {
+          this.photo = data['photo'];
+          this.isPhotoExists = true;
+        } else {
+          this.isPhotoExists = false;
+        }
+      }, error: (e) => {
+        e.status != 500 ? this.message = e['error']['message'] : this.message == "Ошибка сервера";
+        this.openModal('message_modal');
+      }
     });
+    console.log(this.photo);
   }
 
   private doctorsToSelector(): void {
@@ -53,7 +62,7 @@ export class EditPatientComponent implements OnInit {
   editPatient(modal: string): void {
     this.currentPatient.doctor_number = this.selected.split('=')[1].slice(0, -1)
     const data = {
-      diagnosys: this.photo.diagnosys,
+      diagnosis: this.photo.diagnosis,
       patient: this.currentPatient,
     }
     this.patientService.editPatient(this.currentID, data)
@@ -62,7 +71,7 @@ export class EditPatientComponent implements OnInit {
           this.message = data['message'];
         },
         error: (e) => {
-          this.message = e['error']['message'];
+          e.status != 500 ? this.message = e['error']['message'] : this.message == "Ошибка сервера";
         }
       });
     this.openModal(modal);

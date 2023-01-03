@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {Patient} from "../../models/patient_model/patient";
-import {MainPageService} from "../../services/main_page_service/main-page.service";
 import {AuthService} from "../../services/auth_service/auth.service";
 import {TokenStorageService} from "../../services/token_storage_service/token-storage.service";
 import {PatientService} from "../../services/patients_service/patient.service";
@@ -33,7 +32,9 @@ export class PatientsListComponent implements OnInit {
         this.patients = data["people"];
         if (this.patients?.length == 0)
           this.peopleIsNull = true;
-      }, error: (e) => console.error(e)
+      }, error: (e) => {
+        e.status == 404 ? this.message = e['error']['message'] : this.message = "Ошибка сервера"
+      }
     });
   }
 
@@ -54,11 +55,11 @@ export class PatientsListComponent implements OnInit {
     this.closeModal(prev_modal);
     this.patientService.delete(this.tempID).subscribe({
       next: (res) => {
-        this.message = "Удаление успешно";
+        this.message = res['message'];
         this.refreshList();
       },
       error: (e) => {
-        this.message = "Удаление не удалось";
+        e.status == 404 ? this.message = e['error']['message'] : this.message = "Ошибка сервера"
       }
     });
     this.openModal(modal);
@@ -75,7 +76,6 @@ export class PatientsListComponent implements OnInit {
   open(id: any, last_name: any, first_name: any, middle_name: any, modal: string) {
     this.openModal(modal);
     this.message = last_name + ' ' + first_name + ' ' + middle_name;
-
     this.tempID = id;
   }
 }

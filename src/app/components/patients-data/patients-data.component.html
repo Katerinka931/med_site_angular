@@ -4,23 +4,18 @@
 <div class="split left">
   <div class="pos">
     <h2 style="text-align: center">
-      <div *ngIf="currentFile!=null; else fileIsNull">
-        Актуальный снимок
-        <img [src]="currentFile" style="max-width: 29%; display: block; margin: auto; top: 25%; position: fixed;">
-      </div>
-      <ng-template #fileIsNull>
-        Фотография не загружена
-      </ng-template>
+      {{photo_title}}
+      <img [src]="currentFile" style="max-width: 29%; display: block; margin: auto; top: 25%; position: fixed;">
     </h2>
   </div>
   <div>
     <button
       type="submit"
       name="show_all"
-      class="btn btn-light mb-2 text-center edit-button"
+      class="btn btn-light text-center edit-button"
       (click)="get_photos_data('photos_info_modal')"
     >
-      Просмотреть историю снимков
+      История снимков
     </button>
   </div>
 </div>
@@ -34,7 +29,7 @@
     <h6>Лечащий
       врач: {{ patients_doctor.last_name }} {{ patients_doctor.first_name}} {{ patients_doctor.middle_name}} </h6>
     <div class="diagnosis">
-      <h4> Диагноз: {{ photo.diagnosys }}</h4>
+      <h4> Диагноз: {{ photo.diagnosis }}</h4>
     </div>
   </div>
   <div>
@@ -55,16 +50,32 @@
         <img [src]="ph.photo" style="max-width: 80%; display: block; margin: auto;">
         <div style="max-width: 80%; text-align: left; margin-left: auto; margin-right: auto; ">
           <label> Дата и время создания: {{ph.date}} </label> <br>
-          <label> Диагноз: {{ph.diagnosys}} </label> <br>
+          <label> Диагноз: {{ph.diagnosis}} </label> <br>
         </div>
         <button
           class="btn btn-outline-danger" style="margin-bottom: 5%"
           (click)="openAnotherModal('photos_info_modal', 'confirmation_modal', ph.id)"
         >
           Удалить снимок
+        </button> <br>
+        <button style="float: top"
+                type="submit"
+                name="download_jpeg"
+                class="btn btn-outline-secondary text-center"
+                (click)="download(ph.id, 'image')"
+        >
+          Скачать .jpeg
         </button>
-        <br>
+        <button style="margin-left: 10px"
+                type="submit"
+                name="download_dcm"
+                class="btn btn-outline-primary text-center"
+                (click)="download(ph.id, 'dicom')"
+        >
+          Скачать .dcm
+        </button>
       </div>
+      <hr>
     </div>
     <ng-template #tmplt>
       Снимков нет
@@ -98,16 +109,16 @@
 
 <jw-modal id="message_modal">
   <div class="text-center">
-  <label style="margin-top: 10px"> {{ message }} </label>
-  <br>
-  <button
-    type="submit"
-    class="btn btn-outline-info mb-2 text-center"
-    name="save"
-    (click)="closeModal('message_modal');"
-    style="width: 140px; margin-left: 20px"
-  >
-    Закрыть
-  </button>
+    <label style="margin-top: 10px"> {{ message }} </label>
+    <br>
+    <button
+      type="submit"
+      class="btn btn-outline-info mb-2 text-center"
+      name="save"
+      (click)="closeModal('message_modal');"
+      style="width: 140px; margin-left: 20px"
+    >
+      Закрыть
+    </button>
   </div>
 </jw-modal>

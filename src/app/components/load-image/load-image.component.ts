@@ -7,7 +7,7 @@ import {AuthService} from "../../services/auth_service/auth.service";
 import {ModalServiceService} from "../../services/modal_service/modal-service.service";
 
 
-import { DomSanitizer } from '@angular/platform-browser';
+import {DomSanitizer} from '@angular/platform-browser';
 
 
 @Component({
@@ -25,10 +25,10 @@ export class LoadImageComponent implements OnInit {
   patient: Patient = {};
   patients?: Patient[];
   patientsList: string[] = [];
-  selected: any;
+  selected: any = "=";
 
-  diagnosys = '';
-  custom_diagnosys = '';
+  diagnosis = '';
+  custom_diagnosis = '';
   message = '';
   imagePath: any;
   modifiedDate: any;
@@ -46,8 +46,10 @@ export class LoadImageComponent implements OnInit {
       next: (data) => {
         this.patients = data["patients"];
         this.patientsToSelector();
-        console.log(data);
-      }, error: (e) => console.error(e)
+      }, error: (e) => {
+        this.message = "Ошибка сервера";
+        this.openModal('message_modal')
+      }
     });
   }
 
@@ -61,57 +63,52 @@ export class LoadImageComponent implements OnInit {
     this.imagePath = null;
     this.selectedFiles = event.target.files;
     if (this.selectedFiles.length > 1) {
-      confirm("Выберите один файл!");
+      this.message = "Выберите один файл!";
+      this.openModal('message_modal');
     } else {
       this.file_name = this.selectedFiles[0]!.name.split('.')[0];
-      this.modifiedDate= this.selectedFiles[0].lastModified;
+      this.modifiedDate = this.selectedFiles[0].lastModified;
     }
   }
 
   loadImage(modal: string): void {
     this.currentFile = this.selectedFiles[0];
-
-    this.diagnosys = '';
-    this.custom_diagnosys = '';
+    this.diagnosis = '';
+    this.custom_diagnosis = '';
 
     this.loadService.upload(this.currentFile, this.modifiedDate).subscribe(
       event => {
         if (event instanceof HttpResponse) {
           this.message = event.body.message;
-          this.diagnosys = event.body['message'];
+          this.diagnosis = event.body['message'];
           this.imagePath = this.domSerializer.bypassSecurityTrustResourceUrl('data:image/jpg;base64,' + event.body['file']);
         }
       },
-      err => {
-        this.message = err['error']['message'];
+      e => {
+        e.status != 500 ? this.message = e['error']['message'] : this.message == "Ошибка сервера";
         this.openModal(modal);
       });
   }
 
-  saveDiagnosys(modal: string) {
-    if (this.selected == undefined) {
-      this.message = 'Пациент не выбран!';
-      this.openModal(modal);
-    } else {
-      const data = {
-        diagnosys: this.diagnosys,
-        custom_diagnosys: this.custom_diagnosys,
-        pat_id: this.selected.split('=')[1].slice(0, -1),
-        date: this.modifiedDate
-      }
-      this.loadService.save(data, this.currentFile).subscribe({
-        next: (data) => {
-          if (data instanceof HttpResponse) {
-            this.message = data.body['message'];
-            this.openModal(modal);
-          }
-        },
-        error: (e) => {
-          this.message = "Ошибка сохранения!";
+  saveDiagnosis(modal: string) {
+    const data = {
+      diagnosis: this.diagnosis,
+      custom_diagnosis: this.custom_diagnosis,
+      pat_id: this.selected.split('=')[1].slice(0, -1),
+      date: this.modifiedDate
+    }
+    this.loadService.save(data, this.currentFile).subscribe({
+      next: (data) => {
+        if (data instanceof HttpResponse) {
+          this.message = data.body['message'];
           this.openModal(modal);
         }
-      });
-    }
+      },
+      error: (e) => {
+        e.status != 500 ? this.message = e['error']['message'] : this.message == "Ошибка сервера";
+        this.openModal(modal);
+      }
+    });
   }
 
   valueChange(event: any) {

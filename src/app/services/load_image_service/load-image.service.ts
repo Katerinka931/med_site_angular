@@ -41,8 +41,8 @@ export class LoadImageService {
 
     formData.append('file', file);
     formData.append('pat_id', data['pat_id']);
-    formData.append('diagnosys', data['diagnosys']);
-    formData.append('custom_diagnosys', data['custom_diagnosys']);
+    formData.append('diagnosis', data['diagnosis']);
+    formData.append('custom_diagnosis', data['custom_diagnosis']);
     formData.append('date', data['date']);
 
     const req = new HttpRequest('POST', `${baseUrl}/save`, formData, {

@@ -31,10 +31,10 @@ export class CreatePatientComponent implements OnInit {
     this.patientService.getListOfDoctorsToCreatePatient().subscribe({
       next: (data) => {
         this.listOfDoctors = data["doctors"];
-        console.log(this.selected);
         this.doctorsToSelector();
       }, error: (e) => {
-        console.error(e);
+        this.message = "Ошибка сервера"
+        this.openModal('message_modal');
       }
     });
   }
@@ -77,7 +77,7 @@ export class CreatePatientComponent implements OnInit {
           this.message = res['message'];
         },
         error: (e) => {
-          this.message = e['error']['message'];
+          e.status != 500 ? this.message = e['error']['message'] : this.message = "Ошибка сервера"
         }
       });
       this.openModal(modal);
