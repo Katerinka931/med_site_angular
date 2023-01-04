@@ -28,6 +28,7 @@ export class MainComponent implements OnInit {
 
   message: any;
   tempID: any;
+  roles: string[]= [];
 
 
   constructor(private mainService: MainPageService, private renderer: Renderer2, private authService: AuthService, private tokenStorage: TokenStorageService, private router: Router, private modalService: ModalServiceService) {
@@ -39,7 +40,6 @@ export class MainComponent implements OnInit {
     this.userRole = this.tokenStorage.getUserRole()!;
     this.renderer.setStyle(document.body, 'background-color', 'white');
     this.retrieve();
-    this.peopleIsNull = false;
     this.createHeader();
   }
 
@@ -73,11 +73,13 @@ export class MainComponent implements OnInit {
     this.router.navigate([`/patient/${this.selectedPatient.id}`]);
   }
 
-  private retrieve(): void {
+  private retrieve(): void { //todo
     if (this.userRole == 'ADMIN' || this.userRole == 'CHIEF') {
       this.mainService.getAllDoctors(this.authService.user_id).subscribe({
         next: (data) => {
           this.doctors = data["people"];
+          this.roles = data['roles'];
+          this.peopleIsNull = this.doctors?.length == 0;
         }, error: (e) => {
           e.status == 404 ? this.message = e['error']['message'] : this.message = "Ошибка сервера"
           this.openModal('message_modal');
@@ -87,7 +89,7 @@ export class MainComponent implements OnInit {
       this.mainService.getAllPatients(this.authService.user_id).subscribe({
         next: (data) => {
           this.patients = data["people"];
-          console.log(this.patients);
+          this.peopleIsNull = this.patients?.length == 0;
         }, error: (e) => {
           e.status == 404 ? this.message = e['error']['message'] : this.message = "Ошибка сервера"
           this.openModal('message_modal');
@@ -96,24 +98,13 @@ export class MainComponent implements OnInit {
     }
   }
 
-  roleTo(role: string): string { //todo
-    let newRole = '';
-    switch (role) {
-      case 'ADMIN':
-        newRole = 'администратор';
-        break;
-      case 'OPERATOR':
-        newRole = 'оператор';
-        break;
-      case 'CHIEF':
-        newRole = 'главный врач';
-        break;
-      case 'DOCTOR':
-        newRole = 'врач';
-        break;
-    }
-    return newRole;
+  getRole(role: string): string {
+    let currentRole = this.roles.find((obj: string) => {
+      return obj['role'] === role;
+    });
+    return currentRole!['value'];
   }
+
 
   private checkFound(data: Doctor[]) {
     if (data == null) {

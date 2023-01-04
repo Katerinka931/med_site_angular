@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Doctor} from "../../models/doctor_model/doctor";
 import {UserService} from "../../services/users_service/user.service";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute} from "@angular/router";
 import {TokenStorageService} from "../../services/token_storage_service/token-storage.service";
 import {ModalServiceService} from "../../services/modal_service/modal-service.service";
 
@@ -15,13 +15,15 @@ export class EditUserComponent implements OnInit {
   currentUser: Doctor = {};
   currentID = this.route.snapshot.params["usr"];
 
-  typeSearch: string[];
-  selected = '';
+  typeSearch: string[] = [];
+  usersEnum: [];
+  selected: any;
   message: any;
   userRole: string;
 
 
-  constructor(private userService: UserService, private route: ActivatedRoute, private tokenStorage: TokenStorageService, private modalService: ModalServiceService) {
+  constructor(private userService: UserService, private route: ActivatedRoute, private tokenStorage: TokenStorageService,
+              private modalService: ModalServiceService) {
   }
 
   ngOnInit(): void {
@@ -37,13 +39,27 @@ export class EditUserComponent implements OnInit {
     this.userService.getUser(this.currentID).subscribe({
       next: (data) => {
         this.currentUser = data["user"];
-        this.typeSearch = data['roles'];
-        this.getSelected();
+        this.usersEnum = data['roles'];
+        this.selected = this.getRole(this.currentUser.role!).toUpperCase();
+        this.getListOfRoles(this.usersEnum);
       }, error: (e) => {
         this.message = "Ошибка загрузки данных"
         this.openModal('message_modal');
       }
     });
+  }
+
+  private getRole(role: string): string {
+    let currentRole = this.usersEnum.find((obj: string) => {
+      return obj['role'] === role;
+    });
+    return currentRole!['value'];
+  }
+
+  private getListOfRoles(roles: any) {
+    for (let role in roles) {
+      this.typeSearch[role] = roles[role]['value'].toUpperCase();
+    }
   }
 
   editDoctor(modal: string): void {
@@ -58,20 +74,6 @@ export class EditUserComponent implements OnInit {
         }
       });
     this.openModal(modal);
-  }
-
-  private getSelected() {
-    switch (this.currentUser.role) {
-      case 'DOCTOR':
-        this.selected = 'ВРАЧ';
-        break;
-      case 'CHIEF':
-        this.selected = 'ГЛАВНЫЙ ВРАЧ';
-        break;
-      case 'OPERATOR':
-        this.selected = 'ОПЕРАТОР';
-        break;
-    }
   }
 
   openModal(id: string) {

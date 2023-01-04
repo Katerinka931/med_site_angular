@@ -11,7 +11,6 @@ import {Observable, throwError, BehaviorSubject} from 'rxjs';
 import {catchError, filter, take, switchMap} from 'rxjs/operators';
 import {AuthService} from "../services/auth_service/auth.service";
 import {TokenStorageService} from "../services/token_storage_service/token-storage.service";
-import {Router} from "@angular/router";
 
 const TOKEN_HEADER_KEY = 'Authorization';
 

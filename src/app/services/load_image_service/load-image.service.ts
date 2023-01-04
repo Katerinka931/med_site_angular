@@ -21,7 +21,6 @@ export class LoadImageService {
     const formData: FormData = new FormData();
 
     formData.append('file', file);
-
     formData.append('date', date);
 
     const req = new HttpRequest('POST', `${baseUrl}`, formData, {

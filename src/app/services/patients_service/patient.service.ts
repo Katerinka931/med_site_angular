@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Observable} from "rxjs";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpEvent, HttpRequest} from "@angular/common/http";
 import {Patient} from "../../models/patient_model/patient";
 
 const createUrl = 'http://localhost:8000/create_patient';
@@ -13,7 +13,8 @@ const editUrl = 'http://localhost:8000/edit_patient';
 })
 export class PatientService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+  }
 
   createPatient(data: any): Observable<any> {
     return this.http.post(createUrl, data);
@@ -53,5 +54,20 @@ export class PatientService {
 
   download(pat: any, ph: any, type: string): Observable<Object> {
     return this.http.get<Object>(`${patientUrl}/${pat}/download/${type}?id=${ph}`);
+  }
+
+  loadImage(file: File, pat: any, diag: string, date: any, photo_id: string): Observable<HttpEvent<any>> {
+    const formData: FormData = new FormData();
+
+    formData.append('file', file);
+    formData.append('diagnosis', diag)
+    formData.append('date', date);
+    formData.append('pk', photo_id);
+
+    const req = new HttpRequest('POST', `${editUrl}/${pat}/photo`, formData, {
+      responseType: 'json'
+    });
+
+    return this.http.request(req);
   }
 }

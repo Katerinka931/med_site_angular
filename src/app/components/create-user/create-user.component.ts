@@ -16,7 +16,6 @@ export class CreateUserComponent implements OnInit {
 
   typeSearch: string[];
   selected = '';
-  isWrong: any;
   message: any;
 
   constructor(private userService: UserService, private modalService: ModalServiceService) {

@@ -12,9 +12,9 @@ export class LoginComponent implements OnInit {
 
   username = '';
   password = '';
-  isLoggedIn = false;
-  isLoginFailed = false;
   message = '';
+
+  isLoginFailed = false;
 
   constructor(private authService: AuthService, private router: Router, private renderer: Renderer2, private tokenStorage: TokenStorageService) {
     this.renderer.setStyle(document.body, 'background-image', 'linear-gradient(45deg, #409dc9, #4fd6df)');
@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.tokenStorage.getToken()) {
-      this.isLoggedIn = true;
+      this.isLoginFailed = false;
     }
   }
 
@@ -33,7 +33,6 @@ export class LoginComponent implements OnInit {
         this.tokenStorage.saveToken(data.accessToken);
         this.tokenStorage.saveUser(data);
         this.isLoginFailed = false;
-        this.isLoggedIn = true;
         this.saveLoginData(data);
       },
       error: err => {
@@ -42,17 +41,13 @@ export class LoginComponent implements OnInit {
       }
     });
   }
+
   public saveLoginData(data: any) {
     this.tokenStorage.saveToken(data['access']);
     this.tokenStorage.saveRefreshToken(data["refresh"]);
     this.tokenStorage.saveUserRole(data["role"]);
     this.tokenStorage.saveUser(data);
-
     this.mainPage();
-    // const token_parts = data['access'].split(/\./);
-    // const token_decoded = JSON.parse(window.atob(token_parts[1]));
-    // const token_expires = new Date(token_decoded.exp * 1000);
-    // console.log(token_expires);
   }
 
   mainPage(): void {

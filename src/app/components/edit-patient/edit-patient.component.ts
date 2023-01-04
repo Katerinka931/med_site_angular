@@ -6,6 +6,8 @@ import {TokenStorageService} from "../../services/token_storage_service/token-st
 import {Doctor} from "../../models/doctor_model/doctor";
 import {ModalServiceService} from "../../services/modal_service/modal-service.service";
 import {Photo} from "../../models/photo-model/photo.model";
+import {HttpResponse} from "@angular/common/http";
+import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-edit-patient',
@@ -23,8 +25,17 @@ export class EditPatientComponent implements OnInit {
   message: any;
   photo: Photo = {};
   isPhotoExists: boolean = false;
+  gotSuccess: any;
+  file_name: string;
+  imagePath: any;
+  modifiedDate: any;
+  selectedFiles: FileList;
+  currentFile: File;
+  diagnosis: string;
 
-  constructor(private patientService: PatientService, private route: ActivatedRoute, private tokenStorage: TokenStorageService, private modalService: ModalServiceService) {
+  photo_inst: number = 0;
+
+  constructor(private patientService: PatientService, private route: ActivatedRoute, private tokenStorage: TokenStorageService, private modalService: ModalServiceService, private domSerializer: DomSanitizer) {
   }
 
   ngOnInit(): void {
@@ -37,11 +48,14 @@ export class EditPatientComponent implements OnInit {
       next: (data) => {
         this.currentPatient = data["patient"];
         this.listOfDoctors = data["doctors"];
+
         this.doctorsToSelector();
         this.selected = this.currentPatient['doctor']['last_name'] + ' ' + this.currentPatient['doctor']['first_name'] + ' ' + this.currentPatient['doctor']['middle_name'] + ' (ID=' + this.currentPatient['doctor']['id'] + ')';
         if (data['photo'] != null) {
           this.photo = data['photo'];
+          this.modifiedDate = this.photo.date_of_creation;
           this.isPhotoExists = true;
+          this.imagePath = this.domSerializer.bypassSecurityTrustResourceUrl('data:image/jpg;base64,' + this.photo.photo);
         } else {
           this.isPhotoExists = false;
         }
@@ -50,7 +64,6 @@ export class EditPatientComponent implements OnInit {
         this.openModal('message_modal');
       }
     });
-    console.log(this.photo);
   }
 
   private doctorsToSelector(): void {
@@ -82,10 +95,66 @@ export class EditPatientComponent implements OnInit {
   }
 
   openModal(id: string) {
+    this.cleanModal();
     this.modalService.open(id);
   }
 
   closeModal(id: string) {
     this.modalService.close(id);
+    this.retrieve();
+  }
+
+  cleanModal() {
+    this.currentFile = {} as File;
+    this.selectedFiles = {} as FileList;
+    this.file_name = '';
+
+
+  }
+
+  saveImageInstance(modal: string) {
+
+    console.log('ph ' + this.photo.id);
+    console.log('cur file ' + this.currentFile.name);
+
+    if (this.currentFile.name == undefined ){
+      this.photo_inst = this.photo.id!;
+      this.modifiedDate = this.photo.date_of_creation;
+    } else {
+      this.photo_inst = 0;
+    }
+
+    console.log(this.photo_inst);
+
+
+    this.patientService.loadImage(this.currentFile, this.currentID, this.photo.diagnosis!, this.modifiedDate, this.photo_inst.toString()).subscribe(
+      event => {
+        if (event instanceof HttpResponse) {
+          this.message = event.body.message;
+          this.diagnosis = event.body['message'];
+          this.photo = event.body['photo'];
+          this.imagePath = this.domSerializer.bypassSecurityTrustResourceUrl('data:image/jpeg;base64,' + this.photo.photo);
+
+          this.gotSuccess = true;
+          this.cleanModal();
+        }
+      },
+      e => {
+        e.status != 500 ? this.message = e['error']['message'] : this.message == "Ошибка сервера";
+        this.gotSuccess = false;
+      });
+  }
+
+  selectFile(event: any) {
+    this.imagePath = null;
+    this.selectedFiles = event.target.files;
+    if (this.selectedFiles.length > 1) {
+      this.message = "Выберите один файл!";
+      this.openModal('message_modal');
+    } else {
+      this.file_name = this.selectedFiles[0]!.name.split('.')[0];
+      this.modifiedDate = this.selectedFiles[0].lastModified;
+      this.currentFile = this.selectedFiles[0];
+    }
   }
 }

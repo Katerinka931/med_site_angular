@@ -23,6 +23,8 @@ export class PatientsDataComponent implements OnInit {
   message: any;
   photo_title: string;
 
+  photosIsNull: boolean = false;
+
   constructor(private patientService: PatientService, private route: ActivatedRoute, private domSerializer: DomSanitizer, private modalService: ModalServiceService) {
   }
 
@@ -38,7 +40,6 @@ export class PatientsDataComponent implements OnInit {
         this.patient = data["patient"];
         this.patients_doctor = this.patient["doctor"];
         this.photo_title = data['message'];
-
         try {
           let file;
           let recv_photo = data['photo'];
@@ -53,7 +54,8 @@ export class PatientsDataComponent implements OnInit {
             this.currentFile = null;
           else
             this.currentFile = this.domSerializer.bypassSecurityTrustResourceUrl('data:image/jpeg;base64,' + file);
-        } catch (Exception) { }
+        } catch (Exception) {
+        }
       }, error: (e) => {
         e.status != 500 ? this.photo_title = e['error']['message'] : this.photo_title == "Ошибка загрузки";
         this.patient = e['error']["patient"];
@@ -68,9 +70,13 @@ export class PatientsDataComponent implements OnInit {
     this.patientService.getAllPhotos(this.route.snapshot.params["pat"]).subscribe({
       next: (data) => {
         var photo_objects = data['photos'];
+
+        this.photosIsNull = photo_objects.length != 0;
+
         for (var i in photo_objects) {
           var photo = photo_objects[i];
           var file = photo['photo']
+
           this.photos[i] = {
             'id': photo['id'],
             'photo': this.domSerializer.bypassSecurityTrustResourceUrl('data:image/jpeg;base64,' + file),

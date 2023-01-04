@@ -36,6 +36,7 @@
       </select>
     </div>
   </div>
+  <br>
   <div class="form-group">
     <label for="email">Почта</label>
     <input id="email" type="text" name="email" value="{{currentUser.email}}"
@@ -68,17 +69,17 @@
 
 <jw-modal id="message_modal">
   <div class="text-center">
-  <label style="margin-top: 10px"> {{ message }} </label>
-  <br>
-  <button
-    type="submit"
-    class="btn btn-outline-info mb-2 text-center"
-    name="save"
-    (click)="closeModal('message_modal');"
-    style="width: 140px; margin-left: 20px"
-  >
-    Закрыть
-  </button>
+    <label style="margin-top: 10px"> {{ message }} </label>
+    <br>
+    <button
+      type="submit"
+      class="btn btn-outline-info mb-2 text-center"
+      name="save"
+      (click)="closeModal('message_modal');"
+      style="width: 140px; margin-left: 20px"
+    >
+      Закрыть
+    </button>
   </div>
 </jw-modal>
 

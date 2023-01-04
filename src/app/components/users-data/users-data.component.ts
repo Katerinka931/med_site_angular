@@ -18,6 +18,7 @@ export class UsersDataComponent implements OnInit {
   role: string;
   currentUserRole: string;
   message: string;
+  roles: string[] = [];
 
   constructor(private userService: UserService, private route: ActivatedRoute, private router: Router, private tokenStorage: TokenStorageService, private modalService: ModalServiceService) {
   }
@@ -32,7 +33,8 @@ export class UsersDataComponent implements OnInit {
       next: (data) => {
         this.user = data["user"];
         this.patients = this.user["patients"];
-        this.getRole();
+        this.roles = data['roles'];
+        this.role = this.getRole(this.user.role!);
       }, error: (e) => {
         this.message = "Ошибка загрузки данных"
         this.openModal('message_modal');
@@ -40,21 +42,11 @@ export class UsersDataComponent implements OnInit {
     });
   }
 
-  private getRole(): void { //todo не нравится
-    switch (this.user.role) {
-      case 'ADMIN':
-        this.role = 'администратор';
-        break;
-      case 'OPERATOR':
-        this.role = 'оператор';
-        break;
-      case 'CHIEF':
-        this.role = 'главный врач';
-        break;
-      case 'DOCTOR':
-        this.role = 'врач';
-        break;
-    }
+  private getRole(role: string) {
+    let currentRole = this.roles.find((obj: string) => {
+      return obj['role'] === role;
+    });
+    return currentRole!['value'];
   }
 
   refreshList(): void {
@@ -74,7 +66,7 @@ export class UsersDataComponent implements OnInit {
     }
   }
 
-  delete(usr: any, id: any) {
+  delete(usr: any, id: any) { //todo not confirm!!!
     if (confirm("Вы уверены, что хотите удалить \"" + this.selectedPatient.last_name + ' ' + "имя" + ' ' + "отчество" + "\"?")) {
       this.userService.deletePatient(usr, id).subscribe({
         next: (res) => {

@@ -15,11 +15,11 @@ export class PatientsListComponent implements OnInit {
   peopleIsNull: boolean;
   patients?: Patient[];
   selectedPatient: Patient = {};
-  patient: Patient = {};
   message: any;
   tempID: any;
 
-  constructor(private patientService: PatientService, private authService: AuthService, private tokenStorage: TokenStorageService, private router: Router, private modalService: ModalServiceService) {
+  constructor(private patientService: PatientService, private authService: AuthService, private tokenStorage: TokenStorageService,
+              private router: Router, private modalService: ModalServiceService) {
   }
 
   ngOnInit(): void {
@@ -30,8 +30,7 @@ export class PatientsListComponent implements OnInit {
     this.patientService.getPatients(this.authService.user_id).subscribe({
       next: (data) => {
         this.patients = data["people"];
-        if (this.patients?.length == 0)
-          this.peopleIsNull = true;
+        this.peopleIsNull = this.patients?.length == 0;
       }, error: (e) => {
         e.status == 404 ? this.message = e['error']['message'] : this.message = "Ошибка сервера"
       }
@@ -41,6 +40,7 @@ export class PatientsListComponent implements OnInit {
   setActivePatient(pat: Patient) {
     this.selectedPatient = pat;
   }
+
   gotoPatient(pat: Patient) {
     this.setActivePatient(pat);
     this.router.navigate([`/patient/${this.selectedPatient.id}`]);
@@ -73,7 +73,7 @@ export class PatientsListComponent implements OnInit {
     this.modalService.close(id);
   }
 
-  open(id: any, last_name: any, first_name: any, middle_name: any, modal: string) {
+  open_remove_agreement(id: any, last_name: any, first_name: any, middle_name: any, modal: string) {
     this.openModal(modal);
     this.message = last_name + ' ' + first_name + ' ' + middle_name;
     this.tempID = id;

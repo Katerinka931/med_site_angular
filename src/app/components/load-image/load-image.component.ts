@@ -20,7 +20,6 @@ export class LoadImageComponent implements OnInit {
   selectedFiles: FileList;
   currentFile: File;
   file_name = '';
-  fileInfos: Observable<any>;
 
   patient: Patient = {};
   patients?: Patient[];

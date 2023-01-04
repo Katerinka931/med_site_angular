@@ -51,19 +51,20 @@
     </div>
   </div>
   <div *ngIf="userRole != 'OPERATOR'">
+    <br> <br>
     <div *ngIf="isPhotoExists; else addPhoto">
-      <div class="form-group">
-        <label for="diagnosis"><br><br>Диагноз</label>
-        <textarea id="diagnosis" name="text" wrap="soft" maxlength="9970"
-                  style="color: rgba(0, 0, 0, 0.6); border: none; padding-left: 20px; border-radius: 4px; background-color: #ededed; width: 100%; height: 5%; overflow:hidden;"
-                  [(ngModel)]="photo.diagnosis"></textarea>
+      <div class="text-center">
+        <button
+          type="submit"
+          name="show_all"
+          style="min-width: 10%; margin-right: 50px;"
+          class="btn btn-outline-dark text-center"
+          (click)="openModal('change_image_instance_modal')"
+        >
+          Редактировать фото
+        </button>
       </div>
-      <!--      <div class="form-group">todo-->
-      <!--        <label>Изобаржение</label> &lt;!&ndash;for="photo"&ndash;&gt;-->
-      <!--        Изображение загруженное-->
-      <!--      </div>-->
     </div>
-    <br><br>
     <ng-template #addPhoto>
       <div class="text-center">
         <a href="/load_image/"
@@ -99,6 +100,60 @@
       class="btn btn-outline-info mb-2 text-center"
       name="save"
       (click)="closeModal('message_modal');"
+      style="width: 140px; margin-left: 20px"
+    >
+      Закрыть
+    </button>
+  </div>
+</jw-modal>
+
+
+<jw-modal id="change_image_instance_modal">
+  <h1 class="form-header">Изменение изображения</h1>
+  <div class="form-group">
+    <label for="diagnosis"><br><br>Диагноз</label>
+    <textarea id="diagnosis" name="text" wrap="soft" maxlength="9970"
+              style="color: rgba(0, 0, 0, 0.6); border: none; padding-left: 20px; border-radius: 4px; background-color: #ededed; width: 100%; height: 5%; overflow:hidden;"
+              [(ngModel)]="photo.diagnosis"></textarea>
+  </div>
+  <div class="form-group">
+    <label for="diagnosis"><br><br>Изображение</label>
+    <div *ngIf="imagePath; else noImage">
+      <img [src]="imagePath" style="height: 100%; max-width: 100%;  display:block; margin:auto;">
+    </div>
+    <ng-template #noImage>
+      <br>
+      Файл формата .dcm отобразится только после загрузки
+    </ng-template>
+  </div>
+  <div *ngIf="gotSuccess; else errorTemplate">
+    <label style="color: #00e811; width: 100%" class="text-center"> {{message}} </label>
+  </div>
+  <ng-template #errorTemplate>
+    <label style="color: red; width: 100%" class="text-center"> {{message}} </label>
+  </ng-template>
+
+  <label for="file-upload" class="btn btn-info mb-2" style="margin-right: 20px">
+    Обзор...
+  </label>
+  <input id="file-upload" type="file" (change)="selectFile($event)"/>
+  <label *ngIf="file_name != ''" style="font-size: 20px"> Загруженный файл: {{ file_name }} </label>
+
+  <div class="text-center">
+    <button
+      type="submit"
+      class="btn btn-outline-info mb-2 text-center"
+      name="save"
+      (click)="saveImageInstance('change_image_instance_modal')"
+      style="width: 140px; "
+    >
+      Сохранить
+    </button>
+    <button
+      type="submit"
+      class="btn btn-outline-danger mb-2 text-center"
+      name="save"
+      (click)="closeModal('change_image_instance_modal');"
       style="width: 140px; margin-left: 20px"
     >
       Закрыть
