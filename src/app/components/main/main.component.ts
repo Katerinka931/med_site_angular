@@ -28,7 +28,7 @@ export class MainComponent implements OnInit {
 
   message: any;
   tempID: any;
-  roles: string[]= [];
+  roles: string[] = [];
 
 
   constructor(private mainService: MainPageService, private renderer: Renderer2, private authService: AuthService, private tokenStorage: TokenStorageService, private router: Router, private modalService: ModalServiceService) {
@@ -53,7 +53,7 @@ export class MainComponent implements OnInit {
     this.selectedDoctor = doc;
   }
 
-  createHeader() { // todo не нравится
+  createHeader() { // todo не нравится (роли)
     if (this.userRole == 'ADMIN') {
       this.header = 'Список пользователей';
     } else this.header = 'Список докторов'
@@ -73,7 +73,7 @@ export class MainComponent implements OnInit {
     this.router.navigate([`/patient/${this.selectedPatient.id}`]);
   }
 
-  private retrieve(): void { //todo
+  private retrieve(): void { //todo роли
     if (this.userRole == 'ADMIN' || this.userRole == 'CHIEF') {
       this.mainService.getAllDoctors(this.authService.user_id).subscribe({
         next: (data) => {
@@ -98,22 +98,26 @@ export class MainComponent implements OnInit {
     }
   }
 
+  remove(modal: string, prev_modal: string) {
+    this.message = '';
+    this.closeModal(prev_modal);
+    this.mainService.delete(this.tempID).subscribe({
+      next: (res) => {
+        this.message = res['message'];
+        this.refreshList();
+      },
+      error: (e) => {
+        e.status == 404 ? this.message = e['error']['message'] : this.message = "Ошибка сервера"
+      }
+    });
+    this.openModal(modal);
+  }
+
   getRole(role: string): string {
     let currentRole = this.roles.find((obj: string) => {
       return obj['role'] === role;
     });
     return currentRole!['value'];
-  }
-
-
-  private checkFound(data: Doctor[]) {
-    if (data == null) {
-      this.peopleIsNull = true;
-      this.message = 'Записи не найдены';
-    } else {
-      this.peopleIsNull = false;
-      this.doctors = data;
-    }
   }
 
   openModal(id: string) {
@@ -128,20 +132,5 @@ export class MainComponent implements OnInit {
     this.openModal(modal);
     this.message = last_name + ' ' + first_name + ' ' + middle_name;
     this.tempID = id;
-  }
-
-  remove(modal: string, prev_modal: string) {
-    this.message = '';
-    this.closeModal(prev_modal);
-    this.mainService.delete(this.tempID).subscribe({
-      next: (res) => {
-        this.message = res['message'];
-        this.refreshList();
-      },
-      error: (e) => {
-        e.status == 404 ? this.message = e['error']['message'] : this.message = "Ошибка сервера"
-      }
-    });
-    this.openModal(modal);
   }
 }

@@ -22,17 +22,16 @@ export class PatientsDataComponent implements OnInit {
   deleteID: any;
   message: any;
   photo_title: string;
-
   photosIsNull: boolean = false;
+  currentFile: any;
 
-  constructor(private patientService: PatientService, private route: ActivatedRoute, private domSerializer: DomSanitizer, private modalService: ModalServiceService) {
+  constructor(private patientService: PatientService, private route: ActivatedRoute, private domSerializer: DomSanitizer,
+              private modalService: ModalServiceService) {
   }
 
   ngOnInit(): void {
     this.retrieve();
   }
-
-  currentFile: any;
 
   private retrieve(): void {
     this.patientService.getPatientsData(this.route.snapshot.params["pat"]).subscribe({
@@ -40,20 +39,10 @@ export class PatientsDataComponent implements OnInit {
         this.patient = data["patient"];
         this.patients_doctor = this.patient["doctor"];
         this.photo_title = data['message'];
-        try {
-          let file;
-          let recv_photo = data['photo'];
-          if (recv_photo != null) {
-            this.photo = recv_photo;
-            file = this.photo['photo'];
-          } else {
-            file = undefined;
-          }
 
-          if (file == undefined)
-            this.currentFile = null;
-          else
-            this.currentFile = this.domSerializer.bypassSecurityTrustResourceUrl('data:image/jpeg;base64,' + file);
+        try {
+          let file = this.getFile(data['photo']);
+          file == undefined ? this.currentFile = null : this.currentFile = this.domSerializer.bypassSecurityTrustResourceUrl('data:image/jpeg;base64,' + file);
         } catch (Exception) {
         }
       }, error: (e) => {
@@ -69,21 +58,9 @@ export class PatientsDataComponent implements OnInit {
     this.photos = [];
     this.patientService.getAllPhotos(this.route.snapshot.params["pat"]).subscribe({
       next: (data) => {
-        var photo_objects = data['photos'];
-
+        let photo_objects = data['photos'];
         this.photosIsNull = photo_objects.length != 0;
-
-        for (var i in photo_objects) {
-          var photo = photo_objects[i];
-          var file = photo['photo']
-
-          this.photos[i] = {
-            'id': photo['id'],
-            'photo': this.domSerializer.bypassSecurityTrustResourceUrl('data:image/jpeg;base64,' + file),
-            'diagnosis': photo['diagnosis'],
-            'date': photo['date']
-          };
-        }
+        this.getPhotosList(photo_objects);
       }, error: (e) => {
         this.message == "Ошибка сервера";
         this.openModal('message_modal');
@@ -144,16 +121,8 @@ export class PatientsDataComponent implements OnInit {
     let name;
     this.patientService.download(this.patient.id, ph, type).subscribe({
       next: (res) => {
-        console.log('success \n' + res);
         let file = res['photo'];
-
-        if (type == 'image') {
-          name = res['name'] + '.jpeg';
-          this.downloaded_photo = this.domSerializer.bypassSecurityTrustResourceUrl('data:image/jpeg;base64,' + file);
-        } else {
-          name = res['name'];
-          this.downloaded_photo = this.domSerializer.bypassSecurityTrustResourceUrl('data:image/dcm;base64,' + file);
-        }
+        let name = this.getNameOfFIle(type, res, file);
         let byteArrays = this.convert_to_bytearray(file);
         FileSaver.saveAs(new File(byteArrays, name), name);
       },
@@ -162,5 +131,38 @@ export class PatientsDataComponent implements OnInit {
         this.openModal('message_modal');
       }
     });
+  }
+
+  getNameOfFIle(type: any, res: any, file: any) {
+    if (type == 'image') {
+      this.downloaded_photo = this.domSerializer.bypassSecurityTrustResourceUrl('data:image/jpeg;base64,' + file);
+      return res['name'] + '.jpeg';
+    } else {
+      this.downloaded_photo = this.domSerializer.bypassSecurityTrustResourceUrl('data:image/dcm;base64,' + file);
+      return res['name'];
+    }
+  }
+
+  getFile(data: any) {
+    if (data != null) {
+      this.photo = data;
+      return data['photo'];
+    } else {
+      return undefined;
+    }
+  }
+
+  getPhotosList(photo_objects: any) {
+    for (var i in photo_objects) {
+      var photo = photo_objects[i];
+      var file = photo['photo']
+
+      this.photos[i] = {
+        'id': photo['id'],
+        'photo': this.domSerializer.bypassSecurityTrustResourceUrl('data:image/jpeg;base64,' + file),
+        'diagnosis': photo['diagnosis'],
+        'date': photo['date']
+      };
+    }
   }
 }

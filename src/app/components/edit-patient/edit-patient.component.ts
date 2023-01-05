@@ -32,7 +32,6 @@ export class EditPatientComponent implements OnInit {
   selectedFiles: FileList;
   currentFile: File;
   diagnosis: string;
-
   photo_inst: number = 0;
 
   constructor(private patientService: PatientService, private route: ActivatedRoute, private tokenStorage: TokenStorageService, private modalService: ModalServiceService, private domSerializer: DomSanitizer) {
@@ -48,7 +47,6 @@ export class EditPatientComponent implements OnInit {
       next: (data) => {
         this.currentPatient = data["patient"];
         this.listOfDoctors = data["doctors"];
-
         this.doctorsToSelector();
         this.selected = this.currentPatient['doctor']['last_name'] + ' ' + this.currentPatient['doctor']['first_name'] + ' ' + this.currentPatient['doctor']['middle_name'] + ' (ID=' + this.currentPatient['doctor']['id'] + ')';
         if (data['photo'] != null) {
@@ -108,25 +106,15 @@ export class EditPatientComponent implements OnInit {
     this.currentFile = {} as File;
     this.selectedFiles = {} as FileList;
     this.file_name = '';
-
-
   }
 
   saveImageInstance(modal: string) {
-
-    console.log('ph ' + this.photo.id);
-    console.log('cur file ' + this.currentFile.name);
-
     if (this.currentFile.name == undefined ){
       this.photo_inst = this.photo.id!;
       this.modifiedDate = this.photo.date_of_creation;
     } else {
       this.photo_inst = 0;
     }
-
-    console.log(this.photo_inst);
-
-
     this.patientService.loadImage(this.currentFile, this.currentID, this.photo.diagnosis!, this.modifiedDate, this.photo_inst.toString()).subscribe(
       event => {
         if (event instanceof HttpResponse) {
@@ -134,7 +122,6 @@ export class EditPatientComponent implements OnInit {
           this.diagnosis = event.body['message'];
           this.photo = event.body['photo'];
           this.imagePath = this.domSerializer.bypassSecurityTrustResourceUrl('data:image/jpeg;base64,' + this.photo.photo);
-
           this.gotSuccess = true;
           this.cleanModal();
         }

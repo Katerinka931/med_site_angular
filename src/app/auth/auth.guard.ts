@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {
   ActivatedRouteSnapshot,
   CanActivate,
-  CanDeactivate,
   Router,
   RouterStateSnapshot,
   UrlTree
@@ -18,7 +17,7 @@ export interface ComponentCanDeactivate {
   providedIn: 'root'
 })
 
-export class AuthGuard implements CanActivate, CanDeactivate<ComponentCanDeactivate> {
+export class AuthGuard implements CanActivate{
   constructor(private authService: AuthService, private router: Router) {
   }
 
@@ -27,10 +26,6 @@ export class AuthGuard implements CanActivate, CanDeactivate<ComponentCanDeactiv
       this.router.navigate(['/']);
       return false;
     } else return true;
-  }
-
-  canDeactivate(component: ComponentCanDeactivate): Observable<boolean> | boolean { //todo doesnt use
-    return component.canDeactivate ? component.canDeactivate() : true;
   }
 }
 

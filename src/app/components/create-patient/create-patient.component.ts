@@ -12,7 +12,6 @@ import {ModalServiceService} from "../../services/modal_service/modal-service.se
 })
 export class CreatePatientComponent implements OnInit {
   patient: Patient = {};
-  submitted = false;
   userRole: string;
   message: any;
   doctors: string[] = [];
@@ -51,27 +50,21 @@ export class CreatePatientComponent implements OnInit {
   }
 
   savePatient(modal: string) {
-    //todo delete checking of doctor cuz it do in the server
     if (this.selected == undefined && this.userRole != 'DOCTOR') {
       this.message = 'Введите ФИО лечащего врача';
       this.openModal(modal);
-    }
-    else {
-      var doc;
-      if (this.userRole == 'DOCTOR'){
-        doc = ''
-      } else {
-        doc = this.selected.split('=')[1].slice(0, -1)
+    } else {
+      let doc;
+      this.userRole == 'DOCTOR' ? doc = '' : doc = this.selected.split('=')[1].slice(0, -1)
+      let data = {
+        last_name: this.patient.last_name,
+        first_name: this.patient.first_name,
+        middle_name: this.patient.middle_name,
+        email: this.patient.email,
+        phone: this.patient.phone,
+        date_of_birth: this.patient.date_of_birth,
+        doctor_number: doc
       }
-      var data = {
-          last_name: this.patient.last_name,
-          first_name: this.patient.first_name,
-          middle_name: this.patient.middle_name,
-          email: this.patient.email,
-          phone: this.patient.phone,
-          date_of_birth: this.patient.date_of_birth,
-          doctor_number: doc
-        }
       this.patientService.createPatient(data).subscribe({
         next: (res) => {
           this.message = res['message'];

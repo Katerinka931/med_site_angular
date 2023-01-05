@@ -40,14 +40,16 @@
       </div>
     </div>
     <br>
-    <div *ngIf="patients; else noPatients">
+    <div *ngIf="!peopleIsNull; else noPatients">
       <div *ngFor="let pat of patients; let i = index" [class.active]="i == selectedPatient">
         <div class="list-group-item text-capitalize nested-list-item border-gradient"
              style="float: left; margin-bottom: 5px" (click)="gotoPatient(pat)">
           {{ pat.last_name }} {{ pat.first_name }} {{ pat.middle_name }}
         </div>
         <div *ngIf="currentUserRole == 'CHIEF'">
-          <img (click)="delete(user.id, pat.id)" style="float:right; margin-top: 0.5%;" class="img-responsive"
+                  <!--               delete(user.id, pat.id)"-->
+          <img (click)="open(pat.id, pat.last_name, pat.first_name, pat.middle_name, 'confirmation_modal')"
+               style="float:right; margin-top: 0.5%;" class="img-responsive"
                width="45px"
                src="assets/images/remove.png">
         </div>
@@ -55,13 +57,37 @@
     </div>
     <ng-template #noPatients>
       <label>Пациентов нет. </label>
-      <div *ngIf="user.role == 'CHIEF'">
-        <label> Чтобы создать пациентов нажмите на <img class="img-responsive" width="50px"
+      <div *ngIf="currentUserRole == 'CHIEF'">
+        <label> Чтобы создать пациентов нажмите на <img class="img-responsive" width="15px"
                                                         src="assets/images/add.png"></label>
       </div>
     </ng-template>
   </div>
 </div>
+
+<jw-modal id="confirmation_modal">
+  <label> Вы уверены, что хотите удалить из базы человека с именем "{{message}}"? </label>
+  <div class="text-center">
+    <button
+      type="submit"
+      class="btn btn-outline-danger mb-2 text-center"
+      name="save"
+      (click)="remove('message_modal', 'confirmation_modal')"
+      style="width: 140px; "
+    >
+      Удалить
+    </button>
+    <button
+      type="submit"
+      class="btn btn-outline-info mb-2 text-center"
+      name="save"
+      (click)="closeModal('confirmation_modal');"
+      style="width: 140px; margin-left: 20px"
+    >
+      Отменить
+    </button>
+  </div>
+</jw-modal>
 
 <jw-modal id="message_modal">
   <div class="text-center">

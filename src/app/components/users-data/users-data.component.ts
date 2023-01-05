@@ -19,6 +19,8 @@ export class UsersDataComponent implements OnInit {
   currentUserRole: string;
   message: string;
   roles: string[] = [];
+  tempID: any;
+  peopleIsNull = false;
 
   constructor(private userService: UserService, private route: ActivatedRoute, private router: Router, private tokenStorage: TokenStorageService, private modalService: ModalServiceService) {
   }
@@ -35,6 +37,7 @@ export class UsersDataComponent implements OnInit {
         this.patients = this.user["patients"];
         this.roles = data['roles'];
         this.role = this.getRole(this.user.role!);
+        this.peopleIsNull = this.patients?.length == 0;
       }, error: (e) => {
         this.message = "Ошибка загрузки данных"
         this.openModal('message_modal');
@@ -66,19 +69,19 @@ export class UsersDataComponent implements OnInit {
     }
   }
 
-  delete(usr: any, id: any) { //todo not confirm!!!
-    if (confirm("Вы уверены, что хотите удалить \"" + this.selectedPatient.last_name + ' ' + "имя" + ' ' + "отчество" + "\"?")) {
-      this.userService.deletePatient(usr, id).subscribe({
-        next: (res) => {
-          this.message = res['message'];
-          this.refreshList();
-        },
-        error: (e) => {
-          e.status != 500 ? this.message = e['error']['message'] : this.message = "Ошибка сервера"
-        }
-      })
-    }
-    this.openModal('message_modal');
+  remove(modal: string, prev_modal: string) {
+    this.message = '';
+    this.closeModal(prev_modal);
+    this.userService.deletePatient(this.user.id, this.tempID).subscribe({
+      next: (res) => {
+        this.message = res['message'];
+        this.refreshList();
+      },
+      error: (e) => {
+        e.status != 500 ? this.message = e['error']['message'] : this.message = "Ошибка сервера"
+      }
+    })
+    this.openModal(modal);
   }
 
   openModal(id: string) {
@@ -87,5 +90,11 @@ export class UsersDataComponent implements OnInit {
 
   closeModal(id: string) {
     this.modalService.close(id);
+  }
+
+  open(id: any, last_name: any, first_name: any, middle_name: any, modal: any) {
+    this.openModal(modal);
+    this.message = last_name + ' ' + first_name + ' ' + middle_name;
+    this.tempID = id;
   }
 }

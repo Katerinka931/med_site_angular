@@ -20,8 +20,9 @@ export class LoadImageComponent implements OnInit {
   selectedFiles: FileList;
   currentFile: File;
   file_name = '';
+  imagePath: any;
+  modifiedDate: any;
 
-  patient: Patient = {};
   patients?: Patient[];
   patientsList: string[] = [];
   selected: any = "=";
@@ -29,11 +30,9 @@ export class LoadImageComponent implements OnInit {
   diagnosis = '';
   custom_diagnosis = '';
   message = '';
-  imagePath: any;
-  modifiedDate: any;
 
-
-  constructor(private loadService: LoadImageService, private authService: AuthService, private modalService: ModalServiceService, private domSerializer: DomSanitizer) {
+  constructor(private loadService: LoadImageService, private authService: AuthService, private modalService: ModalServiceService,
+              private domSerializer: DomSanitizer) {
   }
 
   ngOnInit(): void {
@@ -67,6 +66,7 @@ export class LoadImageComponent implements OnInit {
     } else {
       this.file_name = this.selectedFiles[0]!.name.split('.')[0];
       this.modifiedDate = this.selectedFiles[0].lastModified;
+      this.diagnosis = '';
     }
   }
 
