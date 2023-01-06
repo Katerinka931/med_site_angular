@@ -114,10 +114,9 @@ export class MainComponent implements OnInit {
   }
 
   getRole(role: string): string {
-    let currentRole = this.roles.find((obj: string) => {
-      return obj['role'] === role;
-    });
-    return currentRole!['value'];
+    return this.roles.find((obj: string) => {
+      return obj === role;
+    })!;
   }
 
   openModal(id: string) {

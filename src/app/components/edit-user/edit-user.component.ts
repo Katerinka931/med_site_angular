@@ -51,14 +51,14 @@ export class EditUserComponent implements OnInit {
 
   private getRole(role: string): string {
     let currentRole = this.usersEnum.find((obj: string) => {
-      return obj['role'] === role;
+      return obj === role;
     });
-    return currentRole!['value'];
+    return currentRole!;
   }
 
   private getListOfRoles(roles: any) {
     for (let role in roles) {
-      this.typeSearch[role] = roles[role]['value'].toUpperCase();
+      this.typeSearch[role] = roles[role].toUpperCase();
     }
   }
 

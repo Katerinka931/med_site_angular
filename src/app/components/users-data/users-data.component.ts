@@ -45,11 +45,10 @@ export class UsersDataComponent implements OnInit {
     });
   }
 
-  private getRole(role: string) {
-    let currentRole = this.roles.find((obj: string) => {
-      return obj['role'] === role;
-    });
-    return currentRole!['value'];
+  getRole(role: string): string {
+    return this.roles.find((obj: string) => {
+      return obj === role;
+    })!;
   }
 
   refreshList(): void {
