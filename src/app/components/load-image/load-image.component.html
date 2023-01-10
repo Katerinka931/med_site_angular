@@ -1,6 +1,7 @@
 <head>
   <title>Обработка изображения</title>
 </head>
+
 <div class="split left" style="background: white; width: 55%;">
   <div class="section" style="height: 13%; ">
     <div class="pos">
@@ -73,3 +74,14 @@
     </button>
   </div>
 </jw-modal>
+
+<div class="my-container">
+  <ng-template #customLoadingTemplate>
+  </ng-template>
+
+  <ngx-loading
+    [show]="loading"
+    [config]="{ backdropBorderRadius: '5px' }"
+    [template]="customLoadingTemplate"
+  ></ngx-loading>
+</div>

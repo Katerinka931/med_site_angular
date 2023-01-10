@@ -12,6 +12,7 @@ import {EditPatientComponent} from "./components/edit-patient/edit-patient.compo
 import {UsersDataComponent} from "./components/users-data/users-data.component";
 import {PatientsListComponent} from "./components/patients-list/patients-list.component";
 import {AuthGuard} from "./auth/auth.guard";
+import {NgxPermissionsModule} from "ngx-permissions";
 
 const routes: Routes = [
   { path: '', component: LoginComponent, pathMatch: "full"},
@@ -20,22 +21,24 @@ const routes: Routes = [
   { path: 'main', component: MainComponent, canActivate: [AuthGuard]},
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},
 
-  { path: 'create_user', component: CreateUserComponent, canActivate: [AuthGuard]},
-  { path: 'edit_user/:usr', component: EditUserComponent, canActivate: [AuthGuard]},
+  { path: 'create_user', component: CreateUserComponent, canActivate: [AuthGuard], data: {role: ['ADMIN', 'CHIEF']}},
+  { path: 'edit_user/:usr', component: EditUserComponent, canActivate: [AuthGuard]}, //CHIEF and ADMIN
 
   { path: 'create_patient', component: CreatePatientComponent, canActivate: [AuthGuard]},
-  { path: 'edit_patient/:pat', component: EditPatientComponent, canActivate: [AuthGuard]},
+  { path: 'edit_patient/:pat', component: EditPatientComponent, canActivate: [AuthGuard]}, // DOC and OPER
 
   { path: 'user/:usr', component: UsersDataComponent, canActivate: [AuthGuard]},
   { path: 'patient/:pat', component: PatientsDataComponent, canActivate: [AuthGuard]},
-  { path: 'patients', component: PatientsListComponent, canActivate: [AuthGuard]},
+  { path: 'patients', component: PatientsListComponent, canActivate: [AuthGuard], data: {role: 'CHIEF'}},
 
-  { path: 'load_image', component: LoadImageComponent, canActivate: [AuthGuard]},
+  { path: 'load_image', component: LoadImageComponent, canActivate: [AuthGuard], data: {role: ['CHIEF', 'DOCTOR']}},
+
+  { path: 'roles', component: MainComponent},
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
-  providers: [AuthGuard]
+  imports: [RouterModule.forRoot(routes), NgxPermissionsModule.forChild()],
+  exports: [RouterModule, NgxPermissionsModule],
+  // providers: [AuthGuard]
 })
 export class AppRoutingModule { }

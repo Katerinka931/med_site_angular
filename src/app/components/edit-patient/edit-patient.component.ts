@@ -8,6 +8,7 @@ import {ModalServiceService} from "../../services/modal_service/modal-service.se
 import {Photo} from "../../models/photo-model/photo.model";
 import {HttpResponse} from "@angular/common/http";
 import {DomSanitizer} from "@angular/platform-browser";
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-edit-patient',
@@ -33,8 +34,10 @@ export class EditPatientComponent implements OnInit {
   currentFile: File;
   diagnosis: string;
   photo_inst: number = 0;
+  access_error: boolean = false;
 
-  constructor(private patientService: PatientService, private route: ActivatedRoute, private tokenStorage: TokenStorageService, private modalService: ModalServiceService, private domSerializer: DomSanitizer) {
+  constructor(private patientService: PatientService, private route: ActivatedRoute, private tokenStorage: TokenStorageService,
+              private modalService: ModalServiceService, private domSerializer: DomSanitizer, private location: Location) {
   }
 
   ngOnInit(): void {
@@ -43,6 +46,7 @@ export class EditPatientComponent implements OnInit {
   }
 
   private retrieve(): void {
+    this.access_error = false;
     this.patientService.getPatient(this.currentID).subscribe({
       next: (data) => {
         this.currentPatient = data["patient"];
@@ -58,7 +62,17 @@ export class EditPatientComponent implements OnInit {
           this.isPhotoExists = false;
         }
       }, error: (e) => {
-        e.status != 500 ? this.message = e['error']['message'] : this.message == "Ошибка сервера";
+        if (e.status == 403) {
+          this.message = 'Доступ запрещен!';
+          this.access_error = true;
+        } else {
+          if (e.status == 404)
+            this.message = e['error']['message']
+          else{
+            this.message = "Ошибка загрузки данных"
+            this.access_error = true;
+          }
+        }
         this.openModal('message_modal');
       }
     });
@@ -99,7 +113,11 @@ export class EditPatientComponent implements OnInit {
 
   closeModal(id: string) {
     this.modalService.close(id);
-    this.retrieve();
+    if (this.access_error) {
+      this.location.back();
+    } else {
+      this.retrieve();
+    }
   }
 
   cleanModal() {
@@ -109,7 +127,7 @@ export class EditPatientComponent implements OnInit {
   }
 
   saveImageInstance(modal: string) {
-    if (this.currentFile.name == undefined ){
+    if (this.currentFile.name == undefined) {
       this.photo_inst = this.photo.id!;
       this.modifiedDate = this.photo.date_of_creation;
     } else {

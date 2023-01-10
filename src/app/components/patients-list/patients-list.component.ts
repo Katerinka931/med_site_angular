@@ -5,6 +5,7 @@ import {TokenStorageService} from "../../services/token_storage_service/token-st
 import {PatientService} from "../../services/patients_service/patient.service";
 import {Router} from "@angular/router";
 import {ModalServiceService} from "../../services/modal_service/modal-service.service";
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-patients-list',
@@ -18,8 +19,10 @@ export class PatientsListComponent implements OnInit {
   message: any;
   tempID: any;
 
+  access_error: boolean = false;
+
   constructor(private patientService: PatientService, private authService: AuthService, private tokenStorage: TokenStorageService,
-              private router: Router, private modalService: ModalServiceService) {
+              private router: Router, private modalService: ModalServiceService, private location: Location) {
   }
 
   ngOnInit(): void {
@@ -27,12 +30,22 @@ export class PatientsListComponent implements OnInit {
   }
 
   private retrieve(): void {
+    this.access_error = false;
     this.patientService.getPatients(this.authService.user_id).subscribe({
       next: (data) => {
         this.patients = data["people"];
         this.peopleIsNull = this.patients?.length == 0;
       }, error: (e) => {
-        e.status == 404 ? this.message = e['error']['message'] : this.message = "Ошибка сервера"
+        if (e.status == 403) {
+          this.message = 'Доступ запрещен!';
+          this.access_error = true;
+        } else {
+          if (e.status == 404)
+            this.message = e['error']['message']
+          else
+            this.message = "Ошибка сервера";
+        }
+        this.openModal('message_modal')
       }
     });
   }
@@ -71,6 +84,9 @@ export class PatientsListComponent implements OnInit {
 
   closeModal(id: string) {
     this.modalService.close(id);
+    if (this.access_error) {
+      this.location.back();
+    }
   }
 
   open_remove_agreement(id: any, last_name: any, first_name: any, middle_name: any, modal: string) {

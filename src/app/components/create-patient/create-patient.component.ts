@@ -4,6 +4,7 @@ import {PatientService} from "../../services/patients_service/patient.service";
 import {TokenStorageService} from "../../services/token_storage_service/token-storage.service";
 import {Doctor} from "../../models/doctor_model/doctor";
 import {ModalServiceService} from "../../services/modal_service/modal-service.service";
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-create-patient',
@@ -17,8 +18,10 @@ export class CreatePatientComponent implements OnInit {
   doctors: string[] = [];
   listOfDoctors: Doctor[];
   selected: any;
+  access_error: boolean = false;
 
-  constructor(private tokenStorage: TokenStorageService, private patientService: PatientService, private modalService: ModalServiceService) {
+  constructor(private tokenStorage: TokenStorageService, private patientService: PatientService, private modalService: ModalServiceService,
+              private location: Location) {
   }
 
   ngOnInit(): void {
@@ -27,12 +30,21 @@ export class CreatePatientComponent implements OnInit {
   }
 
   private retrieve(): void {
+    this.access_error = false;
     this.patientService.getListOfDoctorsToCreatePatient().subscribe({
       next: (data) => {
         this.listOfDoctors = data["doctors"];
         this.doctorsToSelector();
       }, error: (e) => {
-        this.message = "Ошибка сервера"
+        if (e.status == 403) {
+          this.message = 'Доступ запрещен!';
+          this.access_error = true;
+        } else {
+          if (e.status == 404)
+            this.message = e['error']['message']
+          else
+            this.message = "Ошибка загрузки данных"
+        }
         this.openModal('message_modal');
       }
     });
@@ -50,6 +62,7 @@ export class CreatePatientComponent implements OnInit {
   }
 
   savePatient(modal: string) {
+    this.access_error = false;
     if (this.selected == undefined && this.userRole != 'DOCTOR') {
       this.message = 'Введите ФИО лечащего врача';
       this.openModal(modal);
@@ -70,7 +83,15 @@ export class CreatePatientComponent implements OnInit {
           this.message = res['message'];
         },
         error: (e) => {
-          e.status != 500 ? this.message = e['error']['message'] : this.message = "Ошибка сервера"
+          if (e.status == 403) {
+            this.message = 'Доступ запрещен!';
+            this.access_error = true;
+          } else {
+            if (e.status == 404)
+              this.message = e['error']['message']
+            else
+              this.message = "Ошибка загрузки данных"
+          }
         }
       });
       this.openModal(modal);
@@ -83,5 +104,8 @@ export class CreatePatientComponent implements OnInit {
 
   closeModal(id: string) {
     this.modalService.close(id);
+    if (this.access_error) {
+      this.location.back();
+    }
   }
 }

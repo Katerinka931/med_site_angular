@@ -1,11 +1,10 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {Observable} from "rxjs";
+import {Component, OnInit} from '@angular/core';
 import {LoadImageService} from "../../services/load_image_service/load-image.service";
 import {HttpResponse} from "@angular/common/http";
 import {Patient} from "../../models/patient_model/patient";
 import {AuthService} from "../../services/auth_service/auth.service";
 import {ModalServiceService} from "../../services/modal_service/modal-service.service";
-
+import {Location} from '@angular/common';
 
 import {DomSanitizer} from '@angular/platform-browser';
 
@@ -31,8 +30,12 @@ export class LoadImageComponent implements OnInit {
   custom_diagnosis = '';
   message = '';
 
+  access_error: boolean = false;
+
+  public loading = false;
+
   constructor(private loadService: LoadImageService, private authService: AuthService, private modalService: ModalServiceService,
-              private domSerializer: DomSanitizer) {
+              private domSerializer: DomSanitizer, private location: Location) {
   }
 
   ngOnInit(): void {
@@ -40,12 +43,17 @@ export class LoadImageComponent implements OnInit {
   }
 
   private retrieve(): void {
+    this.access_error = false;
     this.loadService.getPatients(this.authService.user_id).subscribe({
       next: (data) => {
         this.patients = data["patients"];
         this.patientsToSelector();
       }, error: (e) => {
-        this.message = "Ошибка сервера";
+        if (e.status == 403) {
+          this.message = 'Доступ запрещен!';
+          this.access_error = true;
+        } else
+          this.message = "Ошибка сервера";
         this.openModal('message_modal')
       }
     });
@@ -71,6 +79,7 @@ export class LoadImageComponent implements OnInit {
   }
 
   loadImage(modal: string): void {
+    this.loading = true;
     this.currentFile = this.selectedFiles[0];
     this.diagnosis = '';
     this.custom_diagnosis = '';
@@ -81,10 +90,12 @@ export class LoadImageComponent implements OnInit {
           this.message = event.body.message;
           this.diagnosis = event.body['message'];
           this.imagePath = this.domSerializer.bypassSecurityTrustResourceUrl('data:image/jpg;base64,' + event.body['file']);
+          this.loading = false;
         }
       },
       e => {
         e.status != 500 ? this.message = e['error']['message'] : this.message == "Ошибка сервера";
+        this.loading = false;
         this.openModal(modal);
       });
   }
@@ -116,6 +127,9 @@ export class LoadImageComponent implements OnInit {
 
   closeModal(id: string) {
     this.modalService.close(id);
+    if (this.access_error) {
+      this.location.back();
+    }
   }
 
   openModal(id: string) {

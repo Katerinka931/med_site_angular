@@ -3,7 +3,7 @@
 </head>
 <div class="split left">
   <div class="pos">
-    <h4><b>{{ user.last_name }} {{ user.first_name }} {{ user.middle_name }}</b></h4>
+    <h4 class="text-capitalize"><b>{{ user.last_name }} {{ user.first_name }} {{ user.middle_name }}</b></h4>
     <p> Должность: {{role}} </p>
     <br>
     <h4><b>Контакты</b></h4>
@@ -47,7 +47,6 @@
           {{ pat.last_name }} {{ pat.first_name }} {{ pat.middle_name }}
         </div>
         <div *ngIf="currentUserRole == 'CHIEF'">
-                  <!--               delete(user.id, pat.id)"-->
           <img (click)="open(pat.id, pat.last_name, pat.first_name, pat.middle_name, 'confirmation_modal')"
                style="float:right; margin-top: 0.5%;" class="img-responsive"
                width="45px"

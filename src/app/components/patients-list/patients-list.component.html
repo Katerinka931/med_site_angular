@@ -16,6 +16,7 @@
     <div *ngFor="let pat of patients; let i = index" [class.active]="i == selectedPatient">
       <div class="list-group-item text-capitalize list-item border-gradient" (click)="gotoPatient(pat)">
         {{ pat.last_name }} {{ pat.first_name }} {{ pat.middle_name }}
+        <div style="float: right"> {{ pat['doctor'].last_name }} {{ pat['doctor'].first_name }} {{ pat['doctor'].middle_name }}</div>
       </div>
       <div>
         <img (click)="open_remove_agreement(pat.id, pat.last_name, pat.first_name, pat.middle_name, 'confirmation_modal')" style="float: right; margin-top: 0.5%;" class="img-responsive" width="45px"
@@ -54,6 +55,22 @@
       style="width: 140px; margin-left: 20px"
     >
       Отменить
+    </button>
+  </div>
+</jw-modal>
+
+<jw-modal id="message_modal">
+  <div class="text-center">
+    <label style="margin-top: 10px"> {{ message }} </label>
+    <br>
+    <button
+      type="submit"
+      class="btn btn-outline-info mb-2 text-center"
+      name="save"
+      (click)="closeModal('message_modal');"
+      style="width: 140px; margin-left: 20px"
+    >
+      Ок
     </button>
   </div>
 </jw-modal>

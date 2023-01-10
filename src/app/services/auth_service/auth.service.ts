@@ -23,7 +23,6 @@ export class AuthService {
   }
 
   login(user: any): Observable<any> {
-    console.log('login ' + !!this.tokenStorage.getRefreshToken())
     return this.http.post(AUTH_API + 'login', JSON.stringify(user), this.httpOptions);
   }
 
@@ -41,5 +40,9 @@ export class AuthService {
 
   isAuthenticated() {
     return this.tokenStorage.getRefreshToken()
+  }
+
+  getRole(){
+    return this.tokenStorage.getUserRole();
   }
 }

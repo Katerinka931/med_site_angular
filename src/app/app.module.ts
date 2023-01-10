@@ -19,6 +19,8 @@ import {EditPatientComponent} from './components/edit-patient/edit-patient.compo
 import {UsersDataComponent} from './components/users-data/users-data.component';
 import { PatientsListComponent } from './components/patients-list/patients-list.component';
 import { ModalComponent } from './components/modal/modal.component';
+import {NgxPermissionsModule} from "ngx-permissions";
+import {ngxLoadingAnimationTypes, NgxLoadingModule} from "ngx-loading";
 
 @NgModule({
   declarations: [
@@ -41,6 +43,13 @@ import { ModalComponent } from './components/modal/modal.component';
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
+    NgxPermissionsModule.forRoot(),
+    NgxLoadingModule.forRoot({animationType: ngxLoadingAnimationTypes.wanderingCubes,
+      backdropBackgroundColour: "rgba(0,0,0,0.1)",
+      backdropBorderRadius: "5px",
+      primaryColour: "#307dfd",
+      secondaryColour: "#50b5ff",
+      tertiaryColour: "#5dd4ef",}),
   ],
   providers: [authInterceptorProviders],
   bootstrap: [AppComponent],

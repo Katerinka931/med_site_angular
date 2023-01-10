@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {Doctor} from "../../models/doctor_model/doctor";
 import {UserService} from "../../services/users_service/user.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {TokenStorageService} from "../../services/token_storage_service/token-storage.service";
 import {ModalServiceService} from "../../services/modal_service/modal-service.service";
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-edit-user',
@@ -21,9 +22,10 @@ export class EditUserComponent implements OnInit {
   message: any;
   userRole: string;
 
+  access_error: boolean = false;
 
   constructor(private userService: UserService, private route: ActivatedRoute, private tokenStorage: TokenStorageService,
-              private modalService: ModalServiceService) {
+              private modalService: ModalServiceService, private location: Location) {
   }
 
   ngOnInit(): void {
@@ -36,6 +38,7 @@ export class EditUserComponent implements OnInit {
   }
 
   private retrieve(): void {
+    this.access_error = false;
     this.userService.getUser(this.currentID).subscribe({
       next: (data) => {
         this.currentUser = data["user"];
@@ -43,7 +46,17 @@ export class EditUserComponent implements OnInit {
         this.selected = this.getRole(this.currentUser.role!).toUpperCase();
         this.getListOfRoles(this.usersEnum);
       }, error: (e) => {
-        this.message = "Ошибка загрузки данных"
+        if (e.status == 403) {
+          this.message = 'Доступ запрещен!';
+          this.access_error = true;
+        } else {
+          if (e.status == 404)
+            this.message = e['error']['message']
+          else {
+            this.message = "Ошибка загрузки данных";
+            this.access_error = true;
+          }
+        }
         this.openModal('message_modal');
       }
     });
@@ -82,5 +95,8 @@ export class EditUserComponent implements OnInit {
 
   closeModal(id: string) {
     this.modalService.close(id);
+    if (this.access_error) {
+      this.location.back();
+    }
   }
 }

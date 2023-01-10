@@ -1,4 +1,4 @@
-import {Component, OnInit, Renderer2} from '@angular/core';
+import {Component, Input, NgModule, OnInit, Renderer2} from '@angular/core';
 import {Doctor} from "../../models/doctor_model/doctor";
 import {MainPageService} from "../../services/main_page_service/main-page.service";
 import {Patient} from "../../models/patient_model/patient";
@@ -13,6 +13,8 @@ import {ModalServiceService} from "../../services/modal_service/modal-service.se
   styleUrls: ['./main.component.css']
 })
 export class MainComponent implements OnInit {
+
+
   doctors?: Doctor[];
   doctor: Doctor = {};
   patients?: Patient[];
@@ -31,7 +33,8 @@ export class MainComponent implements OnInit {
   roles: string[] = [];
 
 
-  constructor(private mainService: MainPageService, private renderer: Renderer2, private authService: AuthService, private tokenStorage: TokenStorageService, private router: Router, private modalService: ModalServiceService) {
+  constructor(private mainService: MainPageService, private renderer: Renderer2, private authService: AuthService, private tokenStorage: TokenStorageService,
+              private router: Router, private modalService: ModalServiceService) {
     this.renderer.setStyle(document.body, 'background-color', 'white');
   }
 
@@ -70,7 +73,11 @@ export class MainComponent implements OnInit {
 
   gotoPatient(pat: Patient) {
     this.setActivePatient(pat);
-    this.router.navigate([`/patient/${this.selectedPatient.id}`]);
+
+    if (this.userRole == 'OPERATOR') {
+      this.router.navigate([`/edit_patient/${this.selectedPatient.id}`]);
+    } else
+      this.router.navigate([`/patient/${this.selectedPatient.id}`]);
   }
 
   private retrieve(): void { //todo роли

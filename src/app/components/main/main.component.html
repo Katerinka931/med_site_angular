@@ -3,7 +3,6 @@
 </head>
 <body>
 <br><br>
-
 <div>
   <div *ngIf="userRole=='ADMIN' || userRole=='CHIEF'; else patientsTemplate">
     <h3 style="text-align: center;">
@@ -17,9 +16,9 @@
     <br><br>
     <div *ngIf="!peopleIsNull; else noPeople">
       <div *ngFor="let doc of doctors; let i = index" [class.active]="i == selectedDoctor">
-        <div class="list-group-item list-item border-gradient" (click)="gotoDoctor(doc)">
+        <div class="list-group-item list-item border-gradient text-capitalize" (click)="gotoDoctor(doc)">
           {{ doc.last_name }} {{ doc.first_name }} {{ doc.middle_name }}
-          <div *ngIf="userRole=='ADMIN'" style="float: right"> {{ getRole(doc.role!) }} </div>
+          <div *ngIf="userRole=='ADMIN'" style="float: right; text-transform: lowercase"> {{ getRole(doc.role!) }} </div>
         </div>
         <div>
           <img (click)="open(doc.id, doc.last_name, doc.first_name, doc.middle_name, 'confirmation_modal')"
@@ -59,13 +58,14 @@
       </div>
     </div>
     <ng-template #noPatients>
-    <div style="padding-top: 20px" class="text-center">
-      <h4><label> Пациентов нет. </label>
-        <label> Нажмите на <img class="img-responsive" width="1.3%" src="assets/images/add.png"> в парвом верхнем углу,
-          чтобы создать пользователя.
-        </label></h4>
-    </div>
-  </ng-template>
+      <div style="padding-top: 20px" class="text-center">
+        <h4><label> Пациентов нет. </label>
+          <label> Нажмите на <img class="img-responsive" width="1.3%" src="assets/images/add.png"> в парвом верхнем
+            углу,
+            чтобы создать пользователя.
+          </label></h4>
+      </div>
+    </ng-template>
   </ng-template>
 </div>
 </body>

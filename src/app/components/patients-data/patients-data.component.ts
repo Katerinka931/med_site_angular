@@ -39,10 +39,14 @@ export class PatientsDataComponent implements OnInit {
         this.patient = data["patient"];
         this.patients_doctor = this.patient["doctor"];
         this.photo_title = data['message'];
-
         try {
           let file = this.getFile(data['photo']);
-          file == undefined ? this.currentFile = null : this.currentFile = this.domSerializer.bypassSecurityTrustResourceUrl('data:image/jpeg;base64,' + file);
+          if (file == undefined) {
+            this.currentFile = null;
+            this.photo = {};
+          } else {
+            this.currentFile = this.domSerializer.bypassSecurityTrustResourceUrl('data:image/jpeg;base64,' + file);
+          }
         } catch (Exception) {
         }
       }, error: (e) => {

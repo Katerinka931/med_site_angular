@@ -32,3 +32,13 @@
   </div>
 </div>
 
+<div class="my-container">
+  <ng-template #customLoadingTemplate>
+  </ng-template>
+
+  <ngx-loading
+    [show]="loading"
+    [config]="{ backdropBorderRadius: '5px' }"
+    [template]="customLoadingTemplate"
+  ></ngx-loading>
+</div>

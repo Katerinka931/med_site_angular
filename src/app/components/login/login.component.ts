@@ -15,6 +15,7 @@ export class LoginComponent implements OnInit {
   message = '';
 
   isLoginFailed = false;
+  public loading = false;
 
   constructor(private authService: AuthService, private router: Router, private renderer: Renderer2, private tokenStorage: TokenStorageService) {
     this.renderer.setStyle(document.body, 'background-image', 'linear-gradient(45deg, #409dc9, #4fd6df)');
@@ -24,18 +25,22 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     if (this.tokenStorage.getToken()) {
       this.isLoginFailed = false;
+      this.tokenStorage.signOut();
     }
   }
 
   login(): void {
+    this.loading = true;
     this.authService.login({'username': this.username, 'password': this.password}).subscribe({
       next: data => {
+        this.loading = false;
         this.tokenStorage.saveToken(data.accessToken);
         this.tokenStorage.saveUser(data);
         this.isLoginFailed = false;
         this.saveLoginData(data);
       },
       error: err => {
+        this.loading = false;
         this.message = 'Неверный логин и/или пароль!';
         this.isLoginFailed = true;
       }

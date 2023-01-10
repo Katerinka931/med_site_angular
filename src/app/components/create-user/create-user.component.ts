@@ -2,12 +2,14 @@ import {Component, OnInit} from '@angular/core';
 import {Doctor} from "../../models/doctor_model/doctor";
 import {UserService} from "../../services/users_service/user.service";
 import {ModalServiceService} from "../../services/modal_service/modal-service.service";
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-create-user',
   templateUrl: './create-user.component.html',
   styleUrls: ['./create-user.component.css']
 })
+
 export class CreateUserComponent implements OnInit {
   user: Doctor = {};
   password: any;
@@ -18,7 +20,9 @@ export class CreateUserComponent implements OnInit {
   selected = '';
   message: any;
 
-  constructor(private userService: UserService, private modalService: ModalServiceService) {
+  access_error: boolean = false;
+
+  constructor(private userService: UserService, private modalService: ModalServiceService, private location: Location) {
   }
 
   ngOnInit(): void {
@@ -28,9 +32,16 @@ export class CreateUserComponent implements OnInit {
   private retrieve(): void {
     this.userService.getUserRoles().subscribe({
       next: (data) => {
+        this.access_error = false;
         this.typeSearch = data['roles'];
       }, error: (e) => {
-        this.message = "Ошибка сервера"
+        if (e.status == 403) {
+          this.message = 'Доступ запрещен!';
+          this.access_error = true;
+        } else {
+          this.message = "Ошибка загрузки данных"
+          this.access_error = false;
+        }
         this.openModal('message_modal');
       }
     });
@@ -71,5 +82,8 @@ export class CreateUserComponent implements OnInit {
 
   closeModal(id: string) {
     this.modalService.close(id);
+    if (this.access_error) {
+      this.location.back();
+    }
   }
 }
