@@ -10,14 +10,17 @@ import {
 } from "@angular/router";
 import {AuthService} from "../services/auth_service/auth.service";
 import {Observable} from "rxjs";
+import {ModalServiceService} from "../services/modal_service/modal-service.service";
+
+export interface ComponentCanDeactivate {
+  canDeactivate: () => boolean | Observable<boolean>;
+}
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuard implements CanActivate, CanActivateChild, CanDeactivate<unknown>, CanLoad {
-
-
-  constructor(private authService: AuthService, private router: Router) {
+export class AuthGuard implements CanActivate, CanActivateChild, CanDeactivate<ComponentCanDeactivate>, CanLoad {
+  constructor(private authService: AuthService, private router: Router, private modalService: ModalServiceService) {
   }
 
   canActivate(
@@ -43,11 +46,13 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanDeactivate<u
   }
 
   canDeactivate(
-    component: unknown,
+    component: ComponentCanDeactivate,
     currentRoute: ActivatedRouteSnapshot,
     currentState: RouterStateSnapshot,
     nextState?: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return true;
+    return component.canDeactivate() ?
+      true:
+        confirm('Внесенные изменения будут потеряны! \nВы точно хотите уйти со страницы?');
   }
 
   canLoad(
@@ -55,4 +60,9 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanDeactivate<u
     segments: UrlSegment[]): Observable<boolean> | Promise<boolean> | boolean {
     return true;
   }
+
+  openModal(id: string) {
+    this.modalService.open(id);
+  }
 }
+

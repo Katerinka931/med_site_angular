@@ -34,17 +34,42 @@
       </a>
     </li>
     <li style="margin-left: 20px; max-width: 40px;">
-      <a routerLink="/">
-        <img class="d-none d-sm-none d-md-block" (click)="logout()" style="width: 100%; float: right;"
-             src="assets/images/exit.png">
-      </a>
+      <img class="d-none d-sm-none d-md-block" (click)="openModal('confirmation_modal_logout')"
+           style="width: 100%; float: right; cursor: pointer;"
+           src="assets/images/exit.png">
     </li>
   </div>
 </nav>
 
-<div class="container mt-3">
+<jw-modal id="confirmation_modal_logout">
+  <div style="text-align: center">
+  <label> Вы уверены, что хотите выйти? </label>
+  </div>
+  <div class="text-center">
+    <button
+      type="submit"
+      class="btn btn-outline-danger mb-2 text-center"
+      name="save"
+      (click)="logout('confirmation_modal_logout')"
+      style="width: 140px; "
+    >
+      Выйти
+    </button>
+    <button
+      type="submit"
+      class="btn btn-outline-info mb-2 text-center"
+      name="save"
+      (click)="closeModal('confirmation_modal_logout');"
+      style="width: 140px; margin-left: 20px"
+    >
+      Отменить
+    </button>
+  </div>
+</jw-modal>
+
+<div class="">
   <router-outlet></router-outlet>
 </div>
-
+<!--container mt-3-->
 
 

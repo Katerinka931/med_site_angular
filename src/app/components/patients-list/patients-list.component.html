@@ -14,14 +14,36 @@
   <br><br>
   <div *ngIf="!peopleIsNull; else noPeople">
     <div *ngFor="let pat of patients; let i = index" [class.active]="i == selectedPatient">
-      <div class="list-group-item text-capitalize list-item border-gradient" (click)="gotoPatient(pat)">
-        {{ pat.last_name }} {{ pat.first_name }} {{ pat.middle_name }}
-        <div style="float: right"> {{ pat['doctor'].last_name }} {{ pat['doctor'].first_name }} {{ pat['doctor'].middle_name }}</div>
+      <div style="width: 95%">
+        <div class="list-group-item list-item border-gradient text-capitalize" (click)="gotoPatient(pat)">
+          <div style="width: 60%; float:left">
+            {{ pat.last_name }} {{ pat.first_name }} {{ pat.middle_name }}
+          </div>
+          <div style="width: 40%; float: right; word-break: normal">
+            {{ pat['doctor'].last_name }} {{ pat['doctor'].first_name }} {{ pat['doctor'].middle_name }}
+          </div>
+        </div>
+        <div class="remove-but">
+          <img (click)="open_remove_agreement(pat.id, pat.last_name, pat.first_name, pat.middle_name, 'confirmation_modal')"
+               class="img-responsive" width="45px"
+               src="assets/images/remove.png">
+        </div>
       </div>
-      <div>
-        <img (click)="open_remove_agreement(pat.id, pat.last_name, pat.first_name, pat.middle_name, 'confirmation_modal')" style="float: right; margin-top: 0.5%;" class="img-responsive" width="45px"
-             src="assets/images/remove.png">
-      </div>
+
+
+<!--      <div class="list-group-item text-capitalize list-item border-gradient" (click)="gotoPatient(pat)">-->
+<!--        {{ pat.last_name }} {{ pat.first_name }} {{ pat.middle_name }}-->
+<!--        <div-->
+<!--          style="float: right"> {{ pat['doctor'].last_name }} {{ pat['doctor'].first_name }} {{ pat['doctor'].middle_name }}</div>-->
+<!--      </div>-->
+<!--      <div>-->
+<!--        <img-->
+<!--          (click)="open_remove_agreement(pat.id, pat.last_name, pat.first_name, pat.middle_name, 'confirmation_modal')"-->
+<!--          style="float: right; margin-top: 0.5%;" class="img-responsive" width="45px"-->
+<!--          src="assets/images/remove.png">-->
+<!--      </div>-->
+
+
     </div>
   </div>
   <ng-template #noPeople>

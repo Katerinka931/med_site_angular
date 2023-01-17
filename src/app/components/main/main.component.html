@@ -3,27 +3,37 @@
 </head>
 <body>
 <br><br>
-<div>
+<div style="width: 100%;">
   <div *ngIf="userRole=='ADMIN' || userRole=='CHIEF'; else patientsTemplate">
     <h3 style="text-align: center;">
       {{ header }}
       <li class="my-button add-but">
         <a routerLink="/create_user/">
-          <img class="img-responsive" width="50px" src="assets/images/add.png">
+          <img class="img-responsive" width="50px" style="margin-top: -5px;" src="assets/images/add.png">
         </a>
       </li>
     </h3>
     <br><br>
     <div *ngIf="!peopleIsNull; else noPeople">
       <div *ngFor="let doc of doctors; let i = index" [class.active]="i == selectedDoctor">
-        <div class="list-group-item list-item border-gradient text-capitalize" (click)="gotoDoctor(doc)">
-          {{ doc.last_name }} {{ doc.first_name }} {{ doc.middle_name }}
-          <div *ngIf="userRole=='ADMIN'" style="float: right; text-transform: lowercase"> {{ getRole(doc.role!) }} </div>
-        </div>
-        <div>
-          <img (click)="open(doc.id, doc.last_name, doc.first_name, doc.middle_name, 'confirmation_modal')"
-               style="float: right; margin-top: 0.5%;" class="img-responsive" width="45px"
-               src="assets/images/remove.png">
+        <div style="width: 95%">
+          <div class="list-group-item list-item border-gradient text-capitalize" (click)="gotoDoctor(doc)">
+
+            <div style="width: 61%; float:left">
+              {{ doc.last_name }} {{ doc.first_name }} {{ doc.middle_name }}
+            </div>
+            <div style="width: 29%; float: right; word-break: normal">
+              <div *ngIf="userRole=='ADMIN'"
+                   style="word-wrap: anywhere">Роль:
+                <label
+                  style="text-transform: lowercase; ">{{ getRole(doc.role!) }} </label></div>
+            </div>
+          </div>
+          <div class="remove-but" style="float: right;">
+            <img (click)="open(doc.id, doc.last_name, doc.first_name, doc.middle_name, 'confirmation_modal')"
+                 class="img-responsive" width="45px"
+                 src="assets/images/remove.png">
+          </div>
         </div>
       </div>
     </div>
@@ -37,7 +47,7 @@
     </ng-template>
   </div>
   <ng-template #patientsTemplate>
-    <h3 style="text-align: center;"> Список пациентов
+    <h3 style="text-align: center;">Список пациентов
       <li class="my-button add-but">
         <a routerLink="/create_patient/">
           <img class="img-responsive" width="50px" src="assets/images/add.png">
@@ -47,13 +57,17 @@
     <br><br>
     <div *ngIf="!peopleIsNull; else noPatients">
       <div *ngFor="let pat of patients; let i = index" [class.active]="i == selectedPatient">
-        <div class="list-group-item text-capitalize list-item border-gradient" (click)="gotoPatient(pat)">
-          {{ pat.last_name }} {{ pat.first_name }} {{ pat.middle_name }}
-        </div>
-        <div>
-          <img (click)="open(pat.id, pat.last_name, pat.first_name, pat.middle_name, 'confirmation_modal')"
-               style="float: right; margin-top: 0.5%;" class="img-responsive" width="45px"
-               src="assets/images/remove.png">
+        <div style="width: 95%">
+          <div class="list-group-item text-capitalize list-item border-gradient" (click)="gotoPatient(pat)">
+            <div style="width: 100%; float:left">
+              {{ pat.last_name }} {{ pat.first_name }} {{ pat.middle_name }}
+            </div>
+          </div>
+          <div class="remove-but">
+            <img (click)="open(pat.id, pat.last_name, pat.first_name, pat.middle_name, 'confirmation_modal')"
+                 class="img-responsive" width="45px"
+                 src="assets/images/remove.png">
+          </div>
         </div>
       </div>
     </div>

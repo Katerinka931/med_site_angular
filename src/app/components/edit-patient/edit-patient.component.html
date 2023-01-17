@@ -7,42 +7,45 @@
     <h1>Редактирование пациента</h1>
   </div>
   <br>
+<!--  <input [(ngModel)]="text" (input)="change($event)">-->
+<!--  <div>the input value is : {{text}}</div>-->
+
   <div class="form-group">
     <label for="last_name">Фамилия</label>
     <input id="last_name" type="text" name="last_name" value="{{currentPatient.last_name}}"
-           [(ngModel)]="currentPatient.last_name" style="background-color: #ededed">
+           [(ngModel)]="currentPatient.last_name" style="background-color: #ededed" (input)="change($event)">
   </div>
   <div class="form-group">
     <label for="first_name">Имя</label>
     <input id="first_name" type="text" name="first_name" value="{{currentPatient.first_name}}"
-           [(ngModel)]="currentPatient.first_name" style="background-color: #ededed">
+           [(ngModel)]="currentPatient.first_name" style="background-color: #ededed" (input)="change($event)">
   </div>
   <div class="form-group">
     <label for="middle_name">Отчество</label>
     <input id="middle_name" type="text" name="middle_name" value="{{currentPatient.middle_name}}"
-           [(ngModel)]="currentPatient.middle_name" style="background-color: #ededed">
+           [(ngModel)]="currentPatient.middle_name" style="background-color: #ededed" (input)="change($event)">
   </div>
   <div class="form-group">
     <label for="email">Почта</label>
     <input id="email" type="text" name="email" value="{{currentPatient.email}}"
-           [(ngModel)]="currentPatient.email" style="background-color: #ededed">
+           [(ngModel)]="currentPatient.email" style="background-color: #ededed" (input)="change($event)">
   </div>
   <div class="form-group">
     <label for="phone">Телефон</label>
     <input id="phone" type="text" name="phone" value="{{currentPatient.phone}}"
-           [(ngModel)]="currentPatient.phone" style="background-color: #ededed">
+           [(ngModel)]="currentPatient.phone" style="background-color: #ededed" (input)="change($event)">
   </div>
   <div class="form-group">
     <label for="date">Дата рождения</label>
     <input id="date" type="date" name="date" value=""
-           [(ngModel)]="currentPatient.date_of_birth" style="background-color: #ededed">
+           [(ngModel)]="currentPatient.date_of_birth" style="background-color: #ededed" (input)="change($event)">
   </div>
   <div *ngIf="userRole != 'DOCTOR'">
     <div class="form-group">
       <label for="doctor_selector">Лечащий врач</label>
       <br>
       <select [(ngModel)]="selected" (change)="valueChange($event)" id="doctor_selector" name="doctor_selector"
-              style="color: rgba(0, 0, 0, 0.6); background-color: #ededed; width: 100%; border-radius: 4px; height: 50px; border: none; padding-left: 20px">
+              style="color: rgba(0, 0, 0, 0.6); background-color: #ededed; width: 100%; border-radius: 4px; height: 50px; border: none; padding-left: 20px" (input)="change($event)">
         <option *ngFor="let type of doctors"
                 [value]="type" [selected]="type == selected">
           {{ type }}
@@ -114,7 +117,7 @@
     <label for="diagnosis"><br><br>Диагноз</label>
     <textarea id="diagnosis" name="text" wrap="soft" maxlength="9970"
               style="color: rgba(0, 0, 0, 0.6); border: none; padding-left: 20px; border-radius: 4px; background-color: #ededed; width: 100%; height: 5%; overflow:hidden;"
-              [(ngModel)]="photo.diagnosis"></textarea>
+              [(ngModel)]="photo.diagnosis" (input)="change_photo($event)"></textarea>
   </div>
   <div class="form-group">
     <label for="diagnosis"><br><br>Изображение</label>
@@ -153,7 +156,7 @@
       type="submit"
       class="btn btn-outline-danger mb-2 text-center"
       name="save"
-      (click)="closeModal('change_image_instance_modal');"
+      (click)="close_edit_photo('change_image_instance_modal');"
       style="width: 140px; margin-left: 20px"
     >
       Закрыть

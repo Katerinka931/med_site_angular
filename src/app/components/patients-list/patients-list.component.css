@@ -1,5 +1,5 @@
 .list-item {
-  width: 90%;
+  width: 88%;
   border-width: 4px;
   box-shadow: 0 0 5px 2px #e5e5e5;
   float: left;
@@ -15,11 +15,19 @@
 }
 
 .remove-but {
-  float: left;
+  /*float: left;*/
+  /*margin-top: 0.5%;*/
+  /*margin-left: 3px;*/
+
+  float: right;
+  margin-top: 0.8%;
+  transform: translateX(27px);
 }
+
 
 .add-but {
   float: right;
+  transform: translateX(-25px);
 }
 
 .my-button {

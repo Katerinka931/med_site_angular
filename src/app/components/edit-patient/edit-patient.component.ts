@@ -1,4 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {
+  Component,
+  HostListener,
+  OnInit,
+} from '@angular/core';
 import {PatientService} from "../../services/patients_service/patient.service";
 import {Patient} from "../../models/patient_model/patient";
 import {ActivatedRoute} from "@angular/router";
@@ -9,11 +13,12 @@ import {Photo} from "../../models/photo-model/photo.model";
 import {HttpResponse} from "@angular/common/http";
 import {DomSanitizer} from "@angular/platform-browser";
 import {Location} from '@angular/common';
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-edit-patient',
   templateUrl: './edit-patient.component.html',
-  styleUrls: ['./edit-patient.component.css']
+  styleUrls: ['./edit-patient.component.css'],
 })
 export class EditPatientComponent implements OnInit {
 
@@ -35,9 +40,16 @@ export class EditPatientComponent implements OnInit {
   diagnosis: string;
   photo_inst: number = 0;
   access_error: boolean = false;
+  flag: boolean = true;
+  flag2: boolean = true;
+
+  @HostListener('window:beforeunload')
+  canDeactivate(): Observable<boolean> | boolean {
+    return this.flag;
+  }
 
   constructor(private patientService: PatientService, private route: ActivatedRoute, private tokenStorage: TokenStorageService,
-              private modalService: ModalServiceService, private domSerializer: DomSanitizer, private location: Location) {
+              private modalService: ModalServiceService, private domSerializer: DomSanitizer, private location: Location,) {
   }
 
   ngOnInit(): void {
@@ -68,7 +80,7 @@ export class EditPatientComponent implements OnInit {
         } else {
           if (e.status == 404)
             this.message = e['error']['message']
-          else{
+          else {
             this.message = "Ошибка загрузки данных"
             this.access_error = true;
           }
@@ -84,6 +96,14 @@ export class EditPatientComponent implements OnInit {
     }
   }
 
+  change(event: any) {
+    this.flag = false;
+  }
+
+  change_photo($event: Event) {
+    this.flag2 = false;
+  }
+
   editPatient(modal: string): void {
     this.currentPatient.doctor_number = this.selected.split('=')[1].slice(0, -1)
     const data = {
@@ -94,6 +114,7 @@ export class EditPatientComponent implements OnInit {
       .subscribe({
         next: (data) => {
           this.message = data['message'];
+          this.flag = true;
         },
         error: (e) => {
           e.status != 500 ? this.message = e['error']['message'] : this.message == "Ошибка сервера";
@@ -117,6 +138,18 @@ export class EditPatientComponent implements OnInit {
       this.location.back();
     } else {
       this.retrieve();
+    }
+  }
+
+  close_edit_photo(id: string) {
+    if (this.flag2) {
+      this.closeModal(id);
+      this.flag2 = true;
+    } else {
+      if (confirm('Внесенные изменения будут потеряны! \nВы точно хотите закрыть окно?')) {
+        this.closeModal(id);
+        this.flag2 = true;
+      }
     }
   }
 

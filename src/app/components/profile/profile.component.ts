@@ -1,9 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {AuthService} from "../../services/auth_service/auth.service";
 import {Doctor} from "../../models/doctor_model/doctor";
 import {UserService} from "../../services/users_service/user.service";
 import {ModalServiceService} from "../../services/modal_service/modal-service.service";
 import {TokenStorageService} from "../../services/token_storage_service/token-storage.service";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-profile',
@@ -18,12 +19,22 @@ export class ProfileComponent implements OnInit {
   new_password_repeat: string;
   message: string;
   gotSuccess: boolean;
+  flag: boolean = true;
 
   constructor(private tokenStorage: TokenStorageService, private userService: UserService, private token: AuthService,
               private modalService: ModalServiceService) { }
 
   ngOnInit(): void {
     this.retrieve();
+  }
+
+  @HostListener('window:beforeunload')
+  canDeactivate(): Observable<boolean> | boolean {
+    return this.flag;
+  }
+
+  change(event: any) {
+    this.flag = false;
   }
 
   private retrieve(): void {
@@ -42,6 +53,7 @@ export class ProfileComponent implements OnInit {
       .subscribe({
         next: (data) => {
           this.message = data['message'];
+          this.flag = true;
         },
         error: (e) => {
           e.status != 500 ? this.message = e['error']['message'] : this.message == "Ошибка сервера";

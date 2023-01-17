@@ -1,10 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {Doctor} from "../../models/doctor_model/doctor";
 import {UserService} from "../../services/users_service/user.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {TokenStorageService} from "../../services/token_storage_service/token-storage.service";
 import {ModalServiceService} from "../../services/modal_service/modal-service.service";
 import {Location} from '@angular/common';
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-edit-user',
@@ -23,6 +24,7 @@ export class EditUserComponent implements OnInit {
   userRole: string;
 
   access_error: boolean = false;
+  flag: boolean = true;
 
   constructor(private userService: UserService, private route: ActivatedRoute, private tokenStorage: TokenStorageService,
               private modalService: ModalServiceService, private location: Location) {
@@ -31,6 +33,15 @@ export class EditUserComponent implements OnInit {
   ngOnInit(): void {
     this.retrieve();
     this.userRole = this.tokenStorage.getUserRole()!;
+  }
+
+  @HostListener('window:beforeunload')
+  canDeactivate(): Observable<boolean> | boolean {
+    return this.flag;
+  }
+
+  change(event: any) {
+    this.flag = false;
   }
 
   valueChange(event: any) {
@@ -81,6 +92,7 @@ export class EditUserComponent implements OnInit {
       .subscribe({
         next: (data) => {
           this.message = data['message'];
+          this.flag = true;
         },
         error: (e) => {
           e.status != 500 ? this.message = e['error']['message'] : this.message == "Ошибка сервера";

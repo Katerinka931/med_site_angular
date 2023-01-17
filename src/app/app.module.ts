@@ -21,6 +21,7 @@ import { PatientsListComponent } from './components/patients-list/patients-list.
 import { ModalComponent } from './components/modal/modal.component';
 import {NgxPermissionsModule} from "ngx-permissions";
 import {ngxLoadingAnimationTypes, NgxLoadingModule} from "ngx-loading";
+import {AuthGuard} from "./auth/auth.guard";
 
 @NgModule({
   declarations: [

@@ -19,21 +19,19 @@ const routes: Routes = [
   { path: 'refresh_token', component: LoginComponent},
   { path: 'logout', component: LoginComponent, canActivate: [AuthGuard]},
   { path: 'main', component: MainComponent, canActivate: [AuthGuard]},
-  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},
+  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard], canDeactivate: [AuthGuard]},
 
   { path: 'create_user', component: CreateUserComponent, canActivate: [AuthGuard], data: {role: ['ADMIN', 'CHIEF']}},
-  { path: 'edit_user/:usr', component: EditUserComponent, canActivate: [AuthGuard]}, //CHIEF and ADMIN
+  { path: 'edit_user/:usr', component: EditUserComponent, canActivate: [AuthGuard], canDeactivate: [AuthGuard]}, //CHIEF and ADMIN
 
   { path: 'create_patient', component: CreatePatientComponent, canActivate: [AuthGuard]},
-  { path: 'edit_patient/:pat', component: EditPatientComponent, canActivate: [AuthGuard]}, // DOC and OPER
+  { path: 'edit_patient/:pat', component: EditPatientComponent, canActivate: [AuthGuard], canDeactivate: [AuthGuard]}, // DOC and OPER
 
   { path: 'user/:usr', component: UsersDataComponent, canActivate: [AuthGuard]},
   { path: 'patient/:pat', component: PatientsDataComponent, canActivate: [AuthGuard]},
   { path: 'patients', component: PatientsListComponent, canActivate: [AuthGuard], data: {role: 'CHIEF'}},
 
   { path: 'load_image', component: LoadImageComponent, canActivate: [AuthGuard], data: {role: ['CHIEF', 'DOCTOR']}},
-
-  { path: 'roles', component: MainComponent},
 ];
 
 @NgModule({
