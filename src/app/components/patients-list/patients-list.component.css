@@ -1,11 +1,10 @@
 .list-item {
-  width: 88%;
+  width: 95%;
   border-width: 4px;
   box-shadow: 0 0 5px 2px #e5e5e5;
   float: left;
   font-size: 20px;
   margin-bottom: 10px;
-  /*width: -moz-available;*/
 }
 
 .border-gradient {
@@ -14,24 +13,9 @@
   border-image-slice: 1;
 }
 
-.remove-but {
-  /*float: left;*/
-  /*margin-top: 0.5%;*/
-  /*margin-left: 3px;*/
-
-  float: right;
-  margin-top: 0.8%;
-  transform: translateX(27px);
-}
-
-
-.add-but {
-  float: right;
-  transform: translateX(-25px);
-}
-
 .my-button {
-  width: 4.5%;
+  float: right;
+  width: 3%;
   background-color: transparent;
   border: none;
   list-style-type: none;
@@ -43,4 +27,15 @@
   left: 50%;
   position: absolute;
   transform: translateX(-50%) translateY(-50%);
+}
+
+.workplace {
+  height: 100%;
+  position: fixed;
+  z-index: 1;
+  overflow-x: hidden;
+  border-radius: 5px;
+  margin-bottom: 0;
+  width: 100%;
+  left: 0;
 }

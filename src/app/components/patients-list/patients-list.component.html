@@ -1,11 +1,11 @@
 <head>
   <title>Список пациентов</title>
 </head>
-<body>
 <br><br>
-<div>
+<div class="workplace">
+  <div style="width: 70%; margin-left: auto; margin-right: auto; ">
   <h3 style="text-align: center;"> Список пациентов
-    <li class="my-button add-but">
+    <li class="my-button">
       <a routerLink="/create_patient/">
         <img class="img-responsive" width="50px" src="assets/images/add.png">
       </a>
@@ -14,36 +14,21 @@
   <br><br>
   <div *ngIf="!peopleIsNull; else noPeople">
     <div *ngFor="let pat of patients; let i = index" [class.active]="i == selectedPatient">
-      <div style="width: 95%">
+      <div style="width: 100%">
         <div class="list-group-item list-item border-gradient text-capitalize" (click)="gotoPatient(pat)">
-          <div style="width: 60%; float:left">
+          <div style="width: 50%; float:left; word-break: normal">
             {{ pat.last_name }} {{ pat.first_name }} {{ pat.middle_name }}
           </div>
-          <div style="width: 40%; float: right; word-break: normal">
+          <div style="width: 50%; float: right; word-break: normal">
             {{ pat['doctor'].last_name }} {{ pat['doctor'].first_name }} {{ pat['doctor'].middle_name }}
           </div>
         </div>
-        <div class="remove-but">
+        <div class="my-button" style="text-align: center;">
           <img (click)="open_remove_agreement(pat.id, pat.last_name, pat.first_name, pat.middle_name, 'confirmation_modal')"
                class="img-responsive" width="45px"
                src="assets/images/remove.png">
         </div>
       </div>
-
-
-<!--      <div class="list-group-item text-capitalize list-item border-gradient" (click)="gotoPatient(pat)">-->
-<!--        {{ pat.last_name }} {{ pat.first_name }} {{ pat.middle_name }}-->
-<!--        <div-->
-<!--          style="float: right"> {{ pat['doctor'].last_name }} {{ pat['doctor'].first_name }} {{ pat['doctor'].middle_name }}</div>-->
-<!--      </div>-->
-<!--      <div>-->
-<!--        <img-->
-<!--          (click)="open_remove_agreement(pat.id, pat.last_name, pat.first_name, pat.middle_name, 'confirmation_modal')"-->
-<!--          style="float: right; margin-top: 0.5%;" class="img-responsive" width="45px"-->
-<!--          src="assets/images/remove.png">-->
-<!--      </div>-->
-
-
     </div>
   </div>
   <ng-template #noPeople>
@@ -54,8 +39,8 @@
         </label></h4>
     </div>
   </ng-template>
+  </div>
 </div>
-</body>
 
 <jw-modal id="confirmation_modal">
   <label> Вы уверены, что хотите удалить из базы человека с именем "{{message}}"? </label>

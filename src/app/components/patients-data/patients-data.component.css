@@ -27,11 +27,19 @@
 }
 
 .edit-button {
-  min-width: 10%;
-  top: 90%;
-  left: 50%;
+  margin-top: 10px;
   position: absolute;
-  transform: translateX(-50%) translateY(-50%);
+  bottom: 25px;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  text-align: center;
+  width: fit-content;
+}
+
+.edit-button-test {
+  margin-top: 7%;
 }
 
 /* Split the screen in half */
@@ -76,7 +84,7 @@
   box-shadow: 0 0 5px 2px gainsboro;
   padding-left: 1%;
   margin-top: 2%;
-  height: 20vw;
+  height: 45vh;
   overflow-y: scroll;
 }
 
@@ -88,4 +96,15 @@ hr {
   border-width: 5px;
   background: #7ccbef;
   color: #4285F4;
+}
+
+.border-for-image-div {
+  height: 100%;
+  width: 100%;
+  display: block;
+  margin: 15% auto auto;
+}
+
+.text-transform {
+  font-size: 5vmin;
 }
