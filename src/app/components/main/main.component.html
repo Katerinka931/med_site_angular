@@ -17,7 +17,7 @@
       <div *ngIf="!peopleIsNull; else noPeople">
         <div *ngFor="let doc of doctors; let i = index" [class.active]="i == selectedDoctor">
           <div style="width: 100%">
-            <div class="list-group-item list-item border-gradient text-capitalize" (click)="gotoDoctor(doc)">
+            <div class="list-group-item list-item border-gradient zoom" (click)="gotoDoctor(doc)">
               <div style="width: 65%; float:left">
                 {{ doc.last_name }} {{ doc.first_name }} {{ doc.middle_name }}
               </div>
@@ -28,9 +28,9 @@
                     style="text-transform: lowercase; ">{{ getRole(doc.role!) }} </label></div>
               </div>
             </div>
-            <div class="my-button" style="float: right; text-align: center;">
+            <div class="my-button" style="float: right; text-align: center; height: 60px;">
               <img (click)="open(doc.id, doc.last_name, doc.first_name, doc.middle_name, 'confirmation_modal')"
-                   class="img-responsive" width="45px"
+                   class="img-responsive" width="45px" style="margin-top: 15%; cursor: pointer;"
                    src="assets/images/remove.png">
             </div>
           </div>
@@ -57,14 +57,14 @@
       <div *ngIf="!peopleIsNull; else noPatients">
         <div *ngFor="let pat of patients; let i = index" [class.active]="i == selectedPatient">
           <div style="width: 100%">
-            <div class="list-group-item text-capitalize list-item border-gradient" (click)="gotoPatient(pat)">
+            <div class="list-group-item text-capitalize list-item border-gradient zoom" (click)="gotoPatient(pat)">
               <div style="float:left">
                 {{ pat.last_name }} {{ pat.first_name }} {{ pat.middle_name }}
               </div>
             </div>
-            <div class="my-button" style="text-align: center;">
+            <div class="my-button" style="text-align: center; height: 60px;">
               <img (click)="open(pat.id, pat.last_name, pat.first_name, pat.middle_name, 'confirmation_modal')"
-                   class="img-responsive" width="45px"
+                   class="img-responsive" width="45px" style="margin-top: 15%; cursor: pointer;"
                    src="assets/images/remove.png">
             </div>
           </div>
@@ -84,14 +84,16 @@
 </div>
 
 <jw-modal id="confirmation_modal">
-  <label> Вы уверены, что хотите удалить из базы человека с именем "{{message}}"? </label>
+  <div style="text-align: center">
+    <label> Вы уверены, что хотите удалить из базы человека с именем "{{message}}"? </label>
+  </div>
   <div class="text-center">
     <button
       type="submit"
       class="btn btn-outline-danger mb-2 text-center"
       name="save"
       (click)="remove('message_modal', 'confirmation_modal')"
-      style="width: 140px; "
+      style="width: 140px; margin-left: 10px"
     >
       Удалить
     </button>
@@ -100,7 +102,7 @@
       class="btn btn-outline-info mb-2 text-center"
       name="save"
       (click)="closeModal('confirmation_modal');"
-      style="width: 140px; margin-left: 20px"
+      style="width: 140px; margin-left: 10px"
     >
       Отменить
     </button>

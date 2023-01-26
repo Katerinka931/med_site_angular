@@ -65,14 +65,16 @@
 </div>
 
 <jw-modal id="confirmation_modal">
+  <div style="text-align: center">
   <label> Вы уверены, что хотите удалить из базы человека с именем "{{message}}"? </label>
+  </div>
   <div class="text-center">
     <button
       type="submit"
       class="btn btn-outline-danger mb-2 text-center"
       name="save"
       (click)="remove('message_modal', 'confirmation_modal')"
-      style="width: 140px; "
+      style="width: 140px; margin-left: 10px"
     >
       Удалить
     </button>
@@ -81,7 +83,7 @@
       class="btn btn-outline-info mb-2 text-center"
       name="save"
       (click)="closeModal('confirmation_modal');"
-      style="width: 140px; margin-left: 20px"
+      style="width: 140px; margin-left: 10px"
     >
       Отменить
     </button>
@@ -97,7 +99,7 @@
       class="btn btn-outline-info mb-2 text-center"
       name="save"
       (click)="closeModal('message_modal');"
-      style="width: 140px; margin-left: 20px"
+      style="width: 140px;"
     >
       Закрыть
     </button>

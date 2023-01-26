@@ -14,15 +14,22 @@ export class AppComponent {
   title = 'Medicine Application';
   showNav: boolean = false;
   role: string;
+  wdth: any;
 
   constructor(private router: Router, private authService: AuthService, private tokenStorage: TokenStorageService,
               private modalService: ModalServiceService) {
+    this.wdth = outerWidth;
     router.events.forEach((event) => {
       if (event instanceof NavigationStart) {
         this.showNav = event['url'] != '/';
         this.role = tokenStorage.getUserRole()!;
       }
     });
+  }
+
+  onResize(event: any) {
+    this.wdth = event.target.innerWidth;
+    // console.log(this.wdth)
   }
 
   openModal(id: string) {
@@ -38,4 +45,6 @@ export class AppComponent {
     this.authService.logout();
     this.router.navigate(['/']);
   }
+
+
 }

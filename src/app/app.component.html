@@ -1,49 +1,74 @@
-<nav class="navbar navbar-expand" id="main_navbar" *ngIf="showNav"
+<nav class="navbar navbar-expand-sm navbar-light" id="main_navbar" *ngIf="showNav"
      style="background: -webkit-linear-gradient(45deg, rgba(66, 183, 245, 0.8) 0%, rgba(66, 245, 189, 0.4) 100%);
     background: linear-gradient(45deg, rgba(66, 183, 245, 0.8) 0%, rgba(66, 245, 189, 0.4) 100%);">
-  <div class="navbar-nav" style="width: 100%; font-size: 17px;">
-    <li>
-      <a class="navbar-brand" style="color: black">@Logo</a>
-    </li>
-    <li class="nav-item" style="width: auto">
-      <a routerLink="/main/" class="nav-link" style="color: black"> Главная</a>
-    </li>
-    <div *ngIf="role == 'CHIEF' || role == 'DOCTOR'">
-      <li class="nav-item" style="width: auto">
-        <a routerLink="/load_image/" class="nav-link" style="color: black"> Обработка изображения</a>
-      </li>
+
+  <a class="navbar-brand" style="color: black">@Logo</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <div class="container">
+        <div class="element-1">
+          <li class="nav-item">
+            <a routerLink="/main/" class="nav-link" style="color: black"> Главная</a>
+          </li>
+        </div>
+        <div *ngIf="role == 'ADMIN' || role == 'CHIEF'" class="element-2">
+          <li class="nav-item">
+            <a routerLink="/create_user/" class="nav-link" style="color: black">Создать пользователя</a>
+          </li>
+        </div>
+        <div *ngIf="role == 'CHIEF' || role == 'DOCTOR'" class="element-3">
+          <li class="nav-item">
+            <a routerLink="/load_image/" class="nav-link" style="color: black"> Обработка изображения</a>
+          </li>
+        </div>
+        <div *ngIf="role == 'OPERATOR'" class="element-2">
+          <li class="nav-item">
+            <a routerLink="/create_patient/" class="nav-link" style="color: black">Создать пациента</a>
+          </li>
+        </div>
+        <br>
+        <div *ngIf="role == 'CHIEF'" class="element-4">
+          <li class="nav-item">
+            <a routerLink="/patients/" class="nav-link" style="color: black">Пациенты</a>
+          </li>
+        </div>
+      </div>
+    </ul>
+
+    <div *ngIf="wdth < 500">
+      <hr style="width: 100%; border-width: 1px; background-color: black">
     </div>
-    <div *ngIf="role == 'ADMIN'">
-      <li class="nav-item" style="width: auto">
-        <a routerLink="/create_user/" class="nav-link" style="color: black">Создать пользователя</a>
-      </li>
-    </div>
-    <div *ngIf="role == 'CHIEF'">
-      <li class="nav-item" style="width: auto">
-        <a routerLink="/patients/" class="nav-link" style="color: black">Пациенты</a>
-      </li>
-    </div>
-    <div *ngIf="role == 'OPERATOR'">
-      <li class="nav-item" style="width: auto">
-        <a routerLink="/create_patient/" class="nav-link" style="color: black">Создать пациента</a>
-      </li>
-    </div>
-    <li style="margin-left: auto; max-width: 40px;">
-      <a routerLink='/profile/'>
-        <img class="d-none d-sm-none d-md-block" style="width: 100%; float: right;" src="assets/images/profile.png">
-      </a>
-    </li>
-    <li style="margin-left: 20px; max-width: 40px;">
-      <img class="d-none d-sm-none d-md-block" (click)="openModal('confirmation_modal_logout')"
-           style="width: 100%; float: right; cursor: pointer;"
-           src="assets/images/exit.png">
-    </li>
+    <ul class="navbar-nav">
+      <div class="container">
+        <div class="element-1">
+          <li>
+            <a routerLink='/profile/'>
+              <img src="assets/images/profile.png" class="img-fluid" style="max-width: 40px;">
+            </a>
+          </li>
+        </div>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <div class="element-2">
+          <li>
+            <img src="assets/images/exit.png" class="img-fluid"
+                 (click)="openModal('confirmation_modal_logout')"
+                 style="cursor: pointer; float: right; max-width: 40px;">
+          </li>
+        </div>
+      </div>
+    </ul>
   </div>
 </nav>
 
+
 <jw-modal id="confirmation_modal_logout">
   <div style="text-align: center">
-  <label> Вы уверены, что хотите выйти? </label>
+    <label> Вы уверены, что хотите выйти? </label>
   </div>
   <div class="text-center">
     <button
@@ -51,7 +76,7 @@
       class="btn btn-outline-danger mb-2 text-center"
       name="save"
       (click)="logout('confirmation_modal_logout')"
-      style="width: 140px; "
+      style="width: 140px; margin-left: 10px"
     >
       Выйти
     </button>
@@ -60,16 +85,15 @@
       class="btn btn-outline-info mb-2 text-center"
       name="save"
       (click)="closeModal('confirmation_modal_logout');"
-      style="width: 140px; margin-left: 20px"
+      style="width: 140px; margin-left: 10px"
     >
       Отменить
     </button>
   </div>
 </jw-modal>
 
-<div class="">
+
+<div class="container mt-3" (window:resize)="onResize($event)">
   <router-outlet></router-outlet>
 </div>
 <!--container mt-3-->
-
-

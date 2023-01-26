@@ -1,14 +1,14 @@
 <head>
   <title>Пациент</title>
 </head>
-<div class="split left">
+<div class="split left" style="min-height: 650px;">
   <div class="pos">
-    <h2 style="text-align: center" class="text-transform">
+    <h4 style="text-align: center" >  <!--class="text-transform"-->
       {{photo_title}}
       <div class="border-for-image-div">
         <img [src]="currentFile" style="max-width: 100%; display: block; margin:auto; ">
       </div>
-    </h2>
+    </h4>
   </div>
   <button
     type="submit"
@@ -19,48 +19,48 @@
     История снимков
   </button>
 </div>
-<div class="split right">
+<div class="split right" style="min-height: 650px;">
   <div class="pos">
-    <h4><b>{{ patient.last_name }} {{ patient.first_name}} {{ patient.middle_name}}</b></h4>
+    <h4 class="text-capitalize"><b>{{ patient.last_name }} {{ patient.first_name}} {{ patient.middle_name}}</b></h4>
     <h6><b>Год рождения: </b> {{ patient.date_of_birth }}</h6>
     <h6><b>Контакты</b></h6>
     <h6>Телефон: {{ patient.phone }}</h6>
     <h6>Почта: {{ patient.email }}</h6>
-    <h6>Лечащий
+    <h6 class="text-capitalize">Лечащий
       врач: {{ patients_doctor.last_name }} {{ patients_doctor.first_name}} {{ patients_doctor.middle_name}} </h6>
-    <div class="diagnosis">
+    <div class="diagnosis" style="min-height: 350px">
       <h4> Диагноз: {{ photo.diagnosis }}</h4>
     </div>
   </div>
-    <div>
-      <a href="/edit_patient/{{ patient.id }}"
-         type="submit"
-         class="btn btn-info mb-2 text-center edit-button"
-      >
-        Редактировать
-      </a>
-    </div>
+  <div>
+    <a href="/edit_patient/{{ patient.id }}"
+       type="submit"
+       class="btn btn-info mb-2 text-center edit-button"
+    >
+      Редактировать
+    </a>
+  </div>
 </div>
 
-<jw-modal id="photos_info_modal">
+<jw-modal id="photos_info_modal" style="">
   <label style="text-align: center; display: block; margin-bottom: 3%"> История фотографий </label>
   <div class="text-center">
     <div *ngIf="photosIsNull; else tmplt">
       <div *ngFor="let ph of photos;">
         <hr>
         <img [src]="ph.photo" style="max-width: 80%; display: block; margin: auto;">
-        <div style="max-width: 80%; text-align: left; margin-left: auto; margin-right: auto; ">
+        <div style="max-width: 55%; text-align: left; margin-left: auto; margin-right: auto; ">
           <label> Дата и время создания: {{ph.date}} </label> <br>
           <label> Диагноз: {{ph.diagnosis}} </label> <br>
         </div>
         <button
-          class="btn btn-outline-danger" style="margin-bottom: 5%"
+          class="btn btn-outline-danger" style="margin-bottom: 2%"
           (click)="openAnotherModal('photos_info_modal', 'confirmation_modal', ph.id)"
         >
           Удалить снимок
         </button>
         <br>
-        <button style="float: top"
+        <button style="margin-left: 5px; margin-bottom: 2%"
                 type="submit"
                 name="download_jpeg"
                 class="btn btn-outline-secondary text-center"
@@ -68,7 +68,7 @@
         >
           Скачать .jpeg
         </button>
-        <button style="margin-left: 10px"
+        <button style="margin-left: 5px; margin-bottom: 2%"
                 type="submit"
                 name="download_dcm"
                 class="btn btn-outline-primary text-center"
@@ -82,11 +82,10 @@
       <hr>
       Здесь будут все изображения
     </ng-template>
-    <br>
     <hr>
     <button
       type="submit"
-      class="btn btn-outline-danger" style="margin-bottom: 5%"
+      class="btn btn-outline-danger" style="margin-bottom: 2%"
       name="save"
       (click)="closeModal('photos_info_modal');"
     >
@@ -96,14 +95,16 @@
 </jw-modal>
 
 <jw-modal id="confirmation_modal">
-  <label style="height: 100%;"> Вы уверены, что хотите удалить снимок? </label>
+  <div style="text-align: center">
+    <label style="height: 100%;"> Вы уверены, что хотите удалить снимок? </label>
+  </div>
   <div class="text-center">
     <button
       type="submit"
       class="btn btn-outline-danger mb-2 text-center"
       name="save"
       (click)="remove('confirmation_modal');"
-      style="width: 140px; "
+      style="width: 140px; margin-left: 10px"
     >
       Удалить
     </button>
@@ -112,7 +113,7 @@
       class="btn btn-outline-info mb-2 text-center"
       name="save"
       (click)="closeModal('confirmation_modal');"
-      style="width: 140px; margin-left: 20px"
+      style="width: 140px; margin-left: 10px"
     >
       Отменить
     </button>

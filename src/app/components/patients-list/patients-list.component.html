@@ -4,53 +4,57 @@
 <br><br>
 <div class="workplace">
   <div style="width: 70%; margin-left: auto; margin-right: auto; ">
-  <h3 style="text-align: center;"> Список пациентов
-    <li class="my-button">
-      <a routerLink="/create_patient/">
-        <img class="img-responsive" width="50px" src="assets/images/add.png">
-      </a>
-    </li>
-  </h3>
-  <br><br>
-  <div *ngIf="!peopleIsNull; else noPeople">
-    <div *ngFor="let pat of patients; let i = index" [class.active]="i == selectedPatient">
-      <div style="width: 100%">
-        <div class="list-group-item list-item border-gradient text-capitalize" (click)="gotoPatient(pat)">
-          <div style="width: 50%; float:left; word-break: normal">
-            {{ pat.last_name }} {{ pat.first_name }} {{ pat.middle_name }}
+    <h3 style="text-align: center;"> Список пациентов
+      <li class="my-button">
+        <a routerLink="/create_patient/">
+          <img class="img-responsive" width="50px" src="assets/images/add.png">
+        </a>
+      </li>
+    </h3>
+    <br><br>
+    <div *ngIf="!peopleIsNull; else noPeople">
+      <div *ngFor="let pat of patients; let i = index" [class.active]="i == selectedPatient">
+        <div style="width: 100%">
+          <div class="list-group-item list-item border-gradient text-capitalize zoom" (click)="gotoPatient(pat)">
+            <div style="width: 50%; float:left; word-break: normal">
+              {{ pat.last_name }} {{ pat.first_name }} {{ pat.middle_name }}
+            </div>
+            <div style="width: 50%; float: right; word-break: normal">
+              {{ pat['doctor'].last_name }} {{ pat['doctor'].first_name }} {{ pat['doctor'].middle_name }}
+            </div>
           </div>
-          <div style="width: 50%; float: right; word-break: normal">
-            {{ pat['doctor'].last_name }} {{ pat['doctor'].first_name }} {{ pat['doctor'].middle_name }}
+          <div class="my-button" style="text-align: center;">
+            <img
+              (click)="open_remove_agreement(pat.id, pat.last_name, pat.first_name, pat.middle_name, 'confirmation_modal')"
+              class="img-responsive" width="45px" style="cursor: pointer;"
+              src="assets/images/remove.png">
           </div>
-        </div>
-        <div class="my-button" style="text-align: center;">
-          <img (click)="open_remove_agreement(pat.id, pat.last_name, pat.first_name, pat.middle_name, 'confirmation_modal')"
-               class="img-responsive" width="45px"
-               src="assets/images/remove.png">
         </div>
       </div>
     </div>
-  </div>
-  <ng-template #noPeople>
-    <div style="padding-top: 20px" class="text-center">
-      <h4><label> Пациентов нет. </label>
-        <label> Нажмите на <img class="img-responsive" width="1.3%" src="assets/images/add.png"> в парвом верхнем углу,
-          чтобы создать пациента.
-        </label></h4>
-    </div>
-  </ng-template>
+    <ng-template #noPeople>
+      <div style="padding-top: 20px" class="text-center">
+        <h4><label> Пациентов нет. </label>
+          <label> Нажмите на <img class="img-responsive" width="1.3%" src="assets/images/add.png"> в парвом верхнем
+            углу,
+            чтобы создать пациента.
+          </label></h4>
+      </div>
+    </ng-template>
   </div>
 </div>
 
 <jw-modal id="confirmation_modal">
-  <label> Вы уверены, что хотите удалить из базы человека с именем "{{message}}"? </label>
+  <div style="text-align: center">
+    <label> Вы уверены, что хотите удалить из базы человека с именем "{{message}}"? </label>
+  </div>
   <div class="text-center">
     <button
       type="submit"
       class="btn btn-outline-danger mb-2 text-center"
       name="save"
       (click)="remove('message_modal', 'confirmation_modal')"
-      style="width: 140px; "
+      style="width: 140px; margin-left: 10px"
     >
       Удалить
     </button>
@@ -59,7 +63,7 @@
       class="btn btn-outline-info mb-2 text-center"
       name="save"
       (click)="closeModal('confirmation_modal');"
-      style="width: 140px; margin-left: 20px"
+      style="width: 140px; margin-left: 10px"
     >
       Отменить
     </button>
@@ -75,7 +79,7 @@
       class="btn btn-outline-info mb-2 text-center"
       name="save"
       (click)="closeModal('message_modal');"
-      style="width: 140px; margin-left: 20px"
+      style="width: 140px;"
     >
       Ок
     </button>
