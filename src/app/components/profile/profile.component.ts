@@ -22,7 +22,8 @@ export class ProfileComponent implements OnInit {
   flag: boolean = true;
 
   constructor(private tokenStorage: TokenStorageService, private userService: UserService, private token: AuthService,
-              private modalService: ModalServiceService) { }
+              private modalService: ModalServiceService) {
+  }
 
   ngOnInit(): void {
     this.retrieve();
@@ -90,12 +91,11 @@ export class ProfileComponent implements OnInit {
     this.message = '';
   }
 
-  clearPasswordData(){
+  clearPasswordData() {
     this.password = '';
     this.new_password = '';
     this.new_password_repeat = '';
   }
-
 }
 
 

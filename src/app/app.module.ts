@@ -9,7 +9,7 @@ import {PatientsDataComponent} from './components/patients-data/patients-data.co
 import {LoadImageComponent} from './components/load-image/load-image.component';
 import {LoginComponent} from './components/login/login.component';
 import {HttpClientModule} from "@angular/common/http";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 import {authInterceptorProviders} from './helper/auth.interceptor';
 import {CreateUserComponent} from './components/create-user/create-user.component';
@@ -39,19 +39,22 @@ import {AuthGuard} from "./auth/auth.guard";
     PatientsListComponent,
     ModalComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    FormsModule,
-    HttpClientModule,
-    NgxPermissionsModule.forRoot(),
-    NgxLoadingModule.forRoot({animationType: ngxLoadingAnimationTypes.wanderingCubes,
-      backdropBackgroundColour: "rgba(0,0,0,0.1)",
-      backdropBorderRadius: "5px",
-      primaryColour: "#307dfd",
-      secondaryColour: "#50b5ff",
-      tertiaryColour: "#5dd4ef",}),
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        FormsModule,
+        HttpClientModule,
+        NgxPermissionsModule.forRoot(),
+        NgxLoadingModule.forRoot({
+            animationType: ngxLoadingAnimationTypes.wanderingCubes,
+            backdropBackgroundColour: "rgba(0,0,0,0.1)",
+            backdropBorderRadius: "5px",
+            primaryColour: "#307dfd",
+            secondaryColour: "#50b5ff",
+            tertiaryColour: "#5dd4ef",
+        }),
+        ReactiveFormsModule,
+    ],
   providers: [authInterceptorProviders],
   bootstrap: [AppComponent],
 })

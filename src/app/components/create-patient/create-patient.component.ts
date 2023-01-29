@@ -5,6 +5,8 @@ import {TokenStorageService} from "../../services/token_storage_service/token-st
 import {Doctor} from "../../models/doctor_model/doctor";
 import {ModalServiceService} from "../../services/modal_service/modal-service.service";
 import {Location} from '@angular/common';
+import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
+
 
 @Component({
   selector: 'app-create-patient',
@@ -50,13 +52,17 @@ export class CreatePatientComponent implements OnInit {
     });
   }
 
-  valueChange(event: any) {
+  valueChange(event
+                :
+                any
+  ) {
     this.selected = event.target.value;
     console.log(this.selected);
   }
 
   private doctorsToSelector(): void {
-    for (let i = 0; i < this.listOfDoctors.length; i++) {
+    for (let i = 0; i < this.listOfDoctors.length; i++
+    ) {
       this.doctors[i] = this.listOfDoctors[i]['last_name']! + ' ' + this.listOfDoctors[i]['first_name'] + ' ' + this.listOfDoctors[i]['middle_name'] + ' (ID=' + this.listOfDoctors[i]['id'] + ')';
     }
   }
