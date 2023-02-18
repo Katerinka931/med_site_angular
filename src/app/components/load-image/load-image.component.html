@@ -4,46 +4,36 @@
 
 <div class="split left" style="background: white; width: 55%; min-height: 580px">
 
-  <div style="margin-top: 20px; width: 90%;">
-    <ngx-file-drop dropZoneLabel="Перенесите нужный файл" (onFileDrop)="dropped($event)"
-                   (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)"
-    >
-      <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
-        Загрузите файл формата dicom
-        <button type="button" class="btn btn-info mb-2" style="margin-left: 20px" (click)="openFileSelector()">Обзор
-        </button>
-      </ng-template>
-    </ngx-file-drop>
-  </div>
+  <label style="margin-left: 5%; margin-top: 15px; "><b> Загруженный файл: {{ file_name }} </b></label>
+  <hr>
 
-  <div class="upload-table">
-    <table class="table">
-      <thead>
-        <th>Загруженный файл: {{ file_name }}</th>
-      </thead>
-    </table>
-  </div>
-  <!--..............old version...............-->
-  <!--    <div class="section" style="height: 13%; ">-->
-  <!--      <div class="pos">-->
-  <!--        <label for="file-upload" class="btn btn-info mb-2" style="margin-right: 20px">-->
-  <!--          Обзор...-->
-  <!--        </label>-->
-  <!--        <input id="file-upload" type="file" (change)="selectFile($event)"/>-->
-  <!--        <label *ngIf="file_name != ''" style="font-size: 20px">{{ file_name }}</label>-->
-  <!--      </div>-->
-  <!--    </div>-->
-  <!--    <div style="border-style: ridge; height: 31vw; width: 70%; display: block; margin: auto;">-->
-  <!--      <img [src]="imagePath" style="width: 100%; max-height: 100%; vertical-align: middle;">-->
-  <!--    </div>-->
-  <!--.............................-->
+  <ngx-file-drop dropZoneLabel="Перенесите нужный файл"
+                 [multiple]="false"
+                 (onFileDrop)="dropped($event)"
+                 (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)"
+                 dropZoneClassName="filedrop"
+  >
+    <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+      <div style="margin-right: auto; margin-left: auto; position: absolute; text-align: center; width: 100%">
+        <button type="button" class="btn btn-info" style="" (click)="openFileSelector()">
+          Выберите
+        </button> <br>
+        или перетащите файл
+      </div>
+      <div class="image-div">
+        <img [src]="imagePath" style="width: 100%; max-height: 100%; vertical-align: middle;">
+      </div>
+    </ng-template>
+  </ngx-file-drop>
+
 
   <div class="section" style="height: 10%">
     <button
       type="submit"
       class="btn btn-info mb-2 text-center edit-button"
-      [disabled]="!selectedFiles" (click)="loadImage('message_modal')"
+      (click)="loadImage('message_modal')"
       style="min-width: 10%; margin-right: 50px"
+      [disabled]="!currentFile"
     >
       Загрузить
     </button>

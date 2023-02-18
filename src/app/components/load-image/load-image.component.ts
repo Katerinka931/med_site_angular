@@ -16,8 +16,9 @@ import {NgxFileDropEntry} from "ngx-file-drop";
 })
 
 export class LoadImageComponent implements OnInit {
-  selectedFiles: FileList;
+  files: NgxFileDropEntry[] = [];
   currentFile: File;
+
   file_name = '';
   imagePath: any;
   modifiedDate: any;
@@ -38,20 +39,27 @@ export class LoadImageComponent implements OnInit {
               private domSerializer: DomSanitizer, private location: Location) {
   }
 
-  // ---------------------
-  public files: NgxFileDropEntry[] = [];
-
   public dropped(files: NgxFileDropEntry[]) {
+    this.imagePath = null;
+
     this.files = files;
-    for (const droppedFile of files) {
-      // Is it a file?
+
+    if (files.length > 1) {
+      this.message = "Выберите один файл!";
+      this.openModal('message_modal');
+    } else {
+      let droppedFile = files[0];
+
       if (droppedFile.fileEntry.isFile) {
         const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
+
         fileEntry.file((file: File) => {
-          this.file_name = this.files[0].relativePath.split('.')[0];
-          // Here you can access the real file
-          console.log(droppedFile.relativePath, file);
+          this.currentFile = file;
+          this.file_name = this.currentFile.name;
+          this.modifiedDate = file.lastModified; //this.selectedFiles[0].lastModified;
+          this.diagnosis = '';
         });
+
       } else {
         // It was a directory (empty directories are added, otherwise only files)
         const fileEntry = droppedFile.fileEntry as FileSystemDirectoryEntry;
@@ -67,21 +75,6 @@ export class LoadImageComponent implements OnInit {
   public fileLeave(event: any) {
     console.log(event);
   }
-  // ---------------------------
-
-  selectFile(event: any): void {
-    this.imagePath = null;
-    this.selectedFiles = event.target.files;
-    if (this.selectedFiles.length > 1) {
-      this.message = "Выберите один файл!";
-      this.openModal('message_modal');
-    } else {
-      this.file_name = this.selectedFiles[0]!.name.split('.')[0];
-      this.modifiedDate = this.selectedFiles[0].lastModified;
-      this.diagnosis = '';
-    }
-  }
-
 
   ngOnInit(): void {
     this.retrieve();
@@ -112,7 +105,6 @@ export class LoadImageComponent implements OnInit {
 
   loadImage(modal: string): void {
     this.loading = true;
-    this.currentFile = this.selectedFiles[0];
     this.diagnosis = '';
     this.custom_diagnosis = '';
 

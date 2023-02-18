@@ -92,9 +92,25 @@ input[type="file"] {
   margin: auto;
 }
 
-.filedrop {
-  margin: auto;
-  height: 100px;
-  border: 2px dotted #d00707;
-  border-radius: 30px;
+.image-div {
+  position: absolute;
+  margin-right: auto;
+  margin-left: auto;
+  left: 0;
+  right: 0;
+
+  margin-top: 69vh;
+  bottom: 10px;
+  width: 60%;
+  height: 80%;
+
+  border-style: double;
+  border-radius: 7px;
+  border-width: 5px;
+}
+
+hr {
+  display: block;
+  overflow: hidden;
+  border-width: 1px;
 }
