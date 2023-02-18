@@ -7,15 +7,15 @@ import {ModalServiceService} from "../../services/modal_service/modal-service.se
 import {Location} from '@angular/common';
 
 import {DomSanitizer} from '@angular/platform-browser';
-
+import {NgxFileDropEntry} from "ngx-file-drop";
 
 @Component({
   selector: 'app-load-image',
   templateUrl: './load-image.component.html',
   styleUrls: ['./load-image.component.css']
 })
-export class LoadImageComponent implements OnInit {
 
+export class LoadImageComponent implements OnInit {
   selectedFiles: FileList;
   currentFile: File;
   file_name = '';
@@ -37,6 +37,51 @@ export class LoadImageComponent implements OnInit {
   constructor(private loadService: LoadImageService, private authService: AuthService, private modalService: ModalServiceService,
               private domSerializer: DomSanitizer, private location: Location) {
   }
+
+  // ---------------------
+  public files: NgxFileDropEntry[] = [];
+
+  public dropped(files: NgxFileDropEntry[]) {
+    this.files = files;
+    for (const droppedFile of files) {
+      // Is it a file?
+      if (droppedFile.fileEntry.isFile) {
+        const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
+        fileEntry.file((file: File) => {
+          this.file_name = this.files[0].relativePath.split('.')[0];
+          // Here you can access the real file
+          console.log(droppedFile.relativePath, file);
+        });
+      } else {
+        // It was a directory (empty directories are added, otherwise only files)
+        const fileEntry = droppedFile.fileEntry as FileSystemDirectoryEntry;
+        console.log(droppedFile.relativePath, fileEntry);
+      }
+    }
+  }
+
+  public fileOver(event: any) {
+    console.log(event);
+  }
+
+  public fileLeave(event: any) {
+    console.log(event);
+  }
+  // ---------------------------
+
+  selectFile(event: any): void {
+    this.imagePath = null;
+    this.selectedFiles = event.target.files;
+    if (this.selectedFiles.length > 1) {
+      this.message = "Выберите один файл!";
+      this.openModal('message_modal');
+    } else {
+      this.file_name = this.selectedFiles[0]!.name.split('.')[0];
+      this.modifiedDate = this.selectedFiles[0].lastModified;
+      this.diagnosis = '';
+    }
+  }
+
 
   ngOnInit(): void {
     this.retrieve();
@@ -62,19 +107,6 @@ export class LoadImageComponent implements OnInit {
   private patientsToSelector(): void {
     for (let i = 0; i < this.patients?.length!; i++) {
       this.patientsList[i] = this.patients![i]['last_name'] + ' ' + this.patients![i]['first_name'] + ' ' + this.patients![i]['middle_name'] + ' (ID=' + this.patients![i]['id'] + ')';
-    }
-  }
-
-  selectFile(event: any): void {
-    this.imagePath = null;
-    this.selectedFiles = event.target.files;
-    if (this.selectedFiles.length > 1) {
-      this.message = "Выберите один файл!";
-      this.openModal('message_modal');
-    } else {
-      this.file_name = this.selectedFiles[0]!.name.split('.')[0];
-      this.modifiedDate = this.selectedFiles[0].lastModified;
-      this.diagnosis = '';
     }
   }
 

@@ -17,11 +17,12 @@ import {EditUserComponent} from './components/edit-user/edit-user.component';
 import {CreatePatientComponent} from './components/create-patient/create-patient.component';
 import {EditPatientComponent} from './components/edit-patient/edit-patient.component';
 import {UsersDataComponent} from './components/users-data/users-data.component';
-import { PatientsListComponent } from './components/patients-list/patients-list.component';
-import { ModalComponent } from './components/modal/modal.component';
+import {PatientsListComponent} from './components/patients-list/patients-list.component';
+import {ModalComponent} from './components/modal/modal.component';
 import {NgxPermissionsModule} from "ngx-permissions";
 import {ngxLoadingAnimationTypes, NgxLoadingModule} from "ngx-loading";
 import {AuthGuard} from "./auth/auth.guard";
+import {NgxFileDropModule} from "ngx-file-drop";
 
 @NgModule({
   declarations: [
@@ -39,22 +40,23 @@ import {AuthGuard} from "./auth/auth.guard";
     PatientsListComponent,
     ModalComponent,
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        FormsModule,
-        HttpClientModule,
-        NgxPermissionsModule.forRoot(),
-        NgxLoadingModule.forRoot({
-            animationType: ngxLoadingAnimationTypes.wanderingCubes,
-            backdropBackgroundColour: "rgba(0,0,0,0.1)",
-            backdropBorderRadius: "5px",
-            primaryColour: "#307dfd",
-            secondaryColour: "#50b5ff",
-            tertiaryColour: "#5dd4ef",
-        }),
-        ReactiveFormsModule,
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    HttpClientModule,
+    NgxPermissionsModule.forRoot(),
+    NgxLoadingModule.forRoot({
+      animationType: ngxLoadingAnimationTypes.wanderingCubes,
+      backdropBackgroundColour: "rgba(0,0,0,0.1)",
+      backdropBorderRadius: "5px",
+      primaryColour: "#307dfd",
+      secondaryColour: "#50b5ff",
+      tertiaryColour: "#5dd4ef",
+    }),
+    ReactiveFormsModule,
+    NgxFileDropModule
+  ],
   providers: [authInterceptorProviders],
   bootstrap: [AppComponent],
 })
