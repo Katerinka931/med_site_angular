@@ -1,3 +1,7 @@
 @import "~bootstrap/dist/css/bootstrap.css";
 
+.active {
+  font-weight: bold;
+}
+
 

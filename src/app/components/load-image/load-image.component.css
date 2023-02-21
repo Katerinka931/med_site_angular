@@ -94,19 +94,20 @@ input[type="file"] {
 
 .image-div {
   position: absolute;
-  margin-right: auto;
-  margin-left: auto;
   left: 0;
   right: 0;
+  margin: 10px auto;
+  width: 26vw;
+  /*margin-right: auto;*/
+  /*margin-left: auto;*/
+  /*margin-top: 175vh;*/
+  /*bottom: -10px;*/
+  /*width: 80%;*/
+  /*height: 80%;*/
 
-  margin-top: 69vh;
-  bottom: 10px;
-  width: 60%;
-  height: 80%;
-
-  border-style: double;
-  border-radius: 7px;
-  border-width: 5px;
+  /*border-style: double;*/
+  /*border-radius: 7px;*/
+  /*border-width: 5px;*/
 }
 
 hr {

@@ -1,7 +1,7 @@
 <head>
   <title>Пациент</title>
 </head>
-<div class="split left" style="min-height: 600px;">
+<div class="split left" style="min-height: 650px;">
   <div class="pos">
     <h4 style="text-align: center" >  <!--class="text-transform"-->
       {{photo_title}}
@@ -42,7 +42,7 @@
   </div>
 </div>
 
-<jw-modal id="photos_info_modal" style="">
+<jw-modal id="photos_info_modal">
   <label style="text-align: center; display: block; margin-bottom: 3%"> История фотографий </label>
   <div class="text-center">
     <div *ngIf="photosIsNull; else tmplt">

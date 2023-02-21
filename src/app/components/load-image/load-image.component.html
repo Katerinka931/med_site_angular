@@ -2,7 +2,7 @@
   <title>Обработка изображения</title>
 </head>
 
-<div class="split left" style="background: white; width: 55%; min-height: 580px">
+<div class="split left" style="background: white; width: 55%; min-height: 600px">
 
   <label style="margin-left: 5%; margin-top: 15px; "><b> Загруженный файл: {{ file_name }} </b></label>
   <hr>
@@ -14,15 +14,19 @@
                  dropZoneClassName="filedrop"
   >
     <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
-      <div style="margin-right: auto; margin-left: auto; position: absolute; text-align: center; width: 100%">
+      <div style="margin-right: auto; margin-left: auto; position: absolute; text-align: center; width: 100%;">
         <button type="button" class="btn btn-info" style="" (click)="openFileSelector()">
           Выберите
-        </button> <br>
+        </button>
+        <br>
         или перетащите файл
+        <div class="image-div">
+          <img [src]="imagePath" style="vertical-align: middle; width: 100%;">
+        </div>
       </div>
-      <div class="image-div">
-        <img [src]="imagePath" style="width: 100%; max-height: 100%; vertical-align: middle;">
-      </div>
+      <!--      <div class="image-div">-->
+      <!--        <img [src]="imagePath" style="width: 100%; max-height: 100%; vertical-align: middle;">-->
+      <!--      </div>-->
     </ng-template>
   </ngx-file-drop>
 
@@ -39,7 +43,7 @@
     </button>
   </div>
 </div>
-<div class="split right" style="width: 40%; min-height: 580px">
+<div class="split right" style="width: 40%; min-height: 600px">
   <div class="pos">
     <h3>Результат обработки:</h3>
     <input type="text" readonly style="width: 100%; min-height: 30px; margin-bottom: 5%" class="diagnosis"
