@@ -4,7 +4,7 @@
 
 <div class="split left" style="background: white; width: 55%; min-height: 600px">
 
-  <label style="margin-left: 5%; margin-top: 15px; "><b> Загруженный файл: {{ file_name }} </b></label>
+  <label style="margin-left: 5%; margin-top: 15px; "><b> Выбранный файл: {{ file_name }} {{modifiedDate}}</b></label>
   <hr>
 
   <ngx-file-drop dropZoneLabel="Перенесите нужный файл"
@@ -89,7 +89,7 @@
       (click)="closeModal('message_modal');"
       style="width: 140px;"
     >
-      Ок
+      ОК
     </button>
   </div>
 </jw-modal>

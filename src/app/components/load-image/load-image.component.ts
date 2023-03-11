@@ -56,7 +56,7 @@ export class LoadImageComponent implements OnInit {
         fileEntry.file((file: File) => {
           this.currentFile = file;
           this.file_name = this.currentFile.name;
-          this.modifiedDate = file.lastModified; //this.selectedFiles[0].lastModified;
+          this.modifiedDate = file.lastModified; //todo this.selectedFiles[0].lastModified;
           this.diagnosis = '';
         });
 
