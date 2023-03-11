@@ -22,6 +22,7 @@ export class LoadImageComponent implements OnInit {
   file_name = '';
   imagePath: any;
   modifiedDate: any;
+  dateToScreen: any;
 
   patients?: Patient[];
   patientsList: string[] = [];
@@ -56,7 +57,9 @@ export class LoadImageComponent implements OnInit {
         fileEntry.file((file: File) => {
           this.currentFile = file;
           this.file_name = this.currentFile.name;
+
           this.modifiedDate = file.lastModified; //todo this.selectedFiles[0].lastModified;
+          this.dateToScreen = new Date(this.modifiedDate).toLocaleString();
           this.diagnosis = '';
         });
 
