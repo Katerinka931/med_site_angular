@@ -70,4 +70,8 @@ export class PatientService {
 
     return this.http.request(req);
   }
+
+  download_docx(id: any, ph: any): Observable<Object> {
+    return this.http.get<Object>(`${patientUrl}/${id}/report?id=${ph}`);
+  }
 }

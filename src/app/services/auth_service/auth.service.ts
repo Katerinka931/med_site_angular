@@ -13,7 +13,7 @@ export class AuthService {
   private renderer: Renderer2;
   private httpOptions: any;
 
-  public user_id: null | undefined;
+  public user_id: number;
 
   constructor(private http: HttpClient, private router: Router, rendererFactory: RendererFactory2, private tokenStorage: TokenStorageService) {
     this.renderer = rendererFactory.createRenderer(null, null);

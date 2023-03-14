@@ -8,6 +8,8 @@ import {Location} from '@angular/common';
 
 import {DomSanitizer} from '@angular/platform-browser';
 import {NgxFileDropEntry} from "ngx-file-drop";
+import * as FileSaver from "file-saver";
+import {TokenStorageService} from "../../services/token_storage_service/token-storage.service";
 
 @Component({
   selector: 'app-load-image',
@@ -35,6 +37,7 @@ export class LoadImageComponent implements OnInit {
   access_error: boolean = false;
 
   public loading = false;
+  saved: boolean = false;
 
   constructor(private loadService: LoadImageService, private authService: AuthService, private modalService: ModalServiceService,
               private domSerializer: DomSanitizer, private location: Location) {
@@ -61,6 +64,7 @@ export class LoadImageComponent implements OnInit {
           this.modifiedDate = file.lastModified; //todo this.selectedFiles[0].lastModified;
           this.dateToScreen = new Date(this.modifiedDate).toLocaleString();
           this.diagnosis = '';
+          this.saved = false;
         });
 
       } else {
@@ -110,6 +114,7 @@ export class LoadImageComponent implements OnInit {
     this.loading = true;
     this.diagnosis = '';
     this.custom_diagnosis = '';
+    this.saved = false;
 
     this.loadService.upload(this.currentFile, this.modifiedDate).subscribe(
       event => {
@@ -139,6 +144,7 @@ export class LoadImageComponent implements OnInit {
         if (data instanceof HttpResponse) {
           this.message = data.body['message'];
           this.openModal(modal);
+          this.saved = true;
         }
       },
       error: (e) => {
@@ -161,5 +167,43 @@ export class LoadImageComponent implements OnInit {
 
   openModal(id: string) {
     this.modalService.open(id);
+  }
+
+  download() {
+    this.loading = true;
+    this.loadService.download(this.selected.split('=')[1].slice(0, -1)).subscribe({
+      next: (res) => {
+        let name = res['name'];
+        let file = res['doc'];
+        let byteArrays = this.convert_to_bytearray(file);
+        FileSaver.saveAs(new File(byteArrays, name), name);
+        this.loading = false;
+      },
+      error: (e) => {
+        this.message = "Не удалось загрузить файл";
+        this.openModal('message_modal');
+        this.loading = false;
+      }
+    });
+  }
+
+  convert_to_bytearray(file: any) {
+    const sliceSize = 1024;
+    const byteCharacters = atob(file);
+    const bytesLength = byteCharacters.length;
+    const slicesCount = Math.ceil(bytesLength / sliceSize);
+    const byteArrays = new Array(slicesCount);
+
+    for (let sliceIndex = 0; sliceIndex < slicesCount; ++sliceIndex) {
+      const begin = sliceIndex * sliceSize;
+      const end = Math.min(begin + sliceSize, bytesLength);
+
+      const bytes = new Array(end - begin);
+      for (let offset = begin, i = 0; offset < end; ++i, ++offset) {
+        bytes[i] = byteCharacters[offset].charCodeAt(0);
+      }
+      byteArrays[sliceIndex] = new Uint8Array(bytes);
+    }
+    return byteArrays;
   }
 }

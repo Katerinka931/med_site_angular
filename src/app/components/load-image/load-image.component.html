@@ -4,7 +4,8 @@
 
 <div class="split left" style="background: white; width: 55%; min-height: 600px">
 
-  <label style="margin-left: 5%; margin-top: 15px; "><b> Выбранный файл: {{ file_name }} <br/>Время создания: {{dateToScreen}}</b></label>
+  <label style="margin-left: 5%; margin-top: 15px; "><b> Выбранный файл: {{ file_name }} <br/>Время
+    создания: {{dateToScreen}}</b></label>
   <hr>
 
   <ngx-file-drop dropZoneLabel="Перенесите нужный файл"
@@ -69,9 +70,21 @@
       type="submit"
       class="btn btn-info mb-2 text-center edit-button"
       name="save"
+      [disabled]="!saved"
+      (click)="download()"
+      style="margin-right: 50px;"
+    >
+      Скачать выписку
+    </button>
+  </div>
+  <div>
+    <button
+      type="submit"
+      class="btn btn-info mb-2 text-center edit-button1"
+      name="save"
       [disabled]="!diagnosis"
       (click)="saveDiagnosis('message_modal')"
-      style="min-width: 10%; margin-right: 50px"
+      style="margin-right: 50px"
     >
       Сохранить
     </button>

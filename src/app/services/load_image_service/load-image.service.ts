@@ -49,4 +49,9 @@ export class LoadImageService {
     });
     return this.http.request(req);
   }
+
+  download(id: any): Observable<Object> {
+    return this.http.get<Object>(`${baseUrl}/download_report?id=${id}`);
+  }
 }
+

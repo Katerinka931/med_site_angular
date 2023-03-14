@@ -3,7 +3,7 @@
 </head>
 <div class="split left" style="min-height: 650px;">
   <div class="pos">
-    <h4 style="text-align: center" >  <!--class="text-transform"-->
+    <h4 style="text-align: center">  <!--class="text-transform"-->
       {{photo_title}}
       <div class="border-for-image-div">
         <img [src]="currentFile" style="width: 100%; display: block; margin:auto;">
@@ -50,8 +50,13 @@
         <hr>
         <img [src]="ph.photo" style="max-width: 80%; display: block; margin: auto;">
         <div style="max-width: 80%; text-align: left; margin-left: auto; margin-right: auto; ">
-          <label> Дата и время создания: {{ph.date}} </label> <br>
+          <label> Дата и время создания снимка: {{ph.date}} </label> <br>
           <label> Диагноз: {{ph.diagnosis}} </label> <br>
+
+          <label> Дата и время проведения исследования: {{ph.date_of_research}} </label> <br>
+          <label> Врач, проводивший
+            исследование: {{ph.researcher.last_name}} {{ph.researcher.first_name}} {{ph.researcher.middle_name}}</label>
+          <br>
         </div>
         <button
           class="btn btn-outline-danger" style="margin-bottom: 2%"
@@ -75,6 +80,13 @@
                 (click)="download(ph.id, 'dicom')"
         >
           Скачать .dcm
+        </button>
+        <br>
+        <button
+          class="btn btn-outline-success" style="margin-bottom: 2%"
+          (click)="download_docx(ph.id)"
+        >
+          Скачать выписку
         </button>
       </div>
     </div>
@@ -135,3 +147,14 @@
     </button>
   </div>
 </jw-modal>
+
+<div class="my-container">
+  <ng-template #customLoadingTemplate>
+  </ng-template>
+
+  <ngx-loading
+    [show]="loading"
+    [config]="{ backdropBorderRadius: '5px' }"
+    [template]="customLoadingTemplate"
+  ></ngx-loading>
+</div>

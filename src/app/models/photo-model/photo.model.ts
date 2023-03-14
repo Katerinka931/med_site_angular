@@ -6,4 +6,5 @@ export class Photo{
   photo ?: string;
   pat_number ?: string;
   date_of_creation ?: any;
+  date_of_research ?: any;
 }

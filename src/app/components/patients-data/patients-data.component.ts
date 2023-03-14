@@ -24,6 +24,7 @@ export class PatientsDataComponent implements OnInit {
   photo_title: string;
   photosIsNull: boolean = false;
   currentFile: any;
+  public loading = false;
 
   constructor(private patientService: PatientService, private route: ActivatedRoute, private domSerializer: DomSanitizer,
               private modalService: ModalServiceService) {
@@ -122,7 +123,6 @@ export class PatientsDataComponent implements OnInit {
   }
 
   download(ph: any, type: string) {
-    let name;
     this.patientService.download(this.patient.id, ph, type).subscribe({
       next: (res) => {
         let file = res['photo'];
@@ -165,8 +165,29 @@ export class PatientsDataComponent implements OnInit {
         'id': photo['id'],
         'photo': this.domSerializer.bypassSecurityTrustResourceUrl('data:image/jpeg;base64,' + file),
         'diagnosis': photo['diagnosis'],
-        'date': photo['date']
+        'date': photo['date'],
+        'date_of_research': photo['research_date'],
+        'researcher': photo['researcher']
       };
     }
+  }
+
+  download_docx(ph: any) {
+    this.loading = true;
+    this.patientService.download_docx(this.patient.id, ph).subscribe({
+      next: (res) => {
+        let name = res['name'];
+        let file = res['doc'];
+        let byteArrays = this.convert_to_bytearray(file);
+        FileSaver.saveAs(new File(byteArrays, name), name);
+        this.loading = false;
+      },
+      error: (e) => {
+        this.message = "Не удалось загрузить файл";
+        this.closeModal('photos_info_modal');
+        this.openModal('message_modal');
+        this.loading = false;
+      }
+    });
   }
 }

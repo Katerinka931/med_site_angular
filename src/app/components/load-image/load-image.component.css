@@ -80,6 +80,14 @@
   transform: translateX(-50%) translateY(-50%);
 }
 
+.edit-button1 {
+  min-width: 10%;
+  top: 90%;
+  left: 50%;
+  position: absolute;
+  transform: translateX(-50%) translateY(-50%);
+}
+
 input[type="file"] {
   display: none;
 }
