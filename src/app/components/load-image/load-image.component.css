@@ -74,15 +74,16 @@
 
 .edit-button {
   min-width: 10%;
-  top: 95%;
+  top: 93%;
   left: 50%;
   position: absolute;
   transform: translateX(-50%) translateY(-50%);
+  margin-top: 10px;
 }
 
 .edit-button1 {
   min-width: 10%;
-  top: 90%;
+  top: 87%;
   left: 50%;
   position: absolute;
   transform: translateX(-50%) translateY(-50%);
@@ -94,7 +95,7 @@ input[type="file"] {
 
 .border-for-image-div {
   border-style: ridge;
-  height: 75%;
+  height: 70%;
   width: 70%;
   display: block;
   margin: auto;
@@ -106,16 +107,6 @@ input[type="file"] {
   right: 0;
   margin: 10px auto;
   width: 26vw;
-  /*margin-right: auto;*/
-  /*margin-left: auto;*/
-  /*margin-top: 175vh;*/
-  /*bottom: -10px;*/
-  /*width: 80%;*/
-  /*height: 80%;*/
-
-  /*border-style: double;*/
-  /*border-radius: 7px;*/
-  /*border-width: 5px;*/
 }
 
 hr {

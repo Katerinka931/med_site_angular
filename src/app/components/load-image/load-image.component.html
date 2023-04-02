@@ -16,7 +16,7 @@
   >
     <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
       <div style="margin-right: auto; margin-left: auto; position: absolute; text-align: center; width: 100%;">
-        <button type="button" class="btn btn-info" style="" (click)="openFileSelector()">
+        <button type="button" class="btn btn-info" (click)="openFileSelector()">
           Выберите
         </button>
         <br>
@@ -25,9 +25,6 @@
           <img [src]="imagePath" style="vertical-align: middle; width: 100%;">
         </div>
       </div>
-      <!--      <div class="image-div">-->
-      <!--        <img [src]="imagePath" style="width: 100%; max-height: 100%; vertical-align: middle;">-->
-      <!--      </div>-->
     </ng-template>
   </ngx-file-drop>
 
@@ -62,32 +59,33 @@
     </div>
     <label>Диагноз: </label> <br>
     <textarea name="text" wrap="soft" maxlength="9970"
-              style="width: 100%; overflow:hidden; resize:none; overflow-y: scroll; min-height: 250px"
+              style="width: 100%; overflow:hidden; resize:none; overflow-y: scroll; min-height: 230px"
               [(ngModel)]="custom_diagnosis"></textarea>
   </div>
-  <div>
-    <button
-      type="submit"
-      class="btn btn-info mb-2 text-center edit-button"
-      name="save"
-      [disabled]="!saved"
-      (click)="download()"
-      style="margin-right: 50px;"
-    >
-      Скачать выписку
-    </button>
-  </div>
-  <div>
-    <button
-      type="submit"
-      class="btn btn-info mb-2 text-center edit-button1"
-      name="save"
-      [disabled]="!diagnosis"
-      (click)="saveDiagnosis('message_modal')"
-      style="margin-right: 50px"
-    >
-      Сохранить
-    </button>
+  <div style="margin-right: 50px; ">
+    <div>
+      <button
+        type="submit"
+        class="btn btn-info mb-2 text-center edit-button"
+        name="save"
+        [disabled]="!saved"
+        (click)="download()"
+      >
+        Скачать выписку
+      </button>
+    </div>
+    <div>
+      <button
+        type="submit"
+        class="btn btn-info mb-2 text-center edit-button1"
+        name="save"
+        [disabled]="!diagnosis"
+        (click)="saveDiagnosis('message_modal')"
+
+      >
+        Сохранить
+      </button>
+    </div>
   </div>
 </div>
 

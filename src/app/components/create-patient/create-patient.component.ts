@@ -52,10 +52,7 @@ export class CreatePatientComponent implements OnInit {
     });
   }
 
-  valueChange(event
-                :
-                any
-  ) {
+  valueChange(event: any) {
     this.selected = event.target.value;
     console.log(this.selected);
   }
