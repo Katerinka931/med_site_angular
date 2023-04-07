@@ -3,13 +3,13 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {TokenStorageService} from "../token_storage_service/token-storage.service";
 import {Observable, tap} from "rxjs";
-
-const AUTH_API = 'http://localhost:8000/';
+import {environment} from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  private AUTH_API = environment.apiUrl;
   private renderer: Renderer2;
   private httpOptions: any;
 
@@ -23,7 +23,7 @@ export class AuthService {
   }
 
   login(user: any): Observable<any> {
-    return this.http.post(AUTH_API + 'login', JSON.stringify(user), this.httpOptions);
+    return this.http.post(this.AUTH_API + 'login', JSON.stringify(user), this.httpOptions);
   }
 
   public logout() {
@@ -31,7 +31,7 @@ export class AuthService {
   }
 
   refreshToken() {
-    return this.http.post<any>(AUTH_API + 'refresh_token', {
+    return this.http.post<any>(this.AUTH_API + 'refresh_token', {
       'refresh': this.tokenStorage.getRefreshToken()
     }).pipe(tap((token) => {
       this.tokenStorage.saveToken(token['access']);

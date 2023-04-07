@@ -1,11 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-
-const createUrl = 'http://localhost:8000/create_user';
-const profileUrl = 'http://localhost:8000/profile';
-const userUrl = 'http://localhost:8000/user';
-const editUrl = 'http://localhost:8000/edit_user';
+import {environment} from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -13,42 +9,46 @@ const editUrl = 'http://localhost:8000/edit_user';
 
 export class UserService {
 
+  private createUrl = environment.apiUrl + 'create_user';
+  private profileUrl = environment.apiUrl + 'profile';
+  private userUrl = environment.apiUrl + 'user';
+  private editUrl = environment.apiUrl + 'edit_user';
   constructor(private http: HttpClient) {
   }
 
   createUser(data: any): Observable<any> {
-    return this.http.post(createUrl, data);
+    return this.http.post(this.createUrl, data);
   }
 
   getUserRoles(): Observable<any> {
-    return this.http.get(createUrl);
+    return this.http.get(this.createUrl);
   }
 
   getDoctorHimself(id: any): Observable<Object> {
-    return this.http.get<Object>(`${profileUrl}`);
+    return this.http.get<Object>(`${this.profileUrl}`);
   }
 
   editDoctorHimself(id: number, data: any): Observable<any> {
-    return this.http.put(`${profileUrl}`, data);
+    return this.http.put(`${this.profileUrl}`, data);
   }
 
   getAnotherDoctor(id: any): Observable<Object> {
-    return this.http.get<Object>(`${userUrl}/${id}`);
+    return this.http.get<Object>(`${this.userUrl}/${id}`);
   }
 
   deletePatient(usr: any, id: any): Observable<any> {
-    return this.http.delete(`${userUrl}/${usr}?remove=${id}`);
+    return this.http.delete(`${this.userUrl}/${usr}?remove=${id}`);
   }
 
   getUser(usr: any): Observable<Object> {
-    return this.http.get<Object>(`${editUrl}/${usr}`);
+    return this.http.get<Object>(`${this.editUrl}/${usr}`);
   }
 
   editUser(id: number, data: any): Observable<any> {
-    return this.http.put(`${editUrl}/${id}`, data);
+    return this.http.put(`${this.editUrl}/${id}`, data);
   }
 
   changePassword(data: any) {
-    return this.http.post(profileUrl, data)
+    return this.http.post(this.profileUrl, data)
   }
 }
