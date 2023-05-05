@@ -90,10 +90,7 @@ export class CreatePatientComponent implements OnInit {
             this.message = 'Доступ запрещен!';
             this.access_error = true;
           } else {
-            if (e.status == 404)
               this.message = e['error']['message']
-            else
-              this.message = "Ошибка загрузки данных"
           }
         }
       });

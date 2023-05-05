@@ -29,7 +29,14 @@
     <h6 class="text-capitalize">Лечащий
       врач: {{ patients_doctor.last_name }} {{ patients_doctor.first_name}} {{ patients_doctor.middle_name}} </h6>
     <div class="diagnosis" style="min-height: 350px">
-      <h4> Диагноз: {{ photo.diagnosis }}</h4>
+      <h4> Диагноз:&nbsp;
+        <div *ngIf="photo.diagnosis; else noDiag">
+          {{ photo.diagnosis }}
+        </div>
+        <ng-template #noDiag>
+          -
+        </ng-template>
+      </h4>
     </div>
   </div>
   <div>

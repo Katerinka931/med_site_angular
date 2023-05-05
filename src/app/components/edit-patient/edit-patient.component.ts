@@ -157,6 +157,7 @@ export class EditPatientComponent implements OnInit {
     this.currentFile = {} as File;
     this.selectedFiles = {} as FileList;
     this.file_name = '';
+    this.message = ''
   }
 
   saveImageInstance(modal: string) {
@@ -174,7 +175,6 @@ export class EditPatientComponent implements OnInit {
           this.photo = event.body['photo'];
           this.imagePath = this.domSerializer.bypassSecurityTrustResourceUrl('data:image/jpeg;base64,' + this.photo.photo);
           this.gotSuccess = true;
-          this.cleanModal();
         }
       },
       e => {

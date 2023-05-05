@@ -59,15 +59,15 @@ export class PatientsDataComponent implements OnInit {
   }
 
   get_photos_data(modal: string) {
-    this.openModal(modal);
-    this.photos = [];
     this.patientService.getAllPhotos(this.route.snapshot.params["pat"]).subscribe({
       next: (data) => {
+        this.openModal(modal);
+        this.photos = [];
         let photo_objects = data['photos'];
         this.photosIsNull = photo_objects.length != 0;
         this.getPhotosList(photo_objects);
       }, error: (e) => {
-        this.message == "Ошибка сервера";
+        this.message = e['error']['message'];
         this.openModal('message_modal');
       }
     });
